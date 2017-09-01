@@ -1,0 +1,11 @@
+{
+  "name": "jukebox-dj-frontend",
+  "version": "0.0.1",
+  "description": "Client code for the Jukebox DJ application.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "SEE LICENSE IN LICENSE.txt"
+}
