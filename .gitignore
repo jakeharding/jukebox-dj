@@ -3,6 +3,9 @@
 *.iml
 index/static/jukebox-dj/.sourcemaps/
 index/static/jukebox-dj/node_modules/
-index/static/jukebox-dj/platforms/
+index/static/jukebox-dj/platforms/ios/
+index/static/jukebox-dj/platforms/android/
 index/static/jukebox-dj/resources/
 index/static/jukebox-dj/www/
+db.sqlite3
+__pycache__/
