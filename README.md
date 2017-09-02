@@ -7,7 +7,8 @@ It is assumed you have cloned the repo and are in the project root directory.
 
 ## Frontend
 
-The frontend is build with the Ionic framework and is served by Django as a static application so it must be built first.
+The frontend is build with the Ionic framework and served by Django as a static application so it must be built first.
+Since the frontend is a static application and is served by Django, the `ionic serve` won't work.
 Node and Ionic CLI will need to be installed.  Installing Node is platform dependent. After Node is installed, Ionic can be installed by running:
 `npm install -g ionic@latest`.
 
