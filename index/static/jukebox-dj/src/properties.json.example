@@ -1,0 +1,7 @@
+{
+  "RestHost": "http//:localhost:8000",
+  "StaticPath": "static"
+}
+// This file is used to setup environment variables for the frontend code.
+// Necessary for when the frontend is not served by Django.
+// Comments are not allowed in JSON files so remove these after saving as properties.json.

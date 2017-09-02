@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import  { WebSocketBridge } from 'django-channels';
 
+
 class RequestedSong {
   name:string;
   requestee:string;
