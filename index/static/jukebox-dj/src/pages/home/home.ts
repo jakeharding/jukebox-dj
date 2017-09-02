@@ -18,8 +18,6 @@ class RequestedSong {
 })
 export class HomePage {
   bridge: WebSocketBridge;
-  // socket: WebSocket;
-  // socket = io.connect("/event",{transports: ['websocket']});
   requestee:string = "";
   name:string = "";
   playlist:RequestedSong[] = [];
