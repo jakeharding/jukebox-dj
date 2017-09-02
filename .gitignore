@@ -1,3 +1,12 @@
 .idea/
 .DS_Store
 *.iml
+index/static/jukebox-dj/.sourcemaps/
+index/static/jukebox-dj/node_modules/
+index/static/jukebox-dj/platforms/ios/
+index/static/jukebox-dj/platforms/android/
+index/static/jukebox-dj/www/
+db.sqlite3
+__pycache__/
+local_settings.py
+index/static/jukebox-dj/src/assets/properties.json

@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title text-center>
+      Jukebox DJ
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding text-center>
+  <form (ngSubmit)="requestSong()">
+    <ion-label color="dark">Enter your name and a song you would like to hear</ion-label>
+    <ion-input placeholder="Your Name" clearInput type="text" [(ngModel)]="requestee" name="name"></ion-input>
+    <ion-input placeholder="Name of Song" clearInput type="text" [(ngModel)]="name" name="song"></ion-input>
+
+    <button ion-button color="danger" [hidden]="!name || !requestee">Request Song</button>
+  </form>
+
+  <section [hidden]="playlist.length === 0">
+    <h1>Playlist</h1>
+    <ion-list>
+      <ion-item *ngFor="let song of playlist">
+        <ion-label color="secondary">
+          Song: {{  song.name }}
+          <span float-right>Requested by: {{ song.requestee }}</span>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </section>
+</ion-content>

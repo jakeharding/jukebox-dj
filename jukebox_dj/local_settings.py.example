@@ -1,0 +1,21 @@
+"""
+local_settings.py - (C) Copyright - 2017
+
+SPDX-License-Identifier: SEE LICENSE.txt
+
+Author(s) of this file:
+  J. Harding
+
+Local settings are for environment specific settings like database config, debug mode, and any secret keys needed.
+This is a minimal example to help setup development when using more than the default database settings.
+"""
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgres',
+        'NAME': 'NAME',
+        'USER': 'USER',
+        'PASSWORD': 'PASSWORD',
+        'HOST': 'localhost',
+    }
+}
