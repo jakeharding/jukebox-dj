@@ -6,7 +6,7 @@ For existing contributors, please use the following header documentation at the 
 fileName.ext - (C) Copyright - 2017
 This software is copyrighted to contributors listed in CONTRIBUTIONS.md.
 
-SPDX-License-Identifier: MIT
+SPDX-License-Identifier: SEE LICENSE.txt
 
 Author(s) of this file:
   Your name or github username
