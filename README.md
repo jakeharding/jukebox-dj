@@ -2,7 +2,7 @@
 
 This repo contains the source code for the term project of CSCI 4850. Please see the [contributing](https://github.com/jakeharding/jukebox-dj/blob/master/CONTRIBUTING.md) document for contribution guidelines.
 
-The following instructions outline how to setup the application for development, leaving out anything platform specific.
+The following instructions outline how to setup the application for development, leaving out anything platform dependent.
 It is assumed you have cloned the repo and are in the project root directory.
 
 ## Frontend
@@ -22,7 +22,7 @@ To build the frontend run the following from the command line:
 
 The backend consists of a Django web application.  
 A virtualenv using Python 3.6 is recommended in order to isolate Python dependencies.
-Installing 
+Installing Python and any database system is platform dependent.
 
 To install Python dependencies run `pip install -r requirements.txt`.
 To run the Django development server run `python manage.py runserver`.
