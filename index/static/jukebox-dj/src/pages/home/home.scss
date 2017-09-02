@@ -2,4 +2,11 @@ page-home {
   ion-label {
     font-size: large;
   }
+  ion-list {
+    ion-label {
+      border: solid 1px;
+      border-bottom: solid 1px!important;
+      padding: 10px;
+    }
+  }
 }
