@@ -11,19 +11,22 @@ Consumers to handle Channel messages
 
 from channels import Group
 
+
 def ws_add(message):
+    print(message)
     # Accept the incoming connection
     message.reply_channel.send({"accept": True})
     # Add them to the chat group
-    Group("chat").add(message.reply_channel)
+    Group("event").add(message.reply_channel)
+
 
 # Connected to websocket.disconnect
 def ws_disconnect(message):
-    Group("chat").discard(message.reply_channel)
+    print(message)
+    Group("event").discard(message.reply_channel)
 
 
 # Connected to websocket.receive
 def ws_message(message):
-    Group("chat").send({
-        "text": "[user] %s" % message.content['text'],
-    })
+    print(message)
+    Group("event").send({"content":message.content})
