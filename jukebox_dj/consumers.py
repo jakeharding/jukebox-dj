@@ -13,7 +13,6 @@ from channels import Group
 
 
 def ws_add(message):
-    print(message)
     # Accept the incoming connection
     message.reply_channel.send({"accept": True})
     # Add them to the chat group
@@ -22,11 +21,9 @@ def ws_add(message):
 
 # Connected to websocket.disconnect
 def ws_disconnect(message):
-    print(message)
     Group("event").discard(message.reply_channel)
 
 
 # Connected to websocket.receive
 def ws_message(message):
-    print(message)
-    Group("event").send({"content":message.content})
+    Group("event").send({"text":message.content["text"]})

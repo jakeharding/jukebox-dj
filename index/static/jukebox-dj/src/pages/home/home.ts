@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-// import  * as io from 'socket.io-client';
+import  { WebSocketBridge } from 'django-channels';
 
 class RequestedSong {
   name:string;
@@ -16,50 +16,23 @@ class RequestedSong {
   templateUrl: 'home.html'
 })
 export class HomePage {
-  socket: WebSocket;
+  bridge: WebSocketBridge;
+  // socket: WebSocket;
   // socket = io.connect("/event",{transports: ['websocket']});
   requestee:string = "";
   name:string = "";
   playlist:RequestedSong[] = [];
 
   constructor(public navCtrl: NavController) {
-    this.socket = new WebSocket("ws://localhost:8000/event/");
-    this.socket.onmessage = (eve) => {
-      console.log(eve);
-    }
-    this.socket.onopen = () => {
-      this.socket.send("Hello World");
-    }
-    this.socket.onmessage = (eve) => {
-      this.playlist.push(eve.data);
-      console.log(eve);
-    }
-    this.socket.onclose = (eve) => {
-      console.log(eve);
-    }
-    // if (this.socket.readyState === WebSocket.OPEN) {this.socket.onopen();}
-    // this.socket.on('event', (song) => {
-    //   console.log(song);
-    //   // this.playlist.push(new RequestedSong())
-    // })
-    // this.socket.on('message', (song) => {
-    //   console.log(song);
-    //   // this.playlist.push(new RequestedSong())
-    // })
-    // this.socket.on('disconnect', (song) => {
-    //   console.log(song);
-    //   // this.playlist.push(new RequestedSong())
-    // })
-    // this.socket.on('connect', (song) => {
-    //   console.log(this.socket.id);
-    //   // this.playlist.push(new RequestedSong())
-    // })
+    this.bridge = new WebSocketBridge();
+    this.bridge.connect('/event/');
+    this.bridge.listen((action, stream) => {
+      this.playlist.push(action);
+    });
   }
 
   requestSong () {
-    // this.socket.emit('event',new RequestedSong(this.name, this.requestee));
-    this.socket.send(new RequestedSong(this.name, this.requestee));
-    // this.playlist.push(new RequestedSong(this.name, this.requestee));
+    this.bridge.send(new RequestedSong(this.name, this.requestee));
     this.name = this.requestee = "";
   }
 
