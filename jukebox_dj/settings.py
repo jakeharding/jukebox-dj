@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'index',
+    'jukebox_dj',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -122,3 +124,13 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "index/static/jukebox-dj/www"),
 ]
 STATIC_URL = '/static/'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+        "ROUTING": "jukebox_dj.routing.channel_routing",
+    },
+}
