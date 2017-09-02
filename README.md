@@ -3,6 +3,7 @@
 This repo contains the source code for the term project of CSCI 4850. Please see the [contributing](https://github.com/jakeharding/jukebox-dj/blob/master/CONTRIBUTING.md) document for contribution guidelines.
 
 The following instructions outline how to setup the application for development, leaving out anything platform dependent.
+This will provide a lightweight web and websocket server for a proof of concept.  More robust servers will be needed for a production instance. 
 It is assumed you have cloned the repo and are in the project root directory.
 
 ## Frontend
