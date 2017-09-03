@@ -19,7 +19,7 @@ Brief description of the file.
 - Write tests for all code written.
 - Use the appropriate coding standard for the code you are writing.
 - Backend is written in Python - use [PEP8](https://www.python.org/dev/peps/pep-0008/)
-- Frontend is written in Typescript using Ionic CLI. Please use Ionic CLI for all enhancements and features.
+- Frontend is written in Typescript using Ionic CLI. Please use [Ionic CLI](https://ionicframework.com/docs/cli/) for all enhancements and features.
 - Merging into master or dev requires a pull request, code review, and approval by a contributor.
 - After pull request is approved, the creator of the pull request will complete the merge unless otherwise noted.
  
