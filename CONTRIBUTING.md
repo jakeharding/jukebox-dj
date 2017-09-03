@@ -18,7 +18,7 @@ Brief description of the file.
 - Always checkout a branch for developing. Never push to master or dev.
 - Write tests for all code written.
 - Use the appropriate coding standard for the code you are writing.
-- Backend is written in Python - use [PEP8](https://www.python.org/dev/peps/pep-0008/)
+- Backend is written in Python and Django - use [PEP8 standards](https://www.python.org/dev/peps/pep-0008/) and [django-admin CLI](https://docs.djangoproject.com/en/1.11/ref/django-admin/)
 - Frontend is written in Typescript using Ionic CLI. Please use [Ionic CLI](https://ionicframework.com/docs/cli/) for all enhancements and features.
 - Merging into master or dev requires a pull request, code review, and approval by a contributor.
 - After pull request is approved, the creator of the pull request will complete the merge unless otherwise noted.
