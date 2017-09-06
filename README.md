@@ -26,6 +26,10 @@ The backend consists of a Django web application.
 A virtualenv using Python 3.6 is recommended in order to isolate Python dependencies.
 Installing Python and any database system is platform dependent.
 
+A Redis server is necessary to run the application.
+Make sure that your Redis server is running on port 6379.
+Installing Redis is platform dependent.
+
 To install Python dependencies run `pip install -r requirements.txt`.
 To run the Django development server run `python manage.py runserver`.
 
