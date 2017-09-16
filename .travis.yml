@@ -5,8 +5,10 @@ install:
   - "pip install -r requirements.txt"
   - "pip install python-coveralls"
 services:
-  - "mysql"
+  - "postgres"
 script:
+  - "npm --prefix jukebox_dj/index/static/jukebox-dj run prepare"
+  - "npm --prefix jukebox_dj/index/static/jukebox-dj run build"
   - "coverage run --source=jukebox_dj manage.py test"
 after_success:
   - "coveralls"

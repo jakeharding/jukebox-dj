@@ -8,5 +8,6 @@ jukebox_dj/index/static/jukebox-dj/platforms/android/
 jukebox_dj/index/static/jukebox-dj/www/
 db.sqlite3
 __pycache__/
+.coverage
 local_settings.py
 jukebox_dj/index/static/jukebox-dj/src/assets/properties.json
