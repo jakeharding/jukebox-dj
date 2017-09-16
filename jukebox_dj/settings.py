@@ -131,6 +131,6 @@ CHANNEL_LAYERS = {
         "CONFIG": {
             "hosts": [("localhost", 6379)],
         },
-        "ROUTING": "jukebox_dj.routing.channel_routing",
+        "ROUTING": "jukebox_dj.prototype.routing.channel_routing",
     },
 }
