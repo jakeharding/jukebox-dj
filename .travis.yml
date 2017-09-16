@@ -1,0 +1,12 @@
+language: python
+python:
+  - "3.6"
+install:
+  - "pip install -r requirements.txt"
+  - "pip install python-coveralls"
+services:
+  - "mysql"
+script:
+  - "coverage run --source=jukebox_dj manage.py test"
+after_success:
+  - "coveralls"
