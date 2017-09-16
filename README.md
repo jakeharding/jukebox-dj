@@ -14,7 +14,7 @@ Node and Ionic CLI will need to be installed.  Installing Node is platform depen
 `npm install -g ionic@latest`.
 
 To build the frontend run the following from the command line:
-- `cd index/static/jukebox-dj/`
+- `cd jukebox_dj/index/static/jukebox-dj/`
 - `npm run prepare` Say yes to any prompt asking to install dependencies.
 - `npm run build` Will build the app.
 - `npm run watch` Will watch files and rebuild the app on any changes.
@@ -25,6 +25,10 @@ To build the frontend run the following from the command line:
 The backend consists of a Django web application.  
 A virtualenv using Python 3.6 is recommended in order to isolate Python dependencies.
 Installing Python and any database system is platform dependent.
+
+A Redis server is necessary to run the application.
+Make sure that your Redis server is running on port 6379.
+Installing Redis is platform dependent.
 
 To install Python dependencies run `pip install -r requirements.txt`.
 To run the Django development server run `python manage.py runserver`.

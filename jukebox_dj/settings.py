@@ -37,8 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'index',
-    'jukebox_dj',
+    'jukebox_dj.index',
     'channels',
 ]
 
@@ -57,7 +56,7 @@ ROOT_URLCONF = 'jukebox_dj.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['index/static/jukebox-dj/www/'],
+        'DIRS': ['jukebox_dj/index/static/jukebox-dj/www/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -121,7 +120,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "index/static/jukebox-dj/www"),
+    os.path.join(BASE_DIR, "jukebox_dj/index/static/jukebox-dj/www"),
 ]
 STATIC_URL = '/static/'
 
@@ -131,6 +130,6 @@ CHANNEL_LAYERS = {
         "CONFIG": {
             "hosts": [("localhost", 6379)],
         },
-        "ROUTING": "jukebox_dj.routing.channel_routing",
+        "ROUTING": "jukebox_dj.prototype.routing.channel_routing",
     },
 }
