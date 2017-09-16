@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 
-from index.views import IndexView
+from jukebox_dj.index.views import IndexView
 
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
