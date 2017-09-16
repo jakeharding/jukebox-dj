@@ -14,7 +14,7 @@ Node and Ionic CLI will need to be installed.  Installing Node is platform depen
 `npm install -g ionic@latest`.
 
 To build the frontend run the following from the command line:
-- `cd index/static/jukebox-dj/`
+- `cd jukebox_dj/index/static/jukebox-dj/`
 - `npm run prepare` Say yes to any prompt asking to install dependencies.
 - `npm run build` Will build the app.
 - `npm run watch` Will watch files and rebuild the app on any changes.
