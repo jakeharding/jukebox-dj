@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'jukebox_dj.index',
     'jukebox_dj.users',
     'jukebox_dj.songs',
+    'jukebox_dj.events',
     'channels',
 ]
 

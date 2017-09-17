@@ -31,7 +31,8 @@ class SongList(m.Model):
     name = m.CharField(max_length=255)
     description = m.TextField(blank=True, null=True)
     dj = m.ForeignKey(settings.AUTH_USER_MODEL)
-    # event = m.ForeignKey('events.Event', blank=True, null=True))
+    created_at = m.DateTimeField(auto_now_add=True)
+    event = m.ForeignKey('events.Event', blank=True, null=True)
 
 
 class SongRequest(m.Model):
@@ -39,7 +40,8 @@ class SongRequest(m.Model):
     song = m.ForeignKey('songs.Song')
     requester_name = m.CharField(max_length=255, blank=True, null=True)
     message = m.CharField(max_length=255, blank=True, null=True)
-    # event = m.ForeignKey('events.Event')
+    created_at = m.DateTimeField(auto_now_add=True)
+    event = m.ForeignKey('events.Event')
 
 
 class Category(m.Model):
@@ -47,3 +49,4 @@ class Category(m.Model):
     name = m.CharField(max_length=255)
     song = m.ForeignKey('songs.Song', blank=True, null=True)
     song_list = m.ForeignKey('songs.SongList', blank=True, null=True)
+    created_at = m.DateTimeField(auto_now_add=True)
