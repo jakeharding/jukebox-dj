@@ -10,7 +10,6 @@ script:
   - "npm install -g cordova ionic@latest"
   - "npm --prefix jukebox_dj/index/static/jukebox-dj run prepare"
   - "npm --prefix jukebox_dj/index/static/jukebox-dj run build"
-  - "python manage.py migrate"
   - "coverage run --source=jukebox_dj manage.py test"
 after_success:
   - "coveralls"
