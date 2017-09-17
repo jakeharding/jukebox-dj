@@ -39,6 +39,8 @@ Make sure that your Redis server is running on port 6379.
 Installing Redis is platform dependent.
 
 To install Python dependencies run `pip install -r requirements.txt`.
+After Python requirements are installed and the database is created, migration will need to be ran to create tables in the database.
+To run the migrations run `python manage.py migrate`.
 To run the Django development server run `python manage.py runserver`.
 
 Open a browser to `http://localhost:8000`.
