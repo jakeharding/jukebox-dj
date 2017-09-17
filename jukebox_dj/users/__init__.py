@@ -9,4 +9,4 @@ Author(s) of this file:
 Setup app config
 """
 
-default_app_config = 'jukebox_dj.users.apps.AppConfig'
+default_app_config = 'jukebox_dj.users.apps.UserConfig'
