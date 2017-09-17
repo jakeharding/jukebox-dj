@@ -11,8 +11,10 @@ Test email authentication backend is working correctly.
 
 
 from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.test import TestCase
+
+from jukebox_dj.users.models import JukeboxUser
 
 
 class TestEmailAuth(TestCase):
@@ -24,9 +26,10 @@ class TestEmailAuth(TestCase):
     """
     def test_email_login(self):
         user = authenticate(**{'username': 'admin', 'password': 'admin'})
-        self.assertTrue(isinstance(user, User), 'Should have success on login username', )
+        self.assertTrue(isinstance(user, JukeboxUser), 'Should have success on login username', )
 
         user = authenticate(**{'username': 'a@a.com', 'password': 'admin'})
-        self.assertTrue(isinstance(user, User), 'Should have success on login with email',)
+        self.assertTrue(isinstance(user, JukeboxUser), 'Should have success on login with email',)
 
-
+        user = authenticate(**{'username': 'sesf@a.com', 'password': 'admin'})
+        self.assertIsNone(user, 'Should not authenticate')

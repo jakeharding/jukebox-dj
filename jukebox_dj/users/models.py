@@ -10,11 +10,11 @@ Models around the user.
 """
 
 
+import uuid
+
 from django.db import models as m
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
 
-class DjUser(User):
-    class Meta:
-        proxy = True
-
+class JukeboxUser(AbstractUser):
+    uuid = m.UUIDField(unique=True, default=uuid.uuid4, editable=False)

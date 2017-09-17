@@ -39,8 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'jukebox_dj.index',
     'jukebox_dj.users',
+    'jukebox_dj.songs',
     'channels',
 ]
+
+AUTH_USER_MODEL = 'users.JukeboxUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
