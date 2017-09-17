@@ -15,7 +15,6 @@ hyperlink==17.3.1
 idna==2.6
 incremental==17.5.0
 msgpack-python==0.4.8
-python-coveralls==2.9.1
 pytz==2017.2
 PyYAML==3.12
 redis==2.10.6
