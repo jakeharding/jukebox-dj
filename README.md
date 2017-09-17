@@ -29,6 +29,9 @@ To build the frontend run the following from the command line:
 
 The backend consists of a Django web application.  
 A virtualenv using Python 3.6 is recommended in order to isolate Python dependencies.
+PostgreSQL is used for a database system. Database settings will need to configured in a local_settings.py file, and
+the postgres service will need to be running.
+An example local settings file is at jukebox_dj/local_settings.py.example.
 Installing Python and any database system is platform dependent.
 
 A Redis server is necessary to run the application.
