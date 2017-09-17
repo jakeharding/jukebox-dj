@@ -5,7 +5,7 @@ install:
   - "pip install -r requirements.txt"
   - "pip install python-coveralls"
 services:
-  - "postgres"
+  - "postgresql"
 script:
   - "npm install -g cordova ionic@latest"
   - "npm --prefix jukebox_dj/index/static/jukebox-dj run prepare"

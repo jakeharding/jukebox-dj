@@ -8,7 +8,7 @@
         "clean": "ionic-app-scripts clean",
         "build": "ionic-app-scripts build",
         "watch": "ionic-app-scripts watch",
-        "prepare": "ionic cordova prepare --no-interactive",
+        "prepare": "ionic cordova prepare --confirm --no-interactive",
         "lint": "ionic-app-scripts lint",
         "ionic:build": "ionic-app-scripts build",
         "ionic:serve": "ionic-app-scripts serve"
