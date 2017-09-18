@@ -10,3 +10,4 @@ db.sqlite3
 __pycache__/
 local_settings.py
 jukebox_dj/index/static/jukebox-dj/src/assets/properties.json
+venv/
