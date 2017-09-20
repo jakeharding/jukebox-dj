@@ -4,6 +4,11 @@ Master branch:
 [![Build Status](https://travis-ci.org/jakeharding/jukebox-dj.svg?branch=master)](https://travis-ci.org/jakeharding/jukebox-dj)
 [![Coverage Status](https://coveralls.io/repos/github/jakeharding/jukebox-dj/badge.svg?branch=master)](https://coveralls.io/github/jakeharding/jukebox-dj?branch=master)
 
+Dev branch:
+
+[![Build Status](https://travis-ci.org/jakeharding/jukebox-dj.svg?branch=dev)](https://travis-ci.org/jakeharding/jukebox-dj)
+[![Coverage Status](https://coveralls.io/repos/github/jakeharding/jukebox-dj/badge.svg?branch=dev)](https://coveralls.io/github/jakeharding/jukebox-dj?branch=dev)
+
 
 This repo contains the source code for the term project of CSCI 4850. Please see the [contributing](https://github.com/jakeharding/jukebox-dj/blob/master/CONTRIBUTING.md) document for contribution guidelines.
 
