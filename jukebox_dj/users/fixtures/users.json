@@ -1,10 +1,10 @@
 [
 {
     "model": "users.jukeboxuser",
-    "pk": "1",
+    "pk": 1,
     "fields": {
         "password": "pbkdf2_sha256$36000$CIPjKVJrsT4F$GNxqdQONOgiI8Sh/leiZ1OMu+DBj3ViOfQzHwbaSprQ=",
-        "last_login": null,
+        "last_login": "2017-09-17T05:37:42.576Z",
         "is_superuser": true,
         "username": "admin",
         "first_name": "",
@@ -13,9 +13,38 @@
         "is_staff": true,
         "is_active": true,
         "date_joined": "2017-09-17T04:46:46.465Z",
+        "uuid": "d48ee72c-05aa-4f60-a878-0975f46f82e7",
         "groups": [],
-        "user_permissions": [],
-        "uuid": "d48ee72c-05aa-4f60-a878-0975f46f82e7"
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.jukeboxuser",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$36000$gu0aFUWH964v$2pNif/OvcbZVhimRcRSlTz2WO1cWYBCv+mSvuZS2aC0=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "aDJ",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2017-09-17T05:38:28.473Z",
+        "uuid": "468a37d3-4f97-4446-aac6-df7671c802fe",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "users.djprofile",
+    "pk": 1,
+    "fields": {
+        "user": 2,
+        "dj_id": "1234",
+        "display_name": "Dj Rockstar",
+        "bio": "Heres some cool stuff"
     }
 }
 ]
