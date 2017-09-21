@@ -1,0 +1,13 @@
+[
+{
+    "model": "events.event",
+    "pk": 1,
+    "fields": {
+        "uuid": "282121e2-bd4a-4b43-b070-f376413f1082",
+        "name": "A wedding and party",
+        "dj": 2,
+        "created_at": "2017-09-17T06:04:02.892Z",
+        "is_active": false
+    }
+}
+]
