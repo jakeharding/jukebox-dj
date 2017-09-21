@@ -1,3 +1,94 @@
-from django.test import TestCase
+"""
+tests.py - (C) Copyright - 2017
 
-# Create your tests here.
+SPDX-License-Identifier: SEE LICENSE.txt
+
+Author(s) of this file:
+  J. Harding
+
+Test REST for events.
+"""
+
+from rest_framework import status
+from rest_framework.test import APITestCase
+from rest_framework.reverse import reverse
+
+from jukebox_dj.events.models import Event
+
+
+class RestApiTestException(Exception):
+    def __init__(self):
+        super().__init__("Test configuration error")
+
+
+class RestApiTestCaseMixin:
+    """
+    Class to test the default functionality of endpoints for our REST API.
+    Update, create, and partial update tests will raise an error if not overridden because they require model specific data.
+    """
+    list_url_name = ""
+    detail_url_name = ""
+    model_under_test = None
+    test_object = None
+
+    def setUp(self):
+        if self.model_under_test:
+            self.test_object = self.model_under_test.objects.first()
+        else:
+            raise RestApiTestException()
+
+    def test_list(self):
+        r = self.client.get(reverse(self.list_url_name))
+        self.assertTrue(status.is_success(r.status_code))
+
+    def test_get(self):
+        r = self.client.get(reverse(self.detail_url_name, args=[self.test_object.uuid]))
+        self.assertTrue(status.is_success(r.status_code))
+
+    def test_update(self):
+        raise RestApiTestException()
+
+    def test_partial_update(self):
+        raise RestApiTestException()
+
+    def test_create(self):
+        raise RestApiTestException()
+
+    def test_delete(self):
+        r = self.client.delete(reverse(self.detail_url_name, args=[self.test_object.uuid]))
+        self.assertTrue(status.is_success(r.status_code))
+
+
+class TestEventApi(APITestCase, RestApiTestCaseMixin):
+
+    fixtures = ['jukebox_dj/users/fixtures/users.json', 'jukebox_dj/events/fixtures/events.json', ]
+    list_url_name = 'event-list'
+    detail_url_name = 'event-detail'
+
+    def setUp(self):
+        self.test_object = Event.objects.first()
+
+    def test_create(self):
+        new_obj_data = {
+            "name": "A party",
+            "dj": "468a37d3-4f97-4446-aac6-df7671c802fe"
+        }
+        r = self.client.post(reverse(self.list_url_name), new_obj_data)
+        self.assertTrue(status.is_success(r.status_code), r.data)
+
+    def test_update(self):
+        """All required fields are needed in PUT requests."""
+        update_obj_data = {
+            "name": "Changes to a shindig",
+            "dj": "468a37d3-4f97-4446-aac6-df7671c802fe"
+        }
+        r = self.client.put(reverse(self.detail_url_name, args=[self.test_object.uuid]), update_obj_data)
+        self.assertTrue(status.is_success(r.status_code), r.data)
+
+    def test_partial_update(self):
+        """All changed fields are needed in PATCH requests."""
+        update_obj_data = {
+            "name": "Like its 1999!",
+        }
+        r = self.client.patch(reverse(self.detail_url_name, args=[self.test_object.uuid]), update_obj_data)
+        self.assertTrue(status.is_success(r.status_code), r.data)

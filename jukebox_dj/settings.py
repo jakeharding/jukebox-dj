@@ -25,6 +25,9 @@ SECRET_KEY = 'u**r&t!os#znpmo+0$mveor(&z3g=ur-rp7!%2wbb_!f&xj4jw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Change this in production
+REST_API_VERSION = 'dev'
+
 ALLOWED_HOSTS = ['*']
 
 
@@ -37,14 +40,26 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'django_filters',
+    'channels',
     'jukebox_dj.index',
     'jukebox_dj.users',
     'jukebox_dj.songs',
     'jukebox_dj.events',
-    'channels',
 ]
 
 AUTH_USER_MODEL = 'users.JukeboxUser'
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    # ],
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
