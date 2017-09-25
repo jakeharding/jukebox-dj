@@ -23,6 +23,7 @@ class Song(m.Model):
     description = m.TextField(blank=True, null=True)
     created_at = m.DateTimeField(auto_now_add=True)
     dj = m.ForeignKey(settings.AUTH_USER_MODEL)
+    # TODO Change to ManyToMany
     song_list = m.ForeignKey('songs.SongList', blank=True, null=True, related_name="songs")
 
 
@@ -32,6 +33,7 @@ class SongList(m.Model):
     description = m.TextField(blank=True, null=True)
     dj = m.ForeignKey(settings.AUTH_USER_MODEL)
     created_at = m.DateTimeField(auto_now_add=True)
+    #TODO  Change to ManyToMany
     event = m.ForeignKey('events.Event', blank=True, null=True, related_name="song_lists")
 
 
@@ -42,6 +44,7 @@ class SongRequest(m.Model):
     message = m.CharField(max_length=255, blank=True, null=True)
     created_at = m.DateTimeField(auto_now_add=True)
     event = m.ForeignKey('events.Event')
+    # TODO Add status field statuses: default: requested, others: queued, denied, played
 
 
 class Category(m.Model):
