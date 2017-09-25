@@ -23,7 +23,7 @@ class Song(m.Model):
     description = m.TextField(blank=True, null=True)
     created_at = m.DateTimeField(auto_now_add=True)
     dj = m.ForeignKey(settings.AUTH_USER_MODEL)
-    song_list = m.ForeignKey('songs.SongList', blank=True, null=True)
+    song_list = m.ForeignKey('songs.SongList', blank=True, null=True, related_name="songs")
 
 
 class SongList(m.Model):
@@ -32,7 +32,7 @@ class SongList(m.Model):
     description = m.TextField(blank=True, null=True)
     dj = m.ForeignKey(settings.AUTH_USER_MODEL)
     created_at = m.DateTimeField(auto_now_add=True)
-    event = m.ForeignKey('events.Event', blank=True, null=True)
+    event = m.ForeignKey('events.Event', blank=True, null=True, related_name="song_lists")
 
 
 class SongRequest(m.Model):

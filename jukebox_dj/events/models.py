@@ -22,3 +22,6 @@ class Event(m.Model):
     dj = m.ForeignKey(settings.AUTH_USER_MODEL)
     created_at = m.DateTimeField(auto_now_add=True)
     is_active = m.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
