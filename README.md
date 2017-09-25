@@ -1,4 +1,14 @@
 # Term project for CSCI 4850
+Master branch:
+
+[![Build Status](https://travis-ci.org/jakeharding/jukebox-dj.svg?branch=master)](https://travis-ci.org/jakeharding/jukebox-dj)
+[![Coverage Status](https://coveralls.io/repos/github/jakeharding/jukebox-dj/badge.svg?branch=master)](https://coveralls.io/github/jakeharding/jukebox-dj?branch=master)
+
+Dev branch:
+
+[![Build Status](https://travis-ci.org/jakeharding/jukebox-dj.svg?branch=dev)](https://travis-ci.org/jakeharding/jukebox-dj)
+[![Coverage Status](https://coveralls.io/repos/github/jakeharding/jukebox-dj/badge.svg?branch=dev)](https://coveralls.io/github/jakeharding/jukebox-dj?branch=dev)
+
 
 This repo contains the source code for the term project of CSCI 4850. Please see the [contributing](https://github.com/jakeharding/jukebox-dj/blob/master/CONTRIBUTING.md) document for contribution guidelines.
 
@@ -24,6 +34,9 @@ To build the frontend run the following from the command line:
 
 The backend consists of a Django web application.  
 A virtualenv using Python 3.6 is recommended in order to isolate Python dependencies.
+PostgreSQL is used for a database system. Database settings will need to configured in a local_settings.py file, and
+the postgres service will need to be running.
+An example local settings file is at jukebox_dj/local_settings.py.example.
 Installing Python and any database system is platform dependent.
 
 A Redis server is necessary to run the application.
@@ -31,6 +44,8 @@ Make sure that your Redis server is running on port 6379.
 Installing Redis is platform dependent.
 
 To install Python dependencies run `pip install -r requirements.txt`.
+After Python requirements are installed and the database is created, migration will need to be ran to create tables in the database.
+To run the migrations run `python manage.py migrate`.
 To run the Django development server run `python manage.py runserver`.
 
 Open a browser to `http://localhost:8000`.

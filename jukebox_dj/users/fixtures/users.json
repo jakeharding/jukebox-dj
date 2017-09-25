@@ -1,0 +1,21 @@
+[
+{
+    "model": "users.jukeboxuser",
+    "pk": "1",
+    "fields": {
+        "password": "pbkdf2_sha256$36000$CIPjKVJrsT4F$GNxqdQONOgiI8Sh/leiZ1OMu+DBj3ViOfQzHwbaSprQ=",
+        "last_login": null,
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "email": "a@a.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2017-09-17T04:46:46.465Z",
+        "groups": [],
+        "user_permissions": [],
+        "uuid": "d48ee72c-05aa-4f60-a878-0975f46f82e7"
+    }
+}
+]

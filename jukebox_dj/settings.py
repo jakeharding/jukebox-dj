@@ -38,8 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'jukebox_dj.index',
+    'jukebox_dj.users',
+    'jukebox_dj.songs',
+    'jukebox_dj.events',
     'channels',
 ]
+
+AUTH_USER_MODEL = 'users.JukeboxUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -85,20 +90,24 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
+AUTHENTICATION_BACKENDS = [
+    'jukebox_dj.users.backends.UserModelEmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    # },
 ]
 
 
@@ -133,3 +142,8 @@ CHANNEL_LAYERS = {
         "ROUTING": "jukebox_dj.prototype.routing.channel_routing",
     },
 }
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
