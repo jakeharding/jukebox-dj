@@ -40,10 +40,12 @@ class RestApiTestCaseMixin:
     def test_list(self):
         r = self.client.get(reverse(self.list_url_name))
         self.assertTrue(status.is_success(r.status_code))
+        return r
 
     def test_get(self):
         r = self.client.get(reverse(self.detail_url_name, args=[self.test_object.uuid]))
         self.assertTrue(status.is_success(r.status_code))
+        return r
 
     def test_update(self):
         raise RestApiTestException()
@@ -61,12 +63,19 @@ class RestApiTestCaseMixin:
 
 class TestEventApi(APITestCase, RestApiTestCaseMixin):
 
-    fixtures = ['jukebox_dj/users/fixtures/users.json', 'jukebox_dj/events/fixtures/events.json', ]
+    fixtures = ['jukebox_dj/users/fixtures/users.json', 'jukebox_dj/events/fixtures/events.json',
+                'jukebox_dj/songs/fixtures/songs.json', 'jukebox_dj/songs/fixtures/song_lists.json'
+                ]
     list_url_name = 'event-list'
     detail_url_name = 'event-detail'
 
     def setUp(self):
         self.test_object = Event.objects.first()
+
+    def test_get(self):
+        r = super().test_get()
+        self.assertIsNotNone(r.data.get('song_lists'), r.data)
+        self.assertTrue(len(r.data.get('song_lists')) > 0, r.data.get('song_lists'))
 
     def test_create(self):
         new_obj_data = {
