@@ -8,7 +8,7 @@
         "description": "",
         "dj": 2,
         "created_at": "2017-09-25T00:33:41.428Z",
-        "event": 1
+        "events": [1]
     }
 }
 ]

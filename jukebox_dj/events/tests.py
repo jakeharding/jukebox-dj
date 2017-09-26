@@ -24,7 +24,8 @@ class RestApiTestException(Exception):
 class RestApiTestCaseMixin:
     """
     Class to test the default functionality of endpoints for our REST API.
-    Update, create, and partial update tests will raise an error if not overridden because they require model specific data.
+    Update, create, and partial update tests will raise an error if not overridden because they require model specific
+    data.
     """
     list_url_name = ""
     detail_url_name = ""
@@ -64,7 +65,8 @@ class RestApiTestCaseMixin:
 class TestEventApi(APITestCase, RestApiTestCaseMixin):
 
     fixtures = ['jukebox_dj/users/fixtures/users.json', 'jukebox_dj/events/fixtures/events.json',
-                'jukebox_dj/songs/fixtures/songs.json', 'jukebox_dj/songs/fixtures/song_lists.json'
+                'jukebox_dj/songs/fixtures/songs.json', 'jukebox_dj/songs/fixtures/song_lists.json',
+                'jukebox_dj/songs/fixtures/requests.json'
                 ]
     list_url_name = 'event-list'
     detail_url_name = 'event-detail'
@@ -76,6 +78,8 @@ class TestEventApi(APITestCase, RestApiTestCaseMixin):
         r = super().test_get()
         self.assertIsNotNone(r.data.get('song_lists'), r.data)
         self.assertTrue(len(r.data.get('song_lists')) > 0, r.data.get('song_lists'))
+        self.assertIsNotNone(r.data.get("song_requests"), r.data)
+        self.assertTrue(len(r.data.get('song_requests')) > 0, r.data.get('song_requests'))
 
     def test_create(self):
         new_obj_data = {

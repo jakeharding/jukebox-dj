@@ -12,14 +12,14 @@ Will hold the ViewSets and Serializers for songs.
 
 from rest_framework.serializers import ModelSerializer
 
-from jukebox_dj.songs.models import SongList, Song
+from jukebox_dj.songs.models import SongList, Song, SongRequest
 
 
 class SongSerializer(ModelSerializer):
 
     class Meta:
         model = Song
-        exclude = ['id', 'dj', 'song_list', ]
+        exclude = ['id', 'dj', 'song_lists', ]
 
 
 class SongListSerializer(ModelSerializer):
@@ -28,5 +28,13 @@ class SongListSerializer(ModelSerializer):
 
     class Meta:
         model = SongList
-        exclude = ['id', 'dj', 'event', ]
+        exclude = ['id', 'dj', 'events', ]
 
+
+class SongRequestSerializer(ModelSerializer):
+
+    song = SongSerializer()
+
+    class Meta:
+        model = SongRequest
+        exclude = ['id', 'event', ]

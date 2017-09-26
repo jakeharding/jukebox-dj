@@ -9,7 +9,7 @@
         "description": "",
         "created_at": "2017-09-17T05:38:33.795Z",
         "dj": 2,
-        "song_list": 1
+        "song_lists": [1]
     }
 },
 {
@@ -22,7 +22,7 @@
         "description": "",
         "created_at": "2017-09-25T00:34:05.911Z",
         "dj": 2,
-        "song_list": 1
+        "song_lists": [1]
     }
 },
 {
@@ -35,7 +35,7 @@
         "description": "",
         "created_at": "2017-09-25T00:34:17.010Z",
         "dj": 2,
-        "song_list": 1
+        "song_lists": [1]
     }
 }
 ]
