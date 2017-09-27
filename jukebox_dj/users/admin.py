@@ -12,7 +12,7 @@ Admin config
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from jukebox_dj.users.models import JukeboxUser
+from jukebox_dj.users.models import JukeboxUser, DjProfile
 
 
 class JukeboxUserAdmin(UserAdmin):
@@ -20,3 +20,4 @@ class JukeboxUserAdmin(UserAdmin):
 
 
 admin.site.register(JukeboxUser, JukeboxUserAdmin)
+admin.site.register(DjProfile)

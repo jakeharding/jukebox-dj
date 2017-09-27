@@ -1,0 +1,41 @@
+[
+{
+    "model": "songs.song",
+    "pk": 1,
+    "fields": {
+        "uuid": "a8d00a30-24cc-405b-b0a5-67b350063e28",
+        "title": "Rise up",
+        "artist": "BER",
+        "description": "",
+        "created_at": "2017-09-17T05:38:33.795Z",
+        "dj": 2,
+        "song_lists": [1]
+    }
+},
+{
+    "model": "songs.song",
+    "pk": 2,
+    "fields": {
+        "uuid": "f55b65bf-8e19-4e30-8ce0-56f899ad10ee",
+        "title": "Another Song",
+        "artist": "Artis",
+        "description": "",
+        "created_at": "2017-09-25T00:34:05.911Z",
+        "dj": 2,
+        "song_lists": [1]
+    }
+},
+{
+    "model": "songs.song",
+    "pk": 3,
+    "fields": {
+        "uuid": "74c400f9-1261-4bc1-aaea-396f21412a6a",
+        "title": "1999",
+        "artist": "Prince",
+        "description": "",
+        "created_at": "2017-09-25T00:34:17.010Z",
+        "dj": 2,
+        "song_lists": [1]
+    }
+}
+]

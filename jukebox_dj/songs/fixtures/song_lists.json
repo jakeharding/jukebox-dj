@@ -1,0 +1,14 @@
+[
+{
+    "model": "songs.songlist",
+    "pk": 1,
+    "fields": {
+        "uuid": "c34be5c2-0e4c-4ac8-87f1-5314c130e74a",
+        "name": "Wedding Song list",
+        "description": "",
+        "dj": 2,
+        "created_at": "2017-09-25T00:33:41.428Z",
+        "events": [1]
+    }
+}
+]
