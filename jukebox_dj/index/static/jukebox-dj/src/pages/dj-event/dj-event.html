@@ -1,0 +1,66 @@
+<!--
+  Generated template for the DjEventPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<jukebox-header></jukebox-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col text-large text-center>
+        <h1>{{ event.name }}</h1>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <!--Denied requests-->
+      <ion-col>
+        <ion-list>
+          <ion-list-header>
+            <h2>Denied Requests</h2>
+          </ion-list-header>
+          <ion-item color="dark" *ngFor="let r of deniedRequests">
+            <ion-label> Title: {{ r.song.title}}</ion-label>
+            <div item-content>
+              Artist: {{ r.song.artist }}
+            </div>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+
+      <!--Incoming Requests-->
+      <ion-col>
+        <ion-list>
+          <ion-list-header>
+            <h2>Current Requests</h2>
+          </ion-list-header>
+          <ion-item color="dark" *ngFor="let r of requestedRequests">
+            <ion-label> Title: {{ r.song.title}}</ion-label>
+            <div item-content>
+              Artist: {{ r.song.artist }}
+            </div>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+
+      <!--Queued Requests-->
+      <ion-col>
+        <ion-list>
+          <ion-list-header>
+            <h2>Queued Requests</h2>
+          </ion-list-header>
+          <ion-item color="dark" *ngFor="let r of queuedRequests">
+            <ion-label> Title: {{ r.song.title}}</ion-label>
+            <div item-content>
+              Artist: {{ r.song.artist }}
+            </div>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+
+
+    </ion-row>
+  </ion-grid>
+</ion-content>

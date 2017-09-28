@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-navbar color="light">
+    <ion-buttons>
+      <button ion-button>Jukebox DJ Logo</button>
+      <button ion-button text-capitalize>Home</button>
+      <button ion-button>FAQ <p text-lowercase>s</p></button>
+      <button ion-button text-capitalize>Support</button>
+    </ion-buttons>
+
+    <ion-buttons end>
+      <button ion-button text-capitalize *ngIf="user">{{ user.djprofile.display_name }}</button>
+      <button ion-button text-capitalize *ngIf="user; else notLoggedIn">Logout</button>
+      <ng-template #notLoggedIn><button text-capitalize ion-button>Login</button></ng-template>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
