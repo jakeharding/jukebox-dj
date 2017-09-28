@@ -1,10 +1,4 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title text-center>
-      Jukebox DJ
-    </ion-title>
-  </ion-navbar>
-</ion-header>
+<jukebox-header></jukebox-header>
 
 <ion-content padding text-center>
   <form (ngSubmit)="requestSong()">
@@ -26,4 +20,5 @@
       </ion-item>
     </ion-list>
   </section>
+  <button ion-button [navPush]="pushPage" [navParams]="event">DJ Event page</button>
 </ion-content>

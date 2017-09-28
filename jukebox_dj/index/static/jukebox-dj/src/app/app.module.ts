@@ -6,11 +6,15 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import {DjEventPage} from "../pages/dj-event/dj-event";
+import {JukeboxHeaderComponent} from "../components/jukebox-header/jukebox-header";
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    DjEventPage,
+    JukeboxHeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -19,7 +23,8 @@ import { HomePage } from '../pages/home/home';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    DjEventPage
   ],
   providers: [
     StatusBar,
