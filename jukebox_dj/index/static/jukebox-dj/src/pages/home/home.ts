@@ -33,7 +33,7 @@ export class HomePage {
     //   this.playlist.push(action);
     // });
 
-    // This provides a shortcut to the dj's event page
+    // This provides a shortcut to the dj's event page so we don't have to show a list of events
     this.event = {
       name: "Emily's Wedding",
       uuid: "282121e2-bd4a-4b43-b070-f376413f1082"

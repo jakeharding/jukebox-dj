@@ -10,6 +10,10 @@ import 'rxjs/add/operator/map';
  * on Ionic pages and navigation.
  */
 
+enum RequestStatus {
+  REQUESTED, QUEUED, DENIED, PLAYED
+}
+
 @IonicPage({
   name:'events',
   segment: 'events/:uuid'
@@ -20,7 +24,10 @@ import 'rxjs/add/operator/map';
 })
 export class DjEventPage {
   event: any; //TODO Model event into a class and remove any
-  requests: any[]; // TODO Model songs and song requests and remove any
+  queuedRequests: any[] = []; // TODO Model songs and song requests and remove any
+  deniedRequests: any[] = []; // TODO Model songs and song requests and remove any
+  playedRequests: any[] = []; // TODO Model songs and song requests and remove any
+  requestedRequests: any[] = []; // TODO Model songs and song requests and remove any
 
   constructor(
     public navCtrl: NavController,
@@ -38,7 +45,23 @@ export class DjEventPage {
     this.http.get(`/api/dev/events/${this.event.uuid}`)
       .map(res => res.json())
       .subscribe(data => {
-        this.requests = data.song_requests;
+        for(let request of data.song_requests) {
+          switch (request.status) {
+            case RequestStatus.DENIED:
+              this.deniedRequests.push(request);
+              break;
+            case RequestStatus.QUEUED:
+              this.queuedRequests.push(request);
+              break;
+            case RequestStatus.PLAYED:
+              this.playedRequests.push(request);
+              break;
+            default:
+              this.requestedRequests.push(request);
+              break;
+          }
+        }
+        console.log(this.deniedRequests, this.playedRequests)
       })
   }
 
