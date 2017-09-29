@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, IonicPage } from 'ionic-angular';
 // import  { WebSocketBridge } from 'django-channels';
-import { DjEventPage} from "../dj-event/dj-event";
 
 
 // class RequestedSong {
@@ -13,12 +12,15 @@ import { DjEventPage} from "../dj-event/dj-event";
 //   }
 // }
 
+@IonicPage({
+  name: 'home'
+})
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
-  pushPage = DjEventPage;
+  pushPage = 'events';
   // bridge: WebSocketBridge;
   // requestee:string = "";
   // name:string = "";

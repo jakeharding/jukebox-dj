@@ -58,5 +58,8 @@
         "platforms": [
             "browser"
         ]
+    },
+    "config": {
+        "ionic_webpack": "./webpack.config.js"
     }
 }
