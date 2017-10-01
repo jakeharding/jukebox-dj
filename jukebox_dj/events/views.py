@@ -37,3 +37,4 @@ class EventViewSet(ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     lookup_field = 'uuid'
+    filter_fields = ('dj__djprofile__dj_id', 'is_active', 'dj__uuid', )
