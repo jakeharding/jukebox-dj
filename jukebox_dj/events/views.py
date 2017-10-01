@@ -15,7 +15,7 @@ from rest_framework.serializers import ModelSerializer, SlugRelatedField
 
 from .models import Event
 from jukebox_dj.users.models import JukeboxUser
-from jukebox_dj.songs.views import SongListSerializer, SongRequestSerializer
+from jukebox_dj.songs.views import SongListSerializer, NestedSongRequestSerializer
 
 
 class EventSerializer(ModelSerializer):
@@ -25,7 +25,7 @@ class EventSerializer(ModelSerializer):
     )
 
     song_lists = SongListSerializer(many=True, read_only=True)
-    song_requests = SongRequestSerializer(many=True, read_only=True)
+    song_requests = NestedSongRequestSerializer(many=True, read_only=True)
 
     class Meta:
         model = Event
