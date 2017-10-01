@@ -14,4 +14,9 @@ from django.contrib import admin
 
 from jukebox_dj.events.models import Event
 
-admin.site.register(Event)
+
+class EventAdmin(admin.ModelAdmin):
+    readonly_fields = ('uuid', )
+
+
+admin.site.register(Event, EventAdmin)

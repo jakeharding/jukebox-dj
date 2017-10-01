@@ -63,3 +63,4 @@ class SongRequestViewset(ModelViewSet):
     queryset = SongRequest.objects.all()
     serializer_class = StandAloneSongRequestSerializer
     lookup_field = 'uuid'
+    filter_fields = ('event__uuid', 'status', 'song__uuid')
