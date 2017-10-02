@@ -20,7 +20,7 @@ export class EventProvider {
     return this.http.get(this.url + uuid).map(res => res.json());
   }
 
-  createEvent (event: Event) {
+  createEvent(event: Event): Observable<Event>  {
     return this.http.post(this.url, event).map(res => res.json());
   }
 }

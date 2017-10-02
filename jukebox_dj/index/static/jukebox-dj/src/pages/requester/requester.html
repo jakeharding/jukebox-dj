@@ -4,9 +4,27 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<jukebox-header></jukebox-header>
+<ion-header>
+
+  <ion-navbar color="dark">
+    <ion-title>Jukebox DJ</ion-title>
+  </ion-navbar>
+
+</ion-header>
 
 
-<ion-content padding>
+<ion-content padding text-center>
+  <h1>{{ event?.name }}</h1>
+  <ion-segment color="light">
+
+    <ion-segment-button value="songs" text-capitalize>
+      Request a Song
+    </ion-segment-button>
+
+    <ion-segment-button value="requests" text-capitalize>
+      Requested Songs
+    </ion-segment-button>
+
+  </ion-segment>
 
 </ion-content>

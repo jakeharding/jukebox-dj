@@ -1,3 +1,12 @@
 page-requester {
+  .segment-button {
+    background-color: lightgray!important;
+    border-radius: 2px;
+    border-width: 0px!important;
 
+  }
+  .segment-activated {
+    background-color: color($colors, primary)!important;
+    color:white!important;
+  }
 }

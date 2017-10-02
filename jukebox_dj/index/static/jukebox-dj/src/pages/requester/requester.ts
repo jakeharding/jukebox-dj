@@ -23,8 +23,8 @@ import { Event } from '../../models/Event';
 export class RequesterPage {
 
   event: Event;
-  songs: Song[] = [];
-  requests: SongRequest[] = [];
+  // songs: Song[] = [];
+  // requests: SongRequest[] = [];
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams, private eventProvider: EventProvider) {
@@ -32,8 +32,8 @@ export class RequesterPage {
     // Index page will make call to filter dj's events for an active event and pass event data to this page
     this.eventProvider.getEvent(navParams.data.uuid).subscribe( data => {
       this.event = data;
-      this.songs = this.event.songs;
-      this.requests = this.event.song_requests;
+      // this.songs = this.event.songs;
+      // this.requests = this.event.song_requests;
     });
   }
 
