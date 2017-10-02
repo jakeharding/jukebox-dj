@@ -7,6 +7,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import {DragulaModule} from "ng2-dragula/ng2-dragula"
 
 import { MyApp } from './app.component';
+import { EventProvider } from '../providers/event/event';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { MyApp } from './app.component';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    EventProvider
   ]
 })
 export class AppModule {}

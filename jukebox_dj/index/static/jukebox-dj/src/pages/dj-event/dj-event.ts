@@ -4,6 +4,8 @@ import { Http } from '@angular/http';
 import { DragulaService } from 'ng2-dragula/components/dragula.provider'
 import 'rxjs/add/operator/map';
 
+import { SongRequestStatus} from '../../models/SongRequest';
+
 /**
  * Generated class for the DjEventPage page.
  *
@@ -11,9 +13,6 @@ import 'rxjs/add/operator/map';
  * on Ionic pages and navigation.
  */
 
-enum RequestStatus {
-  REQUESTED, QUEUED, DENIED, PLAYED
-}
 
 @IonicPage({
   name: 'events',
@@ -49,13 +48,13 @@ export class DjEventPage {
         this.event = data;
         for(let request of data.song_requests) {
           switch (request.status) {
-            case RequestStatus.DENIED:
+            case SongRequestStatus.DENIED:
               this.deniedRequests.push(request);
               break;
-            case RequestStatus.QUEUED:
+            case SongRequestStatus.QUEUED:
               this.queuedRequests.push(request);
               break;
-            case RequestStatus.PLAYED:
+            case SongRequestStatus.PLAYED:
               this.playedRequests.push(request);
               break;
             default:
@@ -64,9 +63,5 @@ export class DjEventPage {
           }
         }
       })
-  }
-
-  ionViewDidLoad() {
-    console.log(this.event);
   }
 }
