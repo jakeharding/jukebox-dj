@@ -36,7 +36,7 @@ export class HomePage {
     // This provides a shortcut to the dj's event page so we don't have to show a list of events
     this.event = {
       name: "Emily's Wedding",
-      uuid: "282121e2-bd4a-4b43-b070-f376413f1082"
+      uuid: "19dcfbdf-b6b9-4ffa-a91e-03f1c7faf7de"
     }
   }
 

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Http } from '@angular/http';
+import { DragulaService } from 'ng2-dragula/components/dragula.provider'
 import 'rxjs/add/operator/map';
 
 /**
@@ -67,5 +68,4 @@ export class DjEventPage {
 
   ionViewDidLoad() {
   }
-
 }
