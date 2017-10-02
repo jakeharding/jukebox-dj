@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Song } from '../../models/Song';
+import { SongRequest, SongRequestStatus } from '../../models/SongRequest';
 
 /**
  * Generated class for the RequesterPage page.
@@ -8,18 +10,21 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
  * on Ionic pages and navigation.
  */
 
-@IonicPage()
+@IonicPage({
+  name: 'requester',
+  segment: 'requester-event/:uuid'
+})
 @Component({
   selector: 'page-requester',
   templateUrl: 'requester.html',
 })
 export class RequesterPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  songs: Song[] = [];
+  requests: SongRequest[] = [];
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad RequesterPage');
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+
   }
 
 }
