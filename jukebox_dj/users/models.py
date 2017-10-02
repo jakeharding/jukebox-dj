@@ -25,3 +25,6 @@ class DjProfile(m.Model):
     dj_id = m.CharField(max_length=4, unique=True)
     display_name = m.CharField(max_length=255, blank=True, null=True)
     bio = m.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.display_name
