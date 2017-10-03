@@ -7,16 +7,10 @@ import { StatusBar } from '@ionic-native/status-bar';
 import {DragulaModule} from "ng2-dragula/ng2-dragula"
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
-import {DjEventPage} from "../pages/dj-event/dj-event";
-import {JukeboxHeaderComponent} from "../components/jukebox-header/jukebox-header";
 
 @NgModule({
   declarations: [
-    MyApp,
-    HomePage,
-    DjEventPage,
-    JukeboxHeaderComponent
+    MyApp
   ],
   imports: [
     BrowserModule,
@@ -26,9 +20,7 @@ import {JukeboxHeaderComponent} from "../components/jukebox-header/jukebox-heade
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    HomePage,
-    DjEventPage
+    MyApp
   ],
   providers: [
     StatusBar,

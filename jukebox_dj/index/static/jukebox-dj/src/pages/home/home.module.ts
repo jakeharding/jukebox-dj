@@ -1,15 +1,13 @@
 import { NgModule } from '@angular/core';
+import { HomePage} from './home';
 import { IonicPageModule } from 'ionic-angular';
-import { DjEventPage } from './dj-event';
 import {ComponentsModule} from "../../components/components.module";
 
 @NgModule({
-  declarations: [
-    DjEventPage
-  ],
+  declarations: [HomePage],
   imports: [
-    IonicPageModule.forChild(DjEventPage),
+    IonicPageModule.forChild(HomePage),
     ComponentsModule
   ],
 })
-export class DjEventPageModule {}
+export class HomePageModule { }

@@ -21,9 +21,11 @@ from rest_framework.routers import DefaultRouter
 
 from jukebox_dj.index.views import IndexView
 from jukebox_dj.events.views import EventViewSet
+from jukebox_dj.songs.views import SongRequestViewset
 
 router = DefaultRouter(trailing_slash=False)
 router.register('events', EventViewSet)
+router.register('song-requests', SongRequestViewset)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),

@@ -32,12 +32,6 @@ class RestApiTestCaseMixin:
     model_under_test = None
     test_object = None
 
-    def setUp(self):
-        if self.model_under_test:
-            self.test_object = self.model_under_test.objects.first()
-        else:
-            raise RestApiTestException()
-
     def test_list(self):
         r = self.client.get(reverse(self.list_url_name))
         self.assertTrue(status.is_success(r.status_code))

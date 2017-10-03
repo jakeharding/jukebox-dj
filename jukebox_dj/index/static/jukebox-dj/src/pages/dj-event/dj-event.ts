@@ -16,7 +16,7 @@ enum RequestStatus {
 }
 
 @IonicPage({
-  name:'events',
+  name: 'events',
   segment: 'events/:uuid'
 })
 @Component({
@@ -46,6 +46,7 @@ export class DjEventPage {
     this.http.get(`/api/dev/events/${this.event.uuid}`)
       .map(res => res.json())
       .subscribe(data => {
+        this.event = data;
         for(let request of data.song_requests) {
           switch (request.status) {
             case RequestStatus.DENIED:
@@ -62,10 +63,10 @@ export class DjEventPage {
               break;
           }
         }
-        console.log(this.deniedRequests, this.playedRequests)
       })
   }
 
   ionViewDidLoad() {
+    console.log(this.event);
   }
 }
