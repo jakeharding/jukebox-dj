@@ -23,6 +23,7 @@ import { Event } from '../../models/Event';
 export class RequesterPage {
 
   event: Event;
+  requests = "songs";
   // songs: Song[] = [];
   // requests: SongRequest[] = [];
 
