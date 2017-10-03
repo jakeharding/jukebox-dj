@@ -17,7 +17,6 @@ from jukebox_dj.users.models import JukeboxUser, DjProfile
 
 class JukeboxUserAdmin(UserAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff', 'uuid')
-    readonly_fields = ('uuid',)
 
 
 admin.site.register(JukeboxUser, JukeboxUserAdmin)
