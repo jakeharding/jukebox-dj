@@ -1,8 +1,8 @@
 <ion-header>
-  <ion-toolbar color="light" class="has-header">
+  <ion-navbar color="light">
     <ion-buttons>
       <button ion-button>Jukebox DJ Logo</button>
-      <button ion-button text-capitalize>Home</button>
+      <button ion-button text-capitalize [navPush]="'home'">Home</button>
       <button ion-button>FAQ <p text-lowercase>s</p></button>
       <button ion-button text-capitalize>Support</button>
     </ion-buttons>
@@ -12,5 +12,5 @@
       <button ion-button text-capitalize *ngIf="user; else notLoggedIn">Logout</button>
       <ng-template #notLoggedIn><button text-capitalize ion-button>Login</button></ng-template>
     </ion-buttons>
-</ion-toolbar>
+  </ion-navbar>
 </ion-header>
