@@ -11,6 +11,7 @@
  */
 import {Song} from "./Song";
 import {SongRequest} from "./SongRequest";
+import {SongList} from "./SongList";
 
 export interface Event {
   uuid: string;
@@ -18,6 +19,6 @@ export interface Event {
   dj: string;
   created_at: Date;
   is_active: boolean;
-  songs: Song[];
+  song_lists: SongList[];
   song_requests: SongRequest[];
 }

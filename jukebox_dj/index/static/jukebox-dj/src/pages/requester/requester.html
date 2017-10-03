@@ -14,17 +14,19 @@
 
 
 <ion-content padding text-center>
-  <h1>{{ event?.name }}</h1>
+  <h1 color=""primary>{{ event?.name }}</h1>
   <ion-grid>
     <ion-row>
-      <ion-col col-12 col-sm-10 offset-sm-1 no-padding>
+      <ion-col col-12 col-sm-10 offset-sm-1 no-padding
+        col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4
+      >
         <ion-segment color="light" [(ngModel)]="requests">
 
           <ion-segment-button value="songs" text-capitalize id="requestSong">
             Request a Song
           </ion-segment-button>
 
-          <ion-segment-button value="requests" text-capitalize id="songRequests">
+          <ion-segment-button value="songRequests" text-capitalize id="songRequests">
             Song Requests
           </ion-segment-button>
 
@@ -32,11 +34,48 @@
       </ion-col>
     </ion-row>
 
-    <ion-row>
-      <ion-col text-center padding-top>
-        <h2 color="light">Request a Song</h2>
-      </ion-col>
-    </ion-row>
+    <div [ngSwitch]="requests">
+      <div *ngSwitchCase="'songs'">
+        <ion-row >
+          <ion-col text-center padding-top
+            col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4
+          >
+            <h2 color="light">Request a Song</h2>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4>
+            <ion-searchbar
+              [(ngModel)]="songSearch"
+              placeholder="Search Available Songs"
+              col-12 col-sm-10 offset-sm-1 no-padding
+              (ionInput) = "filterSongs($event)"
+            >
+
+            </ion-searchbar>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4>
+            <ion-list>
+              <ion-list-header>
+                <h2 padding-top><span float-left>Song Titles</span><span>Artists</span></h2>
+              </ion-list-header>
+              <ion-row>
+              <ion-item *ngFor="let song of filteredSongs">
+                <ion-col>{{ song.title }}</ion-col><ion-col text-center>{{ song.artist }}</ion-col>
+              </ion-item>
+            </ion-list>
+          </ion-col>
+        </ion-row>
+      </div>
+
+
+    </div>
+
+
   </ion-grid>
 
 </ion-content>
