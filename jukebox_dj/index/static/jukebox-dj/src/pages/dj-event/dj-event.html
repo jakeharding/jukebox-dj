@@ -21,12 +21,14 @@
           <ion-list-header>
             <h2>Denied Requests</h2>
           </ion-list-header>
-          <ion-item color="dark" *ngFor="let r of deniedRequests">
-            <ion-label> Title: {{ r.song.title}}</ion-label>
-            <div item-content>
-              Artist: {{ r.song.artist }}
-            </div>
-          </ion-item>
+          <ion-item-group [dragula]='"request-bag"'>
+            <ion-item color="dark" *ngFor="let r of deniedRequests">
+              <ion-label> Title: {{ r.song.title}}</ion-label>
+              <div item-content>
+                Artist: {{ r.song.artist }}
+              </div>
+            </ion-item>
+          </ion-item-group>
         </ion-list>
       </ion-col>
 
@@ -36,12 +38,14 @@
           <ion-list-header>
             <h2>Current Requests</h2>
           </ion-list-header>
-          <ion-item color="dark" *ngFor="let r of requestedRequests">
-            <ion-label> Title: {{ r.song.title}}</ion-label>
-            <div item-content>
-              Artist: {{ r.song.artist }}
-            </div>
-          </ion-item>
+          <ion-item-group [dragula]='"request-bag"'>
+            <ion-item color="dark" *ngFor="let r of requestedRequests">
+              <ion-label> Title: {{ r.song.title}}</ion-label>
+              <div item-content>
+                Artist: {{ r.song.artist }}
+              </div>
+            </ion-item>
+          </ion-item-group>
         </ion-list>
       </ion-col>
 
@@ -51,16 +55,16 @@
           <ion-list-header>
             <h2>Queued Requests</h2>
           </ion-list-header>
-          <ion-item color="dark" *ngFor="let r of queuedRequests">
-            <ion-label> Title: {{ r.song.title}}</ion-label>
-            <div item-content>
-              Artist: {{ r.song.artist }}
-            </div>
-          </ion-item>
+          <ion-item-group [dragula]='"request-bag"'>
+            <ion-item color="dark" *ngFor="let r of queuedRequests">
+              <ion-label> Title: {{ r.song.title}}</ion-label>
+              <div item-content>
+                Artist: {{ r.song.artist }}
+              </div>
+            </ion-item>
+          </ion-item-group>
         </ion-list>
       </ion-col>
-
-
     </ion-row>
   </ion-grid>
 </ion-content>

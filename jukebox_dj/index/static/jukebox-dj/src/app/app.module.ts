@@ -4,6 +4,7 @@ import { HttpModule } from '@angular/http';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import {DragulaModule} from "ng2-dragula/ng2-dragula"
 
 import { MyApp } from './app.component';
 
@@ -15,6 +16,7 @@ import { MyApp } from './app.component';
     BrowserModule,
     HttpModule,
     IonicModule.forRoot(MyApp),
+    DragulaModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
