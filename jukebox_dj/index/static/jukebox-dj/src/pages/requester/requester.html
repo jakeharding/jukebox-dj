@@ -61,12 +61,13 @@
           <ion-col col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4>
             <ion-list>
               <ion-list-header>
-                <h2 padding-top><span float-left>Song Titles</span><span>Artists</span></h2>
+                <ion-label><h2>Song Titles</h2></ion-label><ion-label><h2>Artists</h2></ion-label>
               </ion-list-header>
-              <ion-row>
+
               <ion-item *ngFor="let song of filteredSongs">
-                <ion-col>{{ song.title }}</ion-col><ion-col text-center>{{ song.artist }}</ion-col>
+                <ion-label text-center>{{ song.title }}</ion-label><ion-label text-center>{{ song.artist }}</ion-label>
               </ion-item>
+
             </ion-list>
           </ion-col>
         </ion-row>
