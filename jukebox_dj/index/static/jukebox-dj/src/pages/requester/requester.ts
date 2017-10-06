@@ -32,16 +32,11 @@ export class RequesterPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private eventProvider: EventProvider, private reqProvider: SongRequestProvider) {
-
-    // this call won't be needed after index page is built
     // Index page will make call to filter dj's events for an active event and pass event data to this page
     this.eventProvider.getEvent(navParams.data.uuid).subscribe( data => {
       this.event = data;
-      // this.songs = this.event.songs;
       for (let list of this.event.song_lists) {
-        // for(let song of list.songs) {
-          this.songs = this.songs.concat(list.songs);
-        // }
+        this.songs = this.songs.concat(list.songs);
       }
       this.filteredSongs = this.songs;
     });

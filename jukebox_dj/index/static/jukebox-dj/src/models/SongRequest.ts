@@ -11,13 +11,15 @@
  */
 
 
+import {Song} from "./Song";
+
 export enum SongRequestStatus {
   REQUESTED, QUEUED, DENIED, PLAYED
 }
 
 export class SongRequest {
   uuid: string;
-  song: string;
+  song: string | Song;
   requester_name: string;
   message: string;
   created_at: Date;

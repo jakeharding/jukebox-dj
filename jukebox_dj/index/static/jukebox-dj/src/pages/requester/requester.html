@@ -20,7 +20,7 @@
       <ion-col col-12 col-sm-10 offset-sm-1 no-padding
         col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4
       >
-        <ion-segment color="light" [(ngModel)]="requests">
+        <ion-segment color="light" [(ngModel)]="requesterLists">
 
           <ion-segment-button value="songs" text-capitalize id="requestSong">
             Request a Song
@@ -34,13 +34,13 @@
       </ion-col>
     </ion-row>
 
-    <div [ngSwitch]="requests">
+    <div [ngSwitch]="requesterLists">
       <div *ngSwitchCase="'songs'">
         <ion-row >
           <ion-col text-center padding-top
             col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4
           >
-            <h2 color="light">Request a Song</h2>
+            <h2 color="light">Click a Song to Request</h2>
           </ion-col>
         </ion-row>
 
@@ -67,12 +67,27 @@
               <ion-item *ngFor="let song of filteredSongs" (click)="createRequest(song);">
                 <ion-label text-center>{{ song.title }}</ion-label><ion-label text-center>{{ song.artist }}</ion-label>
               </ion-item>
+            </ion-list>
+          </ion-col>
+        </ion-row>
 
+      </div>
+
+      <div *ngSwitchCase="'songRequests'">
+        <ion-row>
+          <ion-col col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4>
+            <ion-list>
+
+              <h2>Requested Songs</h2>
+
+              <ion-item *ngFor="let request of requested">
+                <ion-label text-center>{{ request.song.title }}</ion-label>
+                <ion-label text-center>{{ request.song.artist }}</ion-label>
+              </ion-item>
             </ion-list>
           </ion-col>
         </ion-row>
       </div>
-
 
     </div>
 
