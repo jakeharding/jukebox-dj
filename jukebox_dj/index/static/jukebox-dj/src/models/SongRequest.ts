@@ -15,11 +15,19 @@ export enum SongRequestStatus {
   REQUESTED, QUEUED, DENIED, PLAYED
 }
 
-export interface SongRequest {
+export class SongRequest {
   uuid: string;
   song: string;
   requester_name: string;
   message: string;
   created_at: Date;
   status: SongRequestStatus;
+  event: string;
+
+  constructor (song: string, event: string, requester_name?: string, message?:string) {
+    this.song = song;
+    this.event = event;
+    this.requester_name = requester_name;
+    this.message = message;
+  }
 }

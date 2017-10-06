@@ -4,6 +4,8 @@ import { Song } from '../../models/Song';
 // import { SongRequest, SongRequestStatus } from '../../models/SongRequest';
 import { EventProvider} from "../../providers/event/event";
 import { Event } from '../../models/Event';
+import {SongRequest} from "../../models/SongRequest";
+import {SongRequestProvider} from "../../providers/song-request/song-request";
 
 /**
  * Generated class for the RequesterPage page.
@@ -28,8 +30,8 @@ export class RequesterPage {
   filteredSongs: Song[] = [];
   // requests: SongRequest[] = [];
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams, private eventProvider: EventProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private eventProvider: EventProvider, private reqProvider: SongRequestProvider) {
 
     // this call won't be needed after index page is built
     // Index page will make call to filter dj's events for an active event and pass event data to this page
@@ -56,6 +58,16 @@ export class RequesterPage {
     } else if (!val || val.length === 0) {
       this.filteredSongs = this.songs;
     }
+  }
+
+  createRequest(song: Song) {
+    let req = new SongRequest(song.uuid, this.event.uuid);
+    console.log(req);
+    this.reqProvider.create(req).subscribe(request => {
+      //TODO Send to WebSocket on success
+      //TODO Notify user of success or failure.
+      console.log(request);
+    });
   }
 
 }
