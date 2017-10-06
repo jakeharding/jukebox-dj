@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Song } from '../../models/Song';
-// import { SongRequest, SongRequestStatus } from '../../models/SongRequest';
 import { EventProvider} from "../../providers/event/event";
 import { Event } from '../../models/Event';
 import {SongRequest} from "../../models/SongRequest";
@@ -32,7 +31,7 @@ export class RequesterPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private eventProvider: EventProvider, private reqProvider: SongRequestProvider) {
-    // Index page will make call to filter dj's events for an active event and pass event data to this page
+    // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
     this.eventProvider.getEvent(navParams.data.uuid).subscribe( data => {
       this.event = data;
       for (let list of this.event.song_lists) {
