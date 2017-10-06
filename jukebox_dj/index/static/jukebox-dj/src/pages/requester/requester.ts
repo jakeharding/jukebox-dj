@@ -25,7 +25,7 @@ import {SongRequestProvider} from "../../providers/song-request/song-request";
 export class RequesterPage {
 
   event: Event;
-  requests: string = "songs";
+  requesterLists: string = "songs";
   songs: Song[] = [];
   filteredSongs: Song[] = [];
   requested: SongRequest[] = [];
@@ -39,9 +39,9 @@ export class RequesterPage {
       this.event = data;
       // this.songs = this.event.songs;
       for (let list of this.event.song_lists) {
-        for(let song of list.songs) {
-          this.songs.push(song);
-        }
+        // for(let song of list.songs) {
+          this.songs = this.songs.concat(list.songs);
+        // }
       }
       this.filteredSongs = this.songs;
     });
@@ -61,11 +61,11 @@ export class RequesterPage {
 
   createRequest(song: Song) {
     let req = new SongRequest(song.uuid, this.event.uuid);
-    console.log(req);
-    this.reqProvider.create(req).subscribe(request => {
+    this.reqProvider.create(req).subscribe((request: SongRequest) => {
       //TODO Send to WebSocket on success
       //TODO Notify user of success or failure.
       console.log(request);
+      request.song = song;
       this.requested.push(request);
     });
   }
