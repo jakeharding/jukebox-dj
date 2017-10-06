@@ -28,7 +28,7 @@ export class RequesterPage {
   requests: string = "songs";
   songs: Song[] = [];
   filteredSongs: Song[] = [];
-  // requests: SongRequest[] = [];
+  requested: SongRequest[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private eventProvider: EventProvider, private reqProvider: SongRequestProvider) {
@@ -38,7 +38,6 @@ export class RequesterPage {
     this.eventProvider.getEvent(navParams.data.uuid).subscribe( data => {
       this.event = data;
       // this.songs = this.event.songs;
-      // this.requests = this.event.song_requests;
       for (let list of this.event.song_lists) {
         for(let song of list.songs) {
           this.songs.push(song);
@@ -67,6 +66,7 @@ export class RequesterPage {
       //TODO Send to WebSocket on success
       //TODO Notify user of success or failure.
       console.log(request);
+      this.requested.push(request);
     });
   }
 
