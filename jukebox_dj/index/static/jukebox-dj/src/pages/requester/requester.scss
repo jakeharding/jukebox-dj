@@ -1,0 +1,29 @@
+page-requester {
+
+  h2 {
+    color: white;
+  }
+
+  .scroll-content {
+    margin-top: 0px!important;
+  }
+
+  .segment-button {
+    background-color: lightgray!important;
+    border-radius: 2px;
+    border-width: 0px!important;
+  }
+  .segment-activated {
+    background-color: color($colors, primary)!important;
+    color:white!important;
+  }
+
+  #requestSong {
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+  }
+  #songRequests {
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+  }
+}
