@@ -21,7 +21,7 @@
           <ion-list-header>
             <h2>Denied Requests</h2>
           </ion-list-header>
-          <ion-item-group [dragula]='"request-bag"'>
+          <ion-item-group [dragula]='"request-bag"' [dragulaModel]="deniedRequests">
             <ion-item color="dark" *ngFor="let r of deniedRequests">
               <ion-label> Title: {{ r.song.title}}</ion-label>
               <div item-content>
@@ -38,7 +38,7 @@
           <ion-list-header>
             <h2>Current Requests</h2>
           </ion-list-header>
-          <ion-item-group [dragula]='"request-bag"'>
+          <ion-item-group [dragula]='"request-bag"' [dragulaModel]="requestedRequests">
             <ion-item color="dark" *ngFor="let r of requestedRequests">
               <ion-label> Title: {{ r.song.title}}</ion-label>
               <div item-content>
@@ -55,7 +55,7 @@
           <ion-list-header>
             <h2>Queued Requests</h2>
           </ion-list-header>
-          <ion-item-group [dragula]='"request-bag"'>
+          <ion-item-group [dragula]='"request-bag"' [dragulaModel]="queuedRequests">
             <ion-item color="dark" *ngFor="let r of queuedRequests">
               <ion-label> Title: {{ r.song.title}}</ion-label>
               <div item-content>
