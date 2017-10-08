@@ -4,8 +4,6 @@ import { Http } from '@angular/http';
 import { DragulaService } from 'ng2-dragula/components/dragula.provider'
 import 'rxjs/add/operator/map';
 
-import { SongRequestStatus} from '../../models/SongRequest';
-
 /**
  * Generated class for the DjEventPage page.
  *
@@ -13,6 +11,9 @@ import { SongRequestStatus} from '../../models/SongRequest';
  * on Ionic pages and navigation.
  */
 
+enum RequestStatus {
+  REQUESTED, QUEUED, DENIED, PLAYED
+}
 
 @IonicPage({
   name: 'events',
@@ -32,7 +33,8 @@ export class DjEventPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private http: Http
+    private http: Http,
+    private dragulaService: DragulaService
   ) {
 
     this.event = navParams.data;
@@ -46,15 +48,15 @@ export class DjEventPage {
       .map(res => res.json())
       .subscribe(data => {
         this.event = data;
-        for(let request of data.song_requests) {
+        for (let request of data.song_requests) {
           switch (request.status) {
-            case SongRequestStatus.DENIED:
+            case RequestStatus.DENIED:
               this.deniedRequests.push(request);
               break;
-            case SongRequestStatus.QUEUED:
+            case RequestStatus.QUEUED:
               this.queuedRequests.push(request);
               break;
-            case SongRequestStatus.PLAYED:
+            case RequestStatus.PLAYED:
               this.playedRequests.push(request);
               break;
             default:
@@ -63,5 +65,30 @@ export class DjEventPage {
           }
         }
       })
+
+      dragulaService.drop.subscribe((value) => {
+      console.log(`drop: ${value[0]}`);
+      this.onDrop(value.slice(1));
+      });
+  }
+
+  ionViewDidLoad() {
+    console.log(this.event);
+  }
+
+  private onDrop(args) {
+    let [e, el] = args;
+    console.log("Queued Songs")
+    for (let x of this.queuedRequests) {
+      console.log(x.song.title)
+    }
+    console.log("Requested Songs")
+    for (let x of this.requestedRequests) {
+      console.log(x.song.title);
+    }
+    console.log("Denied Songs")
+    for (let x of this.deniedRequests) {
+      console.log(x.song.title)
+    }
   }
 }
