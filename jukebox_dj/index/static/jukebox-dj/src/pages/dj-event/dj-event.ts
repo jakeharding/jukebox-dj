@@ -74,7 +74,6 @@ export class DjEventPage {
   }
 
   ionViewDidLoad() {
-    console.log(this.event);
   }
 
   private onDrop(args) {
