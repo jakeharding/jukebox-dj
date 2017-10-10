@@ -22,7 +22,6 @@ export class SongRequestProvider {
   }
 
   update(request: SongRequest): Observable<SongRequest>{
-    request.song = request.song.uuid;
     return this.http.put('/api/dev/song-requests/' + request.uuid, request).map(res => res.json())
   }
 
