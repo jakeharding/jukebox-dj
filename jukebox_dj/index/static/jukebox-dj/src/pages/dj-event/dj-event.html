@@ -21,8 +21,8 @@
           <ion-list-header>
             <h2>Denied Requests</h2>
           </ion-list-header>
-          <ion-item-group [dragula]='"request-bag"'>
-            <ion-item color="dark" *ngFor="let r of deniedRequests">
+          <ion-item-group [dragula]='"request-bag"' [dragulaModel]="deniedRequests" id="denied">
+            <ion-item color="dark" *ngFor="let r of deniedRequests" id="{{ r.uuid }}">
               <ion-label> Title: {{ r.song.title}}</ion-label>
               <div item-content>
                 Artist: {{ r.song.artist }}
@@ -38,8 +38,8 @@
           <ion-list-header>
             <h2>Current Requests</h2>
           </ion-list-header>
-          <ion-item-group [dragula]='"request-bag"'>
-            <ion-item color="dark" *ngFor="let r of requestedRequests">
+          <ion-item-group [dragula]='"request-bag"' [dragulaModel]="requestedRequests" id="requested">
+            <ion-item color="dark" *ngFor="let r of requestedRequests" id="{{ r.uuid }}">
               <ion-label> Title: {{ r.song.title}}</ion-label>
               <div item-content>
                 Artist: {{ r.song.artist }}
@@ -55,8 +55,8 @@
           <ion-list-header>
             <h2>Queued Requests</h2>
           </ion-list-header>
-          <ion-item-group [dragula]='"request-bag"'>
-            <ion-item color="dark" *ngFor="let r of queuedRequests">
+          <ion-item-group [dragula]='"request-bag"' [dragulaModel]="queuedRequests" id="queued">
+            <ion-item color="dark" *ngFor="let r of queuedRequests" id="{{ r.uuid }}">
               <ion-label> Title: {{ r.song.title}}</ion-label>
               <div item-content>
                 Artist: {{ r.song.artist }}
