@@ -7,7 +7,7 @@ install:
 services:
   - "postgresql"
 script:
-  - "npm install -g cordova ionic@latest"
+  - "npm install -g cordova ionic@3.7.1"
   - "npm --prefix jukebox_dj/index/static/jukebox-dj run prepare"
   - "npm --prefix jukebox_dj/index/static/jukebox-dj run build"
   - "coverage run --source=jukebox_dj manage.py test"
