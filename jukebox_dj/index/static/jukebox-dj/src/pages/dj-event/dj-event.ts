@@ -95,7 +95,6 @@ export class DjEventPage {
   private updateRequestStatus(uuid:string, status:SongRequestStatus) {
     this.reqProvider.partialUpdate(uuid, status).subscribe((request: SongRequest) => {
       //TODO: If update successful tell websocket channel and notify requester
-      console.log("Request Made!", request);
     });
   }
 }
