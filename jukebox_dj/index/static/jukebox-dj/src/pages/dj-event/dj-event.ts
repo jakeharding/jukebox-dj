@@ -68,7 +68,6 @@ export class DjEventPage {
       })
 
     dragulaService.drop.subscribe((value) => {
-      console.log(`drop: ${value[0]}`);
       this.onDrop(value.slice(1));
     });
   }
