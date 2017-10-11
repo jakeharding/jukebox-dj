@@ -6,6 +6,9 @@ import { Event } from '../../models/Event';
 import {SongRequest} from "../../models/SongRequest";
 import {SongRequestProvider} from "../../providers/song-request/song-request";
 
+import  { WebSocketBridge } from 'django-channels';
+
+
 /**
  * Generated class for the RequesterPage page.
  *
@@ -29,6 +32,8 @@ export class RequesterPage {
   filteredSongs: Song[] = [];
   requested: SongRequest[] = [];
 
+  bridge: WebSocketBridge;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private eventProvider: EventProvider, private reqProvider: SongRequestProvider) {
     // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
@@ -38,6 +43,10 @@ export class RequesterPage {
         this.songs = this.songs.concat(list.songs);
       }
       this.filteredSongs = this.songs;
+      this.bridge = new WebSocketBridge();
+      this.bridge.connect(`/event/${this.navParams.data.uuid}`);
+      //this.bridge.listen((action, stream) => {
+      //this..push(action)
     });
   }
 
@@ -56,10 +65,11 @@ export class RequesterPage {
   createRequest(song: Song) {
     let req = new SongRequest(song.uuid, this.event.uuid);
     this.reqProvider.create(req).subscribe((request: SongRequest) => {
-      //TODO Send to WebSocket on success
       //TODO Notify user of success or failure.
       console.log(request);
       request.song = song;
+      console.log("sending request");
+      this.bridge.send(request);
       this.requested.push(request);
     });
   }

@@ -8,6 +8,8 @@ import {SongRequest} from '../../models/SongRequest';
 import {SongRequestStatus} from '../../models/SongRequest';
 import {SongRequestProvider} from "../../providers/song-request/song-request"
 
+import  { WebSocketBridge } from 'django-channels';
+
 /**
  * Generated class for the DjEventPage page.
  *
@@ -30,13 +32,23 @@ export class DjEventPage {
   playedRequests: any[] = []; // TODO Model songs and song requests and remove any
   requestedRequests: any[] = []; // TODO Model songs and song requests and remove any
 
+  bridge: WebSocketBridge;
+
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private http: Http,
     private dragulaService: DragulaService,
     private reqProvider: SongRequestProvider
+
   ) {
+    this.bridge = new WebSocketBridge();
+    this.bridge.connect(`/event/${this.navParams.data.uuid}`);
+    this.bridge.listen((action, stream) => {
+      console.log("received request", action);
+      this.requestedRequests.push(action);
+    });
 
     this.event = navParams.data;
 
