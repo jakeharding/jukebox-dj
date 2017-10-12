@@ -48,6 +48,9 @@ export class DjEventPage {
     this.bridge.listen((action, stream) => {
       console.log("received request", action);
       this.requestedRequests.push(action);
+      // TODO connect to requester channel and notify dj of new request.
+      // this.bridge.connect(`/event/${this.navParams.data.uuid}/requester/${action.session}`);
+
     });
 
     this.event = navParams.data;
