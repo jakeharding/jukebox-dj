@@ -60,7 +60,7 @@ class TestEventApi(APITestCase, RestApiTestCaseMixin):
 
     fixtures = ['jukebox_dj/users/fixtures/users.json', 'jukebox_dj/events/fixtures/events.json',
                 'jukebox_dj/songs/fixtures/songs.json', 'jukebox_dj/songs/fixtures/song_lists.json',
-                'jukebox_dj/songs/fixtures/requests.json'
+                'jukebox_dj/songs/fixtures/requests.json', 'jukebox_dj/songs/fixtures/sessions.json',
                 ]
     list_url_name = 'event-list'
     detail_url_name = 'event-detail'

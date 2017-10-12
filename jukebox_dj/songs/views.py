@@ -8,8 +8,8 @@ Author(s) of this file:
 
 Will hold the ViewSets and Serializers for songs.
 """
-
-
+import datetime
+from django.contrib.sessions.models import Session
 from rest_framework.serializers import ModelSerializer, SlugRelatedField
 from rest_framework.viewsets import ModelViewSet
 
@@ -52,6 +52,10 @@ class StandAloneSongRequestSerializer(ModelSerializer):
     event = SlugRelatedField(
         queryset=Event.objects.all(),
         slug_field='uuid'
+    )
+    session = SlugRelatedField(
+        queryset=Session.objects.filter(expire_date__gt=datetime.datetime.utcnow()),
+        slug_field='session_key'
     )
 
     class Meta:
