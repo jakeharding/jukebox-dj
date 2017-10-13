@@ -68,3 +68,8 @@ class SongRequestViewset(ModelViewSet):
     serializer_class = StandAloneSongRequestSerializer
     lookup_field = 'uuid'
     filter_fields = ('event__uuid', 'status', 'song__uuid')
+
+    def create(self, request, *args, **kwargs):
+        """Override the create method to set the session on the song request."""
+        request.data['session'] = request.session.session_key
+        return super(SongRequestViewset, self).create(request, args, kwargs)
