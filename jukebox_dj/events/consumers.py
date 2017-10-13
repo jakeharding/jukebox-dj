@@ -9,15 +9,18 @@ class EventConsumer(JsonWebsocketConsumer):
         Called to return the list of groups to automatically add/remove
         this connection to/from.
         """
-        return ['event_%s' % kwargs['uuid']]
+        groups = ['event_%s' % kwargs['uuid']]
+        if kwargs.get('session'):
+            groups.append('event_%s_requester_%s' % (kwargs['uuid'], kwargs.get('session')))
+        return groups
 
-    def connect(self, message, **kwargs):
-        """
-        Perform things on connection start
-        """
-        # Accept the connection; this is done by default if you don't override
-        # the connect function.
-        self.message.reply_channel.send({"accept": True})
+    # def connect(self, message, **kwargs):
+    #     """
+    #     Perform things on connection start
+    #     """
+    #     # Accept the connection; this is done by default if you don't override
+    #     # the connect function.
+    #     self.message.reply_channel.send({"accept": True})
 
     def receive(self, content, **kwargs):
         """
@@ -29,14 +32,17 @@ class EventConsumer(JsonWebsocketConsumer):
         # If song request status is queued or requested then automatically deny
         # if song request status is denied and older than 1 hour then forward to dj. less than an hour deny
         # If song has been played and older than 1 hour then forward to dj less than an hour deny
+        groups = self.connection_groups(**kwargs)
+        group = groups[0]
+        if kwargs.get('session'):
+            group = groups[1]
+        self.group_send(group, content)
 
-        self.group_send(self.connection_groups(**kwargs)[0], content)
-
-    def disconnect(self, message, **kwargs):
-        """
-        Perform things on connection close
-        """
-        pass
+    # def disconnect(self, message, **kwargs):
+    #     """
+    #     Perform things on connection close
+    #     """
+    #     pass
 
 
 class RequesterConsumer(JsonWebsocketConsumer):

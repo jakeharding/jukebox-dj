@@ -35,7 +35,7 @@ export class DjEventPage {
   eventBridge: WebSocketBridge;
   eventBridgeUri: string;
 
-  requesterBridges: any;
+  requesterBridges: any = {}; // DJ will need to maintain a bridge for each requester
 
 
   constructor(
@@ -91,9 +91,6 @@ export class DjEventPage {
     dragulaService.drop.subscribe((value) => {
       this.onDrop(value.slice(1));
     });
-  }
-
-  ionViewDidLoad() {
   }
 
   private onDrop(args) {

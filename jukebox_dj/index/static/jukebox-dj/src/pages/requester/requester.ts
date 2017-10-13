@@ -32,7 +32,7 @@ export class RequesterPage {
   filteredSongs: Song[] = [];
   requested: SongRequest[] = [];
 
-  bridge: WebSocketBridge;
+  eventBridge: WebSocketBridge;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private eventProvider: EventProvider, private reqProvider: SongRequestProvider,
@@ -44,8 +44,8 @@ export class RequesterPage {
         this.songs = this.songs.concat(list.songs);
       }
       this.filteredSongs = this.songs;
-      this.bridge = new WebSocketBridge();
-      this.bridge.connect(`/events/${this.navParams.data.uuid}`);
+      this.eventBridge = new WebSocketBridge();
+      this.eventBridge.connect(`/events/${this.navParams.data.uuid}`);
       //this.bridge.listen((action, stream) => {
       //this..push(action)
     });
@@ -69,9 +69,15 @@ export class RequesterPage {
       //Success on http request. Update dj and open channel with session key.
       request.song = song;
       console.log("sending request");
-      this.bridge.send(request);
+      this.eventBridge.send(request);
       this.requested.push(request);
-
+      const toast = this.toast.create({
+        message: "Your request has been sent!",
+        duration: 3000,
+        position: 'top',
+        cssClass: 'success-toast'
+      });
+      toast.present();
     }, error => {
       // Error on http request. Most likely a network connection problem
       const toast = this.toast.create({

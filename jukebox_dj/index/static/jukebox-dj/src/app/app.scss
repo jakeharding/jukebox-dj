@@ -23,5 +23,13 @@
 .error-toast {
   .toast-container {
     background-color: color($colors, danger);
+    text-align: center;
+  }
+}
+
+.success-toast {
+  .toast-container {
+    background-color: color($colors, success);
+    text-align: center;
   }
 }
