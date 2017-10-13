@@ -19,7 +19,7 @@ export enum SongRequestStatus {
 
 export class SongRequest {
   uuid: string;
-  song: string | Song;
+  song: Song | string;
   requester_name: string;
   message: string;
   created_at: Date;

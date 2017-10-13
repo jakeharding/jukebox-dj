@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { DragulaService } from 'ng2-dragula/components/dragula.provider'
 import 'rxjs/add/operator/map';
@@ -9,6 +9,7 @@ import {SongRequestStatus} from '../../models/SongRequest';
 import {SongRequestProvider} from "../../providers/song-request/song-request"
 
 import  { WebSocketBridge } from 'django-channels';
+import {Song} from "../../models/Song";
 
 /**
  * Generated class for the DjEventPage page.
@@ -43,8 +44,8 @@ export class DjEventPage {
     public navParams: NavParams,
     private http: Http,
     private dragulaService: DragulaService,
-    private reqProvider: SongRequestProvider
-
+    private reqProvider: SongRequestProvider,
+    private toast: ToastController
   ) {
     this.event = navParams.data;
     this.eventBridgeUri = `/events/${this.event.uuid}`;
@@ -52,9 +53,16 @@ export class DjEventPage {
     this.eventBridge = new WebSocketBridge();
     this.eventBridge.connect(this.eventBridgeUri);
 
-    this.eventBridge.listen((action, stream) => {
-      console.log("received request", action);
-      this.requestedRequests.push(action);
+    this.eventBridge.listen((songRequest: SongRequest) => {
+      this.requestedRequests.push(songRequest);
+      const toast = this.toast.create({
+        message: `Request for ${ songRequest.song.title } has been received!`,
+        duration: 3000,
+        position: 'top',
+        cssClass: 'new-request-toast'
+      });
+      toast.present();
+
       // TODO connect to requester channel and notify dj of new request.
       // this.bridge.connect(`/event/${this.navParams.data.uuid}/requester/${action.session}`);
 

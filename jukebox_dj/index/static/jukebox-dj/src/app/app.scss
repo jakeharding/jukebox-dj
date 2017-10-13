@@ -33,3 +33,10 @@
     text-align: center;
   }
 }
+
+.new-request-toast {
+  .toast-container {
+    background-color: color($colors, primary);
+    text-align: center;
+  }
+}

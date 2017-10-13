@@ -33,10 +33,14 @@ export class RequesterPage {
   requested: SongRequest[] = [];
 
   eventBridge: WebSocketBridge;
+  eventBridgeUri: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private eventProvider: EventProvider, private reqProvider: SongRequestProvider,
               private toast: ToastController) {
+
+    this.eventBridgeUri = `/events/${this.navParams.data.uuid}`;
+
     // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
     this.eventProvider.getEvent(navParams.data.uuid).subscribe( data => {
       this.event = data;
@@ -45,7 +49,7 @@ export class RequesterPage {
       }
       this.filteredSongs = this.songs;
       this.eventBridge = new WebSocketBridge();
-      this.eventBridge.connect(`/events/${this.navParams.data.uuid}`);
+      this.eventBridge.connect(this.eventBridgeUri);
       //this.bridge.listen((action, stream) => {
       //this..push(action)
     });
@@ -68,7 +72,6 @@ export class RequesterPage {
     this.reqProvider.create(req).subscribe((request: SongRequest) => {
       //Success on http request. Update dj and open channel with session key.
       request.song = song;
-      console.log("sending request");
       this.eventBridge.send(request);
       this.requested.push(request);
       const toast = this.toast.create({
