@@ -9,7 +9,7 @@ Author(s) of this file:
 Tests related to songs and requests.
 """
 
-
+import json
 from rest_framework.test import APITestCase
 from rest_framework.reverse import reverse
 from rest_framework.status import HTTP_200_OK, is_success
@@ -38,7 +38,7 @@ class TestSongRequestRest(APITestCase, RestApiTestCaseMixin):
             "message": "this one goes out to the homies",
             "event": "282121e2-bd4a-4b43-b070-f376413f1082",
         }
-        r = self.client.post(reverse(self.list_url_name), new_obj)
+        r = self.client.post(reverse(self.list_url_name), json.dumps(new_obj), content_type='application/json')
         self.assertTrue(is_success(r.status_code), r.status_code)
 
     def test_update(self):
