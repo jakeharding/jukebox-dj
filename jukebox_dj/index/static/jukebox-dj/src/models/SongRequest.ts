@@ -19,12 +19,13 @@ export enum SongRequestStatus {
 
 export class SongRequest {
   uuid: string;
-  song: Song | string;
+  song: any;
   requester_name: string;
   message: string;
   created_at: Date;
   status: SongRequestStatus;
   event: string;
+  session: string;
 
   constructor (song: string, event: string, requester_name?: string, message?:string) {
     this.song = song;

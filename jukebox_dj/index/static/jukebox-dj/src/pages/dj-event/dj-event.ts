@@ -63,9 +63,11 @@ export class DjEventPage {
       });
       toast.present();
 
-      // TODO connect to requester channel and notify dj of new request.
-      // this.bridge.connect(`/event/${this.navParams.data.uuid}/requester/${action.session}`);
-
+      if (!this.requesterBridges[songRequest.session]) {
+        let newBridge = new WebSocketBridge();
+        newBridge.connect(`/event/${this.event.uuid}/requester/${songRequest.session}`);
+        this.requesterBridges[songRequest.session] = newBridge;
+      }
     });
 
 
@@ -121,6 +123,8 @@ export class DjEventPage {
   private updateRequestStatus(uuid:string, status:SongRequestStatus) {
     this.reqProvider.partialUpdate(uuid, status).subscribe((request: SongRequest) => {
       //TODO: If update successful tell websocket channel and notify requester
+      let bridge = this.requesterBridges[request.session];
+      bridge.send(request);
     });
   }
 }

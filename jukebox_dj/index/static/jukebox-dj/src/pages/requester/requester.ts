@@ -35,6 +35,8 @@ export class RequesterPage {
   eventBridge: WebSocketBridge;
   eventBridgeUri: string;
 
+  requesterBridge: WebSocketBridge;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private eventProvider: EventProvider, private reqProvider: SongRequestProvider,
               private toast: ToastController) {
@@ -50,8 +52,6 @@ export class RequesterPage {
       this.filteredSongs = this.songs;
       this.eventBridge = new WebSocketBridge();
       this.eventBridge.connect(this.eventBridgeUri);
-      //this.bridge.listen((action, stream) => {
-      //this..push(action)
     });
   }
 
@@ -81,6 +81,23 @@ export class RequesterPage {
         cssClass: 'success-toast'
       });
       toast.present();
+
+      if (!this.requesterBridge) {
+        this.requesterBridge = new WebSocketBridge();
+        this.requesterBridge.connect(`${this.eventBridgeUri}/requester/${request.session}`);
+
+        this.requesterBridge.listen((songRequest: SongRequest) => {
+          console.log('requester received update', songRequest);
+          const toast = this.toast.create({
+            message: 'The status of your request has changed',
+            duration: 3000,
+            position: 'top',
+            cssClass: 'update-request-toast'
+          });
+          toast.present();
+        });
+      }
+
     }, error => {
       // Error on http request. Most likely a network connection problem
       const toast = this.toast.create({
