@@ -37,7 +37,6 @@ class TestSongRequestRest(APITestCase, RestApiTestCaseMixin):
             "requester_name": "Some dude",
             "message": "this one goes out to the homies",
             "event": "282121e2-bd4a-4b43-b070-f376413f1082",
-            "session": "7b4fffgy6fnhpdjcg8912qnxsyz3hv51",
         }
         r = self.client.post(reverse(self.list_url_name), new_obj)
         self.assertTrue(is_success(r.status_code), r.status_code)

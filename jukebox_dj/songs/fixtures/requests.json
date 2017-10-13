@@ -10,7 +10,7 @@
         "created_at": "2017-09-26T00:12:27.031Z",
         "event": 1,
         "status": 0,
-        "session_id": "7b4fffgy6fnhpdjcg8912qnxsyz3hv51"
+        "session": "7b4fffgy6fnhpdjcg8912qnxsyz3hv51"
     }
 },
 {
@@ -24,7 +24,7 @@
         "created_at": "2017-09-26T00:37:56.906Z",
         "event": 1,
         "status": 1,
-        "session_id": "7b4fffgy6fnhpdjcg8912qnxsyz3hv51"
+        "session": "7b4fffgy6fnhpdjcg8912qnxsyz3hv51"
     }
 },
 {
@@ -38,7 +38,7 @@
         "created_at": "2017-09-26T00:38:21.545Z",
         "event": 1,
         "status": 3,
-        "session_id": "7b4fffgy6fnhpdjcg8912qnxsyz3hv51"
+        "session": "7b4fffgy6fnhpdjcg8912qnxsyz3hv51"
     }
 },
 {
@@ -52,7 +52,7 @@
         "created_at": "2017-09-26T00:39:28.725Z",
         "event": 1,
         "status": 2,
-        "session_id": "7b4fffgy6fnhpdjcg8912qnxsyz3hv51"
+        "session": "7b4fffgy6fnhpdjcg8912qnxsyz3hv51"
     }
 }
 ]

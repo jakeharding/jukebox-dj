@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { Song } from '../../models/Song';
 import { EventProvider} from "../../providers/event/event";
 import { Event } from '../../models/Event';
@@ -35,7 +35,8 @@ export class RequesterPage {
   bridge: WebSocketBridge;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private eventProvider: EventProvider, private reqProvider: SongRequestProvider) {
+              private eventProvider: EventProvider, private reqProvider: SongRequestProvider,
+              private toast: ToastController) {
     // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
     this.eventProvider.getEvent(navParams.data.uuid).subscribe( data => {
       this.event = data;
@@ -44,7 +45,7 @@ export class RequesterPage {
       }
       this.filteredSongs = this.songs;
       this.bridge = new WebSocketBridge();
-      this.bridge.connect(`/event/${this.navParams.data.uuid}`);
+      this.bridge.connect(`/events/${this.navParams.data.uuid}`);
       //this.bridge.listen((action, stream) => {
       //this..push(action)
     });
@@ -65,12 +66,21 @@ export class RequesterPage {
   createRequest(song: Song) {
     let req = new SongRequest(song.uuid, this.event.uuid);
     this.reqProvider.create(req).subscribe((request: SongRequest) => {
-      //TODO Notify user of success or failure.
-      console.log(request);
+      //Success on http request. Update dj and open channel with session key.
       request.song = song;
       console.log("sending request");
       this.bridge.send(request);
       this.requested.push(request);
+
+    }, error => {
+      // Error on http request. Most likely a network connection problem
+      const toast = this.toast.create({
+        message: "Unable to request a song at this time. Please check your network and try again.",
+        duration: 3000,
+        position: "top",
+        cssClass: "error-toast"
+      });
+      toast.present();
     });
   }
 

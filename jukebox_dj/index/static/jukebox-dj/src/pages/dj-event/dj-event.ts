@@ -32,7 +32,10 @@ export class DjEventPage {
   playedRequests: any[] = []; // TODO Model songs and song requests and remove any
   requestedRequests: any[] = []; // TODO Model songs and song requests and remove any
 
-  bridge: WebSocketBridge;
+  eventBridge: WebSocketBridge;
+  eventBridgeUri: string;
+
+  requesterBridges: any;
 
 
   constructor(
@@ -43,9 +46,13 @@ export class DjEventPage {
     private reqProvider: SongRequestProvider
 
   ) {
-    this.bridge = new WebSocketBridge();
-    this.bridge.connect(`/event/${this.navParams.data.uuid}`);
-    this.bridge.listen((action, stream) => {
+    this.event = navParams.data;
+    this.eventBridgeUri = `/events/${this.event.uuid}`;
+
+    this.eventBridge = new WebSocketBridge();
+    this.eventBridge.connect(this.eventBridgeUri);
+
+    this.eventBridge.listen((action, stream) => {
       console.log("received request", action);
       this.requestedRequests.push(action);
       // TODO connect to requester channel and notify dj of new request.
@@ -53,7 +60,6 @@ export class DjEventPage {
 
     });
 
-    this.event = navParams.data;
 
     // Quick and dirty http request. Plenty of TODOs
     // TODO MUST - Hold the api version (dev in the url) in an environment specific way

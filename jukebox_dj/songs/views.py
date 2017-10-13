@@ -71,5 +71,8 @@ class SongRequestViewset(ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         """Override the create method to set the session on the song request."""
-        request.data['session'] = request.session.session_key
+        if not request.session.session_key:
+            request.session.save()
+        # request.data._mutable = True
+        request.data["session"] = request.session.session_key
         return super(SongRequestViewset, self).create(request, args, kwargs)

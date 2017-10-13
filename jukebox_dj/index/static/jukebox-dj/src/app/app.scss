@@ -19,3 +19,9 @@
   overflow-y: auto !important;
   padding-top: 70px !important;
 }
+
+.error-toast {
+  .toast-container {
+    background-color: color($colors, danger);
+  }
+}
