@@ -46,9 +46,13 @@ export class RequesterPage {
     // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
     this.eventProvider.getEvent(navParams.data.uuid).subscribe( data => {
       this.event = data;
+
+      // TODO Paginate this in the backend. This pulls in all songs and song lists for the event.
       for (let list of this.event.song_lists) {
         this.songs = this.songs.concat(list.songs);
       }
+
+      // TODO Filter songs via network request query. This only filters the list in the browser.
       this.filteredSongs = this.songs;
       this.eventBridge = new WebSocketBridge();
       this.eventBridge.connect(this.eventBridgeUri);

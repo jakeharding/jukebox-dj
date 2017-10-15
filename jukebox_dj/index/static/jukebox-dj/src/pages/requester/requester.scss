@@ -33,4 +33,10 @@ page-requester {
   .toolbar-title {
     color: white!important;
   }
+
+  .song-container {
+    overflow-y: auto;
+    position: relative;
+    height: 350px;
+  }
 }
