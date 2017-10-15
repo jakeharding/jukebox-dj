@@ -13,14 +13,18 @@ import {Observable} from "rxjs/Observable";
 */
 @Injectable()
 export class EventProvider {
-  url:string = '/api/dev/events/';
+  url:string = '/api/dev/events';
   constructor(public http: Http) {}
 
   getEvent(uuid:string): Observable<Event> {
-    return this.http.get(this.url + uuid).map(res => res.json());
+    return this.http.get(`${this.url}/${uuid}`).map(res => res.json());
   }
 
   createEvent(event: Event): Observable<Event>  {
     return this.http.post(this.url, event).map(res => res.json());
+  }
+
+  getEvents(): Observable<Event[]> {
+    return this.http.get(this.url).map(res => res.json());
   }
 }
