@@ -9,7 +9,7 @@ Author(s) of this file:
 Tests related to songs and requests.
 """
 
-
+import json
 from rest_framework.test import APITestCase
 from rest_framework.reverse import reverse
 from rest_framework.status import HTTP_200_OK, is_success
@@ -21,7 +21,7 @@ from jukebox_dj.songs.models import SongRequest
 class TestSongRequestRest(APITestCase, RestApiTestCaseMixin):
     fixtures = ['jukebox_dj/users/fixtures/users.json', 'jukebox_dj/events/fixtures/events.json',
                 'jukebox_dj/songs/fixtures/songs.json', 'jukebox_dj/songs/fixtures/song_lists.json',
-                'jukebox_dj/songs/fixtures/requests.json'
+                'jukebox_dj/songs/fixtures/requests.json', 'jukebox_dj/songs/fixtures/sessions.json',
                 ]
     list_url_name = "songrequest-list"
     detail_url_name = "songrequest-detail"
@@ -36,9 +36,9 @@ class TestSongRequestRest(APITestCase, RestApiTestCaseMixin):
             "song": "a8d00a30-24cc-405b-b0a5-67b350063e28",
             "requester_name": "Some dude",
             "message": "this one goes out to the homies",
-            "event": "282121e2-bd4a-4b43-b070-f376413f1082"
+            "event": "282121e2-bd4a-4b43-b070-f376413f1082",
         }
-        r = self.client.post(reverse(self.list_url_name), new_obj)
+        r = self.client.post(reverse(self.list_url_name), json.dumps(new_obj), content_type='application/json')
         self.assertTrue(is_success(r.status_code), r.status_code)
 
     def test_update(self):
@@ -47,7 +47,9 @@ class TestSongRequestRest(APITestCase, RestApiTestCaseMixin):
             "requester_name": "Some dude",
             "message": "this one goes out to the homies",
             "event": "282121e2-bd4a-4b43-b070-f376413f1082",
-            "status": SongRequest.PLAYED_STATUS
+            "status": SongRequest.PLAYED_STATUS,
+            "session": "7b4fffgy6fnhpdjcg8912qnxsyz3hv51",
+
         }
         r = self.client.put(reverse(self.detail_url_name, args=[self.test_object.uuid]), update_obj)
         self.assertTrue(is_success(r.status_code), r.data)

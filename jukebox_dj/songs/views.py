@@ -8,8 +8,8 @@ Author(s) of this file:
 
 Will hold the ViewSets and Serializers for songs.
 """
-
-
+import datetime
+from django.contrib.sessions.models import Session
 from rest_framework.serializers import ModelSerializer, SlugRelatedField
 from rest_framework.viewsets import ModelViewSet
 
@@ -53,6 +53,10 @@ class StandAloneSongRequestSerializer(ModelSerializer):
         queryset=Event.objects.all(),
         slug_field='uuid'
     )
+    session = SlugRelatedField(
+        queryset=Session.objects.filter(expire_date__gt=datetime.datetime.utcnow()),
+        slug_field='session_key'
+    )
 
     class Meta:
         model = SongRequest
@@ -64,3 +68,11 @@ class SongRequestViewset(ModelViewSet):
     serializer_class = StandAloneSongRequestSerializer
     lookup_field = 'uuid'
     filter_fields = ('event__uuid', 'status', 'song__uuid')
+
+    def create(self, request, *args, **kwargs):
+        """Override the create method to set the session on the song request."""
+        if not request.session.session_key:
+            request.session.save()
+        # request.data._mutable = True
+        request.data["session"] = request.session.session_key
+        return super(SongRequestViewset, self).create(request, args, kwargs)

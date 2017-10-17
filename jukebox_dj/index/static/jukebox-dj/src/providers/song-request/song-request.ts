@@ -4,8 +4,6 @@ import 'rxjs/add/operator/map';
 import {SongRequest, SongRequestStatus} from "../../models/SongRequest";
 import {Observable} from "rxjs/Observable";
 
-import { RequestOptions, Headers } from '@angular/http';
-
 /*
   Generated class for the SongRequestProvider provider.
 

@@ -26,4 +26,17 @@ page-requester {
     border-bottom-left-radius: 0px;
     border-top-left-radius: 0px;
   }
+
+  .toolbar-background {
+    background-color: transparent!important;
+  }
+  .toolbar-title {
+    color: white!important;
+  }
+
+  .song-container {
+    overflow-y: auto;
+    position: relative;
+    height: 350px;
+  }
 }

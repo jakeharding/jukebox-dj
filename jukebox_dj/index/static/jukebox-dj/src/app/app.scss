@@ -19,3 +19,31 @@
   overflow-y: auto !important;
   padding-top: 70px !important;
 }
+
+.error-toast {
+  .toast-container {
+    background-color: color($colors, danger);
+    text-align: center;
+  }
+}
+
+.success-toast {
+  .toast-container {
+    background-color: color($colors, success);
+    text-align: center;
+  }
+}
+
+.new-request-toast {
+  .toast-container {
+    background-color: color($colors, primary);
+    text-align: center;
+  }
+}
+
+.update-request-toast {
+  .toast-container {
+    background-color: color($colors, light);
+    text-align: center;
+  }
+}

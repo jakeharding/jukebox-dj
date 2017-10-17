@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { Song } from '../../models/Song';
 import { EventProvider} from "../../providers/event/event";
 import { Event } from '../../models/Event';
 import {SongRequest} from "../../models/SongRequest";
 import {SongRequestProvider} from "../../providers/song-request/song-request";
+
+import  { WebSocketBridge } from 'django-channels';
+
 
 /**
  * Generated class for the RequesterPage page.
@@ -29,15 +32,30 @@ export class RequesterPage {
   filteredSongs: Song[] = [];
   requested: SongRequest[] = [];
 
+  eventBridge: WebSocketBridge;
+  eventBridgeUri: string;
+
+  requesterBridge: WebSocketBridge;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private eventProvider: EventProvider, private reqProvider: SongRequestProvider) {
+              private eventProvider: EventProvider, private reqProvider: SongRequestProvider,
+              private toast: ToastController) {
+
+    this.eventBridgeUri = `/events/${this.navParams.data.uuid}`;
+
     // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
     this.eventProvider.getEvent(navParams.data.uuid).subscribe( data => {
       this.event = data;
+
+      // TODO Paginate this in the backend. This pulls in all songs and song lists for the event.
       for (let list of this.event.song_lists) {
         this.songs = this.songs.concat(list.songs);
       }
+
+      // TODO Filter songs via network request query. This only filters the list in the browser.
       this.filteredSongs = this.songs;
+      this.eventBridge = new WebSocketBridge();
+      this.eventBridge.connect(this.eventBridgeUri);
     });
   }
 
@@ -56,11 +74,43 @@ export class RequesterPage {
   createRequest(song: Song) {
     let req = new SongRequest(song.uuid, this.event.uuid);
     this.reqProvider.create(req).subscribe((request: SongRequest) => {
-      //TODO Send to WebSocket on success
-      //TODO Notify user of success or failure.
-      console.log(request);
+      //Success on http request. Update dj and open channel with session key.
       request.song = song;
+      this.eventBridge.send(request);
       this.requested.push(request);
+      const toast = this.toast.create({
+        message: "Your request has been sent!",
+        duration: 3000,
+        position: 'top',
+        cssClass: 'success-toast'
+      });
+      toast.present();
+
+      if (!this.requesterBridge) {
+        this.requesterBridge = new WebSocketBridge();
+        this.requesterBridge.connect(`${this.eventBridgeUri}/requester/${request.session}`);
+
+        this.requesterBridge.listen((songRequest: SongRequest) => {
+          console.log('requester received update', songRequest);
+          const toast = this.toast.create({
+            message: 'The status of your request has changed',
+            duration: 3000,
+            position: 'top',
+            cssClass: 'update-request-toast'
+          });
+          toast.present();
+        });
+      }
+
+    }, error => {
+      // Error on http request. Most likely a network connection problem
+      const toast = this.toast.create({
+        message: "Unable to request a song at this time. Please check your network and try again.",
+        duration: 3000,
+        position: "top",
+        cssClass: "error-toast"
+      });
+      toast.present();
     });
   }
 

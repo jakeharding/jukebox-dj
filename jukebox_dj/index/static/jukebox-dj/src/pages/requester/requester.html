@@ -6,7 +6,7 @@
 -->
 <ion-header>
 
-  <ion-navbar color="dark">
+  <ion-navbar>
     <ion-title>Jukebox DJ</ion-title>
   </ion-navbar>
 
@@ -14,7 +14,7 @@
 
 
 <ion-content padding text-center>
-  <h1 color=""primary>{{ event?.name }}</h1>
+  <h1 color="primary">{{ event?.name }}</h1>
   <ion-grid>
     <ion-row>
       <ion-col col-12 col-sm-10 offset-sm-1 no-padding
@@ -40,7 +40,7 @@
           <ion-col text-center padding-top
             col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4
           >
-            <h2 color="light">Click a Song to Request</h2>
+            <h2 color="light">Tap a Song to Request</h2>
           </ion-col>
         </ion-row>
 
@@ -64,9 +64,12 @@
                 <ion-label><h2>Song Titles</h2></ion-label><ion-label><h2>Artists</h2></ion-label>
               </ion-list-header>
 
-              <ion-item *ngFor="let song of filteredSongs" (click)="createRequest(song);">
-                <ion-label text-center>{{ song.title }}</ion-label><ion-label text-center>{{ song.artist }}</ion-label>
-              </ion-item>
+              <div class="song-container">
+                <button ion-item *ngFor="let song of filteredSongs" (click)="createRequest(song);">
+                  <ion-label text-center>{{ song.title }}</ion-label><ion-label text-center>{{ song.artist }}</ion-label>
+                </button>
+              </div>
+
             </ion-list>
           </ion-col>
         </ion-row>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { DragulaService } from 'ng2-dragula/components/dragula.provider'
 import 'rxjs/add/operator/map';
@@ -7,6 +7,9 @@ import 'rxjs/add/operator/map';
 import {SongRequest} from '../../models/SongRequest';
 import {SongRequestStatus} from '../../models/SongRequest';
 import {SongRequestProvider} from "../../providers/song-request/song-request"
+
+import  { WebSocketBridge } from 'django-channels';
+import {Song} from "../../models/Song";
 
 /**
  * Generated class for the DjEventPage page.
@@ -30,15 +33,43 @@ export class DjEventPage {
   playedRequests: any[] = []; // TODO Model songs and song requests and remove any
   requestedRequests: any[] = []; // TODO Model songs and song requests and remove any
 
+  eventBridge: WebSocketBridge;
+  eventBridgeUri: string;
+
+  requesterBridges: any = {}; // DJ will need to maintain a bridge for each requester
+
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private http: Http,
     private dragulaService: DragulaService,
-    private reqProvider: SongRequestProvider
+    private reqProvider: SongRequestProvider,
+    private toast: ToastController
   ) {
-
     this.event = navParams.data;
+    this.eventBridgeUri = `/events/${this.event.uuid}`;
+
+    this.eventBridge = new WebSocketBridge();
+    this.eventBridge.connect(this.eventBridgeUri);
+
+    this.eventBridge.listen((songRequest: SongRequest) => {
+      this.requestedRequests.push(songRequest);
+      const toast = this.toast.create({
+        message: `Request for ${ songRequest.song.title } has been received!`,
+        duration: 3000,
+        position: 'top',
+        cssClass: 'new-request-toast'
+      });
+      toast.present();
+
+      if (!this.requesterBridges[songRequest.session]) {
+        let newBridge = new WebSocketBridge();
+        newBridge.connect(`/event/${this.event.uuid}/requester/${songRequest.session}`);
+        this.requesterBridges[songRequest.session] = newBridge;
+      }
+    });
+
 
     // Quick and dirty http request. Plenty of TODOs
     // TODO MUST - Hold the api version (dev in the url) in an environment specific way
@@ -72,9 +103,6 @@ export class DjEventPage {
     });
   }
 
-  ionViewDidLoad() {
-  }
-
   private onDrop(args) {
     let [el, target, source, sibling] = args;
     let status : SongRequestStatus;
@@ -95,6 +123,8 @@ export class DjEventPage {
   private updateRequestStatus(uuid:string, status:SongRequestStatus) {
     this.reqProvider.partialUpdate(uuid, status).subscribe((request: SongRequest) => {
       //TODO: If update successful tell websocket channel and notify requester
+      let bridge = this.requesterBridges[request.session];
+      bridge.send(request);
     });
   }
 }

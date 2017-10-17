@@ -1,26 +1,7 @@
 <jukebox-header></jukebox-header>
 
 <ion-content padding padding-top padding-top text-center>
-  <!--Save this for now as an example-->
-  <!--<form (ngSubmit)="requestSong()">-->
-    <!--<ion-label color="dark">Enter your name and a song you would like to hear</ion-label>-->
-    <!--<ion-input placeholder="Your Name" clearInput type="text" [(ngModel)]="requestee" name="name"></ion-input>-->
-    <!--<ion-input placeholder="Name of Song" clearInput type="text" [(ngModel)]="name" name="song"></ion-input>-->
-
-    <!--<button ion-button color="danger" [hidden]="!name || !requestee">Request Song</button>-->
-  <!--</form>-->
-
-  <!--<section [hidden]="playlist.length === 0">-->
-    <!--<h1>Playlist</h1>-->
-    <!--<ion-list>-->
-      <!--<ion-item *ngFor="let song of playlist">-->
-        <!--<ion-label color="secondary">-->
-          <!--Song: {{  song.name }}-->
-          <!--<span float-right>Requested by: {{ song.requestee }}</span>-->
-        <!--</ion-label>-->
-      <!--</ion-item>-->
-    <!--</ion-list>-->
-  <!--</section>-->
-  <!--<button ion-button (click)="eventDetail()">Start {{ event.name }}</button>-->
-  <button ion-button [navPush]="pushPage" [navParams]="event">Start {{ event.name }}</button>
+  <ion-list>
+    <button ion-item *ngFor="let e of events" [navPush]="'events'" [navParams]="e">Start {{ e.name }}</button>
+  </ion-list>
 </ion-content>
