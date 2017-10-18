@@ -1,3 +1,16 @@
 jukebox-header {
+  .toolbar-background {
+    background: -webkit-gradient(left, $NAVBAR_LEFT, $NAVBAR_RIGHT);
+    background: -o-linear-gradient(right, $NAVBAR_LEFT, $NAVBAR_RIGHT);
+    background: -moz-linear-gradient(right, $NAVBAR_LEFT, $NAVBAR_RIGHT);
+    background: linear-gradient(to right, $NAVBAR_LEFT, $NAVBAR_RIGHT);
+  }
 
+  #title-button {
+    font-weight: bold;
+  }
+
+  ion-header ion-icon.back-button-icon.icon {
+    color: map-get($colors, white);
+  }
 }

@@ -5,7 +5,17 @@
   Ionic pages and navigation.
 -->
 
-<jukebox-header></jukebox-header>
+<jukebox-header class="hidden-xs-down"></jukebox-header>
+
+
+<ion-header class="hidden-sm-up">
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Jukebox DJ</ion-title>
+  </ion-navbar>
+</ion-header>
 
 <ion-content padding>
   <ion-grid>
@@ -16,7 +26,7 @@
     </ion-row>
     <ion-row>
       <!--Denied requests-->
-      <ion-col>
+      <ion-col col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-4 offset-lg-0 col-xl-4 offset-xl-0>
         <ion-list>
           <ion-list-header>
             <h2>Denied Requests</h2>
@@ -33,7 +43,7 @@
       </ion-col>
 
       <!--Incoming Requests-->
-      <ion-col>
+      <ion-col col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-4 offset-lg-0 col-xl-4 offset-xl-0>
         <ion-list>
           <ion-list-header>
             <h2>Current Requests</h2>
@@ -50,7 +60,7 @@
       </ion-col>
 
       <!--Queued Requests-->
-      <ion-col>
+      <ion-col col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-4 offset-lg-0 col-xl-4 offset-xl-0>
         <ion-list>
           <ion-list-header>
             <h2>Queued Requests</h2>
