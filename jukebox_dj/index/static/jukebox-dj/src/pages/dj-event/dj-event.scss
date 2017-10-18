@@ -1,4 +1,7 @@
 page-dj-event {
+  ion-item-group {
+    min-height: 50px;
+  }
   @media (max-width: 575px) {
     .hidden-xs-down {
       display: none !important;
