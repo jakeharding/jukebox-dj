@@ -1,13 +1,10 @@
 page-dj-event {
-  ion-item-group {
-    min-height: 50px;
-  }
-  @media (max-width: 575px) {
+  @media (max-width: map-get($grid-breakpoints, sm)) {
     .hidden-xs-down {
       display: none !important;
     }
   }
-  @media (min-width: 576px) {
+  @media (min-width: map-get($grid-breakpoints, sm) + 1) {
     .hidden-sm-up {
       display: none !important;
     }
