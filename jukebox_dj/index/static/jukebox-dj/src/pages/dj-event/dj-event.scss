@@ -9,6 +9,10 @@ page-dj-event {
       display: none !important;
     }
   }
+  
+  ion-item-group {
+    min-height: 50px;		
+  }
 
   .toolbar-background {
     background: -webkit-gradient(left, $NAVBAR_LEFT, $NAVBAR_RIGHT);
