@@ -65,7 +65,7 @@ export class DjEventPage {
 
       if (!this.requesterBridges[songRequest.session]) {
         let newBridge = new WebSocketBridge();
-        newBridge.connect(`/event/${this.event.uuid}/requester/${songRequest.session}`);
+        newBridge.connect(`/events/${this.event.uuid}/requester/${songRequest.session}`);
         this.requesterBridges[songRequest.session] = newBridge;
       }
     });
@@ -96,7 +96,7 @@ export class DjEventPage {
               break;
           }
         }
-      })
+      });
 
     dragulaService.drop.subscribe((value) => {
       this.onDrop(value.slice(1));

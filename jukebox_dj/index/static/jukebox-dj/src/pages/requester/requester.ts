@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angu
 import { Song } from '../../models/Song';
 import { EventProvider} from "../../providers/event/event";
 import { Event } from '../../models/Event';
-import {SongRequest} from "../../models/SongRequest";
+import {SongRequest, SongRequestStatus} from "../../models/SongRequest";
 import {SongRequestProvider} from "../../providers/song-request/song-request";
 
 import  { WebSocketBridge } from 'django-channels';
@@ -91,12 +91,32 @@ export class RequesterPage {
         this.requesterBridge.connect(`${this.eventBridgeUri}/requester/${request.session}`);
 
         this.requesterBridge.listen((songRequest: SongRequest) => {
-          console.log('requester received update', songRequest);
+          let toastClass, toastMsg;
+
+          switch (songRequest.status) {
+            case SongRequestStatus.DENIED:
+              toastClass = "error-toast";
+              toastMsg = `Sorry, your request for ${songRequest.song.title} has been denied.`;
+              break;
+            case SongRequestStatus.QUEUED:
+              toastClass = "success-toast";
+              toastMsg = `Your song has been queued! ${songRequest.song.title} will be played soon.`;
+              break;
+            case SongRequestStatus.PLAYED:
+              toastClass = 'played-request-toast';
+              toastMsg = `Your song, ${songRequest.song.title} has been played!`;
+              break;
+            default:
+              toastClass = '';
+              toastMsg = '';
+              break;
+          }
+
           const toast = this.toast.create({
-            message: 'The status of your request has changed',
+            message: toastMsg,
             duration: 3000,
             position: 'top',
-            cssClass: 'update-request-toast'
+            cssClass: toastClass
           });
           toast.present();
         });
