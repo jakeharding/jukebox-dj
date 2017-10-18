@@ -1,3 +1,22 @@
 page-dj-event {
+  @media (max-width: 575px) {
+    .hidden-xs-down {
+      display: none !important;
+    }
+  }
+  @media (min-width: 576px) {
+    .hidden-sm-up {
+      display: none !important;
+    }
+  }
 
+  .toolbar-background {
+    background: -webkit-gradient(left, $NAVBAR_LEFT, $NAVBAR_RIGHT);
+    background: -o-linear-gradient(right, $NAVBAR_LEFT, $NAVBAR_RIGHT);
+    background: -moz-linear-gradient(right, $NAVBAR_LEFT, $NAVBAR_RIGHT);
+    background: linear-gradient(to right, $NAVBAR_LEFT, $NAVBAR_RIGHT);
+  }
+  .toolbar-title {
+    color: white!important;
+  }
 }
