@@ -96,15 +96,15 @@ export class RequesterPage {
           switch (songRequest.status) {
             case SongRequestStatus.DENIED:
               toastClass = "error-toast";
-              toastMsg = `Sorry, your request for ${songRequest.song.title} has been denied.`;
+              toastMsg = `Sorry, your request for ${songRequest.song_title} has been denied.`;
               break;
             case SongRequestStatus.QUEUED:
               toastClass = "success-toast";
-              toastMsg = `Your song has been queued! ${songRequest.song.title} will be played soon.`;
+              toastMsg = `Your song has been queued! ${songRequest.song_title} will be played soon.`;
               break;
             case SongRequestStatus.PLAYED:
               toastClass = 'played-request-toast';
-              toastMsg = `Your song, ${songRequest.song.title} has been played!`;
+              toastMsg = `Your song, ${songRequest.song_title} has been played!`;
               break;
             default:
               toastClass = '';
