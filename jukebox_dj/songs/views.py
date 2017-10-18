@@ -10,7 +10,7 @@ Will hold the ViewSets and Serializers for songs.
 """
 import datetime
 from django.contrib.sessions.models import Session
-from rest_framework.serializers import ModelSerializer, SlugRelatedField
+from rest_framework.serializers import ModelSerializer, SlugRelatedField, SerializerMethodField
 from rest_framework.viewsets import ModelViewSet
 
 from jukebox_dj.songs.models import SongList, Song, SongRequest
@@ -58,6 +58,11 @@ class StandAloneSongRequestSerializer(ModelSerializer):
         slug_field='session_key'
     )
 
+    song_title = SerializerMethodField()
+
+    def get_song_title(self, song_request):
+        return song_request.song.title
+
     class Meta:
         model = SongRequest
         exclude = ['id', ]
@@ -73,6 +78,5 @@ class SongRequestViewset(ModelViewSet):
         """Override the create method to set the session on the song request."""
         if not request.session.session_key:
             request.session.save()
-        # request.data._mutable = True
         request.data["session"] = request.session.session_key
         return super(SongRequestViewset, self).create(request, args, kwargs)

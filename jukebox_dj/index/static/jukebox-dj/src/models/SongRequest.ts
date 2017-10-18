@@ -26,6 +26,7 @@ export class SongRequest {
   status: SongRequestStatus;
   event: string;
   session: string;
+  song_title: string;
 
   constructor (song: string, event: string, requester_name?: string, message?:string) {
     this.song = song;
