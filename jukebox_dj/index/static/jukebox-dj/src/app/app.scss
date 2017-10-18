@@ -47,3 +47,14 @@
     text-align: center;
   }
 }
+
+.mobile-toolbar .toolbar-background {
+  background: -webkit-gradient(left, $NAVBAR_LEFT, $NAVBAR_RIGHT);
+  background: -o-linear-gradient(right, $NAVBAR_LEFT, $NAVBAR_RIGHT);
+  background: -moz-linear-gradient(right, $NAVBAR_LEFT, $NAVBAR_RIGHT);
+  background: linear-gradient(to right, $NAVBAR_LEFT, $NAVBAR_RIGHT);
+}
+
+.mobile-toolbar .toolbar-title {
+  color: white!important;
+}
