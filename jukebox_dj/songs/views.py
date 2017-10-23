@@ -9,11 +9,10 @@ Author(s) of this file:
 Will hold the ViewSets and Serializers for songs.
 """
 import datetime
-from django.contrib.sessions.models import Session
 from rest_framework.serializers import ModelSerializer, SlugRelatedField, SerializerMethodField
 from rest_framework.viewsets import ModelViewSet
 
-from jukebox_dj.songs.models import SongList, Song, SongRequest
+from jukebox_dj.songs.models import SongList, Song, SongRequest, SongRequestCookie
 from jukebox_dj.events.models import Event
 
 
@@ -53,9 +52,9 @@ class StandAloneSongRequestSerializer(ModelSerializer):
         queryset=Event.objects.all(),
         slug_field='uuid'
     )
-    session = SlugRelatedField(
-        queryset=Session.objects.filter(expire_date__gt=datetime.datetime.utcnow()),
-        slug_field='session_key'
+    cookie = SlugRelatedField(
+        queryset=SongRequestCookie.objects.all(),
+        slug_field='uuid'
     )
 
     song_title = SerializerMethodField()
