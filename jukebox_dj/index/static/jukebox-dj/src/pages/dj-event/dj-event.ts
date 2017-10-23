@@ -63,10 +63,10 @@ export class DjEventPage {
       });
       toast.present();
 
-      if (!this.requesterBridges[songRequest.session]) {
+      if (!this.requesterBridges[songRequest.cookie]) {
         let newBridge = new WebSocketBridge();
-        newBridge.connect(`/events/${this.event.uuid}/requester/${songRequest.session}`);
-        this.requesterBridges[songRequest.session] = newBridge;
+        newBridge.connect(`/events/${this.event.uuid}/requester/${songRequest.cookie}`);
+        this.requesterBridges[songRequest.cookie] = newBridge;
       }
     });
 
@@ -123,7 +123,7 @@ export class DjEventPage {
   private updateRequestStatus(uuid:string, status:SongRequestStatus) {
     this.reqProvider.partialUpdate(uuid, status).subscribe((request: SongRequest) => {
       //TODO: If update successful tell websocket channel and notify requester
-      let bridge = this.requesterBridges[request.session];
+      let bridge = this.requesterBridges[request.cookie];
       bridge.send(request);
     });
   }

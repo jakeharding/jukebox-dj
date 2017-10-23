@@ -71,7 +71,7 @@ class TestSongRequestRest(APITestCase, RestApiTestCaseMixin):
 
 class TestCustomMiddleware(TestCase):
 
-    fixtures = ['jukebox_dj/users/fixtures/users.json',]
+    fixtures = ['jukebox_dj/users/fixtures/users.json']
 
     def setUp(self):
         self.r = HttpRequest()

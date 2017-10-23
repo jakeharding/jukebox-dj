@@ -18,7 +18,7 @@ import  { WebSocketBridge } from 'django-channels';
 
 @IonicPage({
   name: 'requester',
-  segment: 'requester-event/:uuid'
+  segment: 'requester-events/:uuid'
 })
 @Component({
   selector: 'page-requester',
@@ -36,6 +36,8 @@ export class RequesterPage {
   eventBridgeUri: string;
 
   requesterBridge: WebSocketBridge;
+  requesterBridgeUri: string;
+  requesterCookie: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private eventProvider: EventProvider, private reqProvider: SongRequestProvider,
@@ -59,6 +61,14 @@ export class RequesterPage {
     });
   }
 
+  ionViewWillLoad() {
+    this.requesterCookie = document.cookie.split(/;\s*/).find((value) => {
+      return value.indexOf('song_request') >= 0;
+    }).split("=")[1];
+
+    this.requesterBridgeUri = `${this.eventBridgeUri}/requester/${this.requesterCookie}`;
+  }
+
   filterSongs (event: any) {
     let val = event.target.value;
 
@@ -72,7 +82,7 @@ export class RequesterPage {
   }
 
   createRequest(song: Song) {
-    let req = new SongRequest(song.uuid, this.event.uuid);
+    let req = new SongRequest(song.uuid, this.event.uuid, this.requesterCookie);
     this.reqProvider.create(req).subscribe((request: SongRequest) => {
       //Success on http request. Update dj and open channel with session key.
       request.song = song;
@@ -88,7 +98,7 @@ export class RequesterPage {
 
       if (!this.requesterBridge) {
         this.requesterBridge = new WebSocketBridge();
-        this.requesterBridge.connect(`${this.eventBridgeUri}/requester/${request.session}`);
+        this.requesterBridge.connect(this.requesterBridgeUri);
 
         this.requesterBridge.listen((songRequest: SongRequest) => {
           let toastClass, toastMsg;

@@ -25,13 +25,14 @@ export class SongRequest {
   created_at: Date;
   status: SongRequestStatus;
   event: string;
-  session: string;
+  cookie: string;
   song_title: string;
 
-  constructor (song: string, event: string, requester_name?: string, message?:string) {
+  constructor (song: string, event: string, cookie:string, requester_name?: string, message?:string) {
     this.song = song;
     this.event = event;
     this.requester_name = requester_name;
     this.message = message;
+    this.cookie = cookie;
   }
 }

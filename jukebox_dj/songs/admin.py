@@ -18,3 +18,10 @@ admin.site.register(Song)
 admin.site.register(SongList)
 admin.site.register(Category)
 admin.site.register(SongRequest)
+
+
+class CookieAdmin(admin.ModelAdmin):
+    readonly_fields = ('uuid', )
+
+
+admin.site.register(SongRequestCookie, CookieAdmin)
