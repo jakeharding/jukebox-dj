@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='songrequest',
             name='session',
-            field=models.ForeignKey(default='7b4fffgy6fnhpdjcg8912qnxsyz3hv51', on_delete=django.db.models.deletion.CASCADE, related_name='song_requests', to='sessions.Session'),
+            field=models.ForeignKey(default='7b4fffgy6fnhpdjcg8912qnxsyz3hv51', on_delete=django.db.models.deletion.CASCADE, related_name='song_requests', to='sessions.Session', null=True),
             preserve_default=False,
         ),
     ]

@@ -61,10 +61,16 @@ class SongRequest(m.Model):
     created_at = m.DateTimeField(auto_now_add=True)
     event = m.ForeignKey('events.Event', related_name="song_requests")
     status = m.SmallIntegerField(choices=STATUS_CHOICES, default=REQUESTED_STATUS)
-    session = m.ForeignKey('sessions.Session', related_name='song_requests')
+    cookie = m.ForeignKey('songs.SongRequestCookie', related_name='song_requests')
 
     def __str__(self):
         return "Request for %s at %s" % (self.song.title, self.event.name)
+
+
+class SongRequestCookie(m.Model):
+    uuid = m.UUIDField(unique=True, default=uuid.uuid4, editable=False)
+    user = m.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name='song_request_cookies')
+    created_at = m.DateTimeField(auto_now_add=True)
 
 
 class Category(m.Model):

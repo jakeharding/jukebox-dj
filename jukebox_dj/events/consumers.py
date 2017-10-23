@@ -1,4 +1,5 @@
 from channels.generic.websockets import JsonWebsocketConsumer
+from channels.message import Message
 
 
 class EventConsumer(JsonWebsocketConsumer):
@@ -48,13 +49,13 @@ class EventConsumer(JsonWebsocketConsumer):
 class RequesterConsumer(JsonWebsocketConsumer):
     http_user = True
 
-    def connect(self, message, **kwargs):
-        """
-        Perform things on connection start
-        """
-        # Accept the connection; this is done by default if you don't override
-        # the connect function.
-        self.message.reply_channel.send({"accept": True})
+    # def connect(self, message, **kwargs):
+    #     """
+    #     Perform things on connection start
+    #     """
+    #     # Accept the connection; this is done by default if you don't override
+    #     # the connect function.
+    #     self.message.reply_channel.send({"accept": True})
 
     def receive(self,content, **kwargs):
         """
