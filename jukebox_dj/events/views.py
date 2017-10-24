@@ -21,7 +21,7 @@ from jukebox_dj.songs.views import SongListSerializer, NestedSongRequestSerializ
 class EventSerializer(ModelSerializer):
     dj = SlugRelatedField(
         queryset=JukeboxUser.objects.filter(djprofile__isnull=False),
-        slug_field='uuid'
+        slug_field='dj_id'
     )
 
     song_lists = SongListSerializer(many=True, read_only=True)
@@ -37,4 +37,4 @@ class EventViewSet(ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     lookup_field = 'uuid'
-    filter_fields = ('dj__djprofile__dj_id', 'is_active', 'dj__uuid', )
+    filter_fields = ('dj_id', 'is_active', 'dj__user__uuid', )

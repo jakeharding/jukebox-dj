@@ -12,14 +12,13 @@ Setup app config
 
 import uuid
 
-from django.conf import settings
 from django.db import models as m
 
 
 class Event(m.Model):
     uuid = m.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     name = m.CharField(max_length=255)
-    dj = m.ForeignKey(settings.AUTH_USER_MODEL)
+    dj = m.ForeignKey('users.DjProfile', related_name='events')
     created_at = m.DateTimeField(auto_now_add=True)
     is_active = m.BooleanField(default=False)
 

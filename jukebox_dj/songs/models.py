@@ -22,7 +22,7 @@ class Song(m.Model):
     artist = m.CharField(max_length=255)
     description = m.TextField(blank=True, null=True)
     created_at = m.DateTimeField(auto_now_add=True)
-    dj = m.ForeignKey(settings.AUTH_USER_MODEL, related_name="songs")
+    dj = m.ForeignKey('users.DjProfile', related_name="songs")
     song_lists = m.ManyToManyField('songs.SongList', blank=True, related_name="songs")
 
     def __str__(self):
@@ -33,7 +33,7 @@ class SongList(m.Model):
     uuid = m.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     name = m.CharField(max_length=255)
     description = m.TextField(blank=True, null=True)
-    dj = m.ForeignKey(settings.AUTH_USER_MODEL, related_name="song_lists")
+    dj = m.ForeignKey('users.DjProfile', related_name="song_lists")
     created_at = m.DateTimeField(auto_now_add=True)
     events = m.ManyToManyField('events.Event', blank=True, related_name="song_lists")
 
