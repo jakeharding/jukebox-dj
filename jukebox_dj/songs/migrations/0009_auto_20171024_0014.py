@@ -9,6 +9,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('users', '0002_djprofile'),
         ('songs', '0008_songrequest_cookie'),
     ]
 

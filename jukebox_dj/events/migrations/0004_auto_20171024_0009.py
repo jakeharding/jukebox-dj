@@ -9,6 +9,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('users', '0002_djprofile'),
         ('events', '0003_auto_20170920_2026'),
     ]
 

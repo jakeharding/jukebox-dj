@@ -27,7 +27,7 @@ from jukebox_dj.users.models import DjProfile
 class TestSongRequestRest(APITestCase, RestApiTestCaseMixin):
     fixtures = ['jukebox_dj/users/fixtures/users.json', 'jukebox_dj/events/fixtures/events.json',
                 'jukebox_dj/songs/fixtures/songs.json', 'jukebox_dj/songs/fixtures/song_lists.json',
-                'jukebox_dj/songs/fixtures/requests.json', 'jukebox_dj/songs/fixtures/sessions.json',
+                'jukebox_dj/songs/fixtures/requests.json',
                 ]
     list_url_name = "songrequest-list"
     detail_url_name = "songrequest-detail"

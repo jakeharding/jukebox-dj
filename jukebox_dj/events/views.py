@@ -14,13 +14,13 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.serializers import ModelSerializer, SlugRelatedField
 
 from .models import Event
-from jukebox_dj.users.models import JukeboxUser
+from jukebox_dj.users.models import DjProfile
 from jukebox_dj.songs.views import SongListSerializer, NestedSongRequestSerializer
 
 
 class EventSerializer(ModelSerializer):
     dj = SlugRelatedField(
-        queryset=JukeboxUser.objects.filter(djprofile__isnull=False),
+        queryset=DjProfile.objects.all(),
         slug_field='dj_id'
     )
 
