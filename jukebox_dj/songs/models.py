@@ -22,7 +22,7 @@ class Song(m.Model):
     artist = m.CharField(max_length=255)
     description = m.TextField(blank=True, null=True)
     created_at = m.DateTimeField(auto_now_add=True)
-    dj = m.ForeignKey(settings.AUTH_USER_MODEL, related_name="songs")
+    dj = m.ForeignKey('users.DjProfile', related_name="songs")
     song_lists = m.ManyToManyField('songs.SongList', blank=True, related_name="songs")
 
     def __str__(self):
@@ -33,7 +33,7 @@ class SongList(m.Model):
     uuid = m.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     name = m.CharField(max_length=255)
     description = m.TextField(blank=True, null=True)
-    dj = m.ForeignKey(settings.AUTH_USER_MODEL, related_name="song_lists")
+    dj = m.ForeignKey('users.DjProfile', related_name="song_lists")
     created_at = m.DateTimeField(auto_now_add=True)
     events = m.ManyToManyField('events.Event', blank=True, related_name="song_lists")
 
@@ -61,10 +61,19 @@ class SongRequest(m.Model):
     created_at = m.DateTimeField(auto_now_add=True)
     event = m.ForeignKey('events.Event', related_name="song_requests")
     status = m.SmallIntegerField(choices=STATUS_CHOICES, default=REQUESTED_STATUS)
-    session = m.ForeignKey('sessions.Session', related_name='song_requests')
+    cookie = m.ForeignKey('songs.SongRequestCookie', related_name='song_requests')
 
     def __str__(self):
         return "Request for %s at %s" % (self.song.title, self.event.name)
+
+
+class SongRequestCookie(m.Model):
+    uuid = m.UUIDField(unique=True, default=uuid.uuid4, editable=False)
+    user = m.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name='song_request_cookies')
+    created_at = m.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.uuid
 
 
 class Category(m.Model):

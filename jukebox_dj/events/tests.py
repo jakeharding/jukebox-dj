@@ -78,7 +78,7 @@ class TestEventApi(APITestCase, RestApiTestCaseMixin):
     def test_create(self):
         new_obj_data = {
             "name": "A party",
-            "dj": "468a37d3-4f97-4446-aac6-df7671c802fe"
+            "dj": "1234"
         }
         r = self.client.post(reverse(self.list_url_name), new_obj_data)
         self.assertTrue(status.is_success(r.status_code), r.data)
@@ -87,7 +87,7 @@ class TestEventApi(APITestCase, RestApiTestCaseMixin):
         """All required fields are needed in PUT requests."""
         update_obj_data = {
             "name": "Changes to a shindig",
-            "dj": "468a37d3-4f97-4446-aac6-df7671c802fe"
+            "dj": "1234"
         }
         r = self.client.put(reverse(self.detail_url_name, args=[self.test_object.uuid]), update_obj_data)
         self.assertTrue(status.is_success(r.status_code), r.data)
