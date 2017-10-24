@@ -58,9 +58,13 @@ class StandAloneSongRequestSerializer(ModelSerializer):
     )
 
     song_title = SerializerMethodField()
+    song_artist = SerializerMethodField()
 
     def get_song_title(self, song_request):
         return song_request.song.title
+
+    def get_song_artist(selfself, song_request):
+        return song_request.song.artist
 
     class Meta:
         model = SongRequest

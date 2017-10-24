@@ -66,6 +66,10 @@ export class RequesterPage {
       return value.indexOf('song_request') >= 0;
     }).split("=")[1];
 
+    this.reqProvider.list({cookie: this.requesterCookie}).subscribe( songRequests => {
+      this.requested = songRequests;
+    });
+
     this.requesterBridgeUri = `${this.eventBridgeUri}/requester/${this.requesterCookie}`;
   }
 

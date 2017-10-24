@@ -13,6 +13,8 @@ import {Observable} from "rxjs/Observable";
 @Injectable()
 export class SongRequestProvider {
 
+  uri: string = '/api/dev/song-requests';
+
   constructor(public http: Http) {}
 
   create(request: SongRequest): Observable<SongRequest>{
@@ -25,5 +27,9 @@ export class SongRequestProvider {
 
   partialUpdate(uuid:string, status:SongRequestStatus): Observable<SongRequest>{
     return this.http.patch(`/api/dev/song-requests/${uuid}`, {status}).map(res => res.json())
+  }
+
+  list(params:any) {
+    return this.http.get(this.uri, {params}).map(res => res.json());
   }
 }
