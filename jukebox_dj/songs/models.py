@@ -72,9 +72,6 @@ class SongRequestCookie(m.Model):
     user = m.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, related_name='song_request_cookies')
     created_at = m.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.uuid
-
 
 class Category(m.Model):
     uuid = m.UUIDField(unique=True, default=uuid.uuid4, editable=False)
