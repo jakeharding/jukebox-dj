@@ -48,6 +48,11 @@ export class RequesterPage {
 
     this.eventBridge = new WebSocketBridge();
     this.eventBridge.connect(this.eventBridgeUri);
+    this.eventBridge.listen((songRequest: SongRequest) => {
+
+      // Listen on this bridge to remove songs from songs available for request.
+      this.removeSong(songRequest.song.uuid);
+    });
 
     // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
     this.eventProvider.getEvent(navParams.data.uuid).subscribe( data => {
@@ -63,12 +68,23 @@ export class RequesterPage {
     });
   }
 
+  removeSong(uuid:string) {
+    this.filteredSongs = this.filteredSongs.filter((underTest: Song) => {
+      return uuid !== underTest.uuid;
+    });
+
+    // Overall songs are filtered separately in case user has searched for song
+    this.songs = this.songs.filter((underTest: Song) => {
+      return uuid !== underTest.uuid;
+    });
+  }
+
   ionViewWillLoad() {
     this.requesterCookie = document.cookie.split(/;\s*/).find((value) => {
       return value.indexOf('song_request') >= 0;
     }).split("=")[1];
 
-    this.reqProvider.list({cookie: this.requesterCookie}).subscribe( songRequests => {
+    this.reqProvider.list({cookie__uuid: this.requesterCookie}).subscribe( songRequests => {
       this.requested = songRequests;
     });
 
@@ -91,20 +107,14 @@ export class RequesterPage {
     let req = new SongRequest(song.uuid, this.event.uuid, this.requesterCookie);
     this.reqProvider.create(req).subscribe((request: SongRequest) => {
 
-      //Success on http request. Update dj and open channel with session key.
       request.song = song;
+
+      //Success on http request. Update dj and other requesters and open channel with session key.
+      // This will also update this requester's list
       this.eventBridge.send(request);
+
+      // Add to list of requester's requests
       this.requested.push(request);
-
-      // Song request successful. Remove song from filtered songs.
-      this.filteredSongs = this.filteredSongs.filter((underTest: Song) => {
-        return song.uuid !== underTest.uuid;
-      });
-
-      // Overall songs are filtered separately in case user has searched for song
-      this.songs = this.songs.filter((underTest: Song) => {
-        return song.uuid !== underTest.uuid;
-      });
 
       // Show a success message
       const toast = this.toast.create({
@@ -165,6 +175,9 @@ export class RequesterPage {
         cssClass: "error-toast"
       });
       toast.present();
+
+      // update other requesters in case they haven't heard about this song request yet
+      this.eventBridge.send({song:{uuid: req.song}});
     });
   }
 
