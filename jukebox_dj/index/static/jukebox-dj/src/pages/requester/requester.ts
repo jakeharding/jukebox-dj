@@ -7,6 +7,7 @@ import {SongRequest, SongRequestStatus} from "../../models/SongRequest";
 import {SongRequestProvider} from "../../providers/song-request/song-request";
 
 import  { WebSocketBridge } from 'django-channels';
+import {Observable} from "rxjs/Observable";
 
 
 /**
@@ -29,6 +30,7 @@ export class RequesterPage {
   event: Event;
   requesterLists: string = "songs";
   songs: Song[] = [];
+  // filteredSongs: Observable<Array<Song>>;
   filteredSongs: Song[] = [];
   requested: SongRequest[] = [];
 
@@ -45,19 +47,22 @@ export class RequesterPage {
 
     this.eventBridgeUri = `/events/${this.navParams.data.uuid}`;
 
+    this.eventBridge = new WebSocketBridge();
+    this.eventBridge.connect(this.eventBridgeUri);
+
     // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
     this.eventProvider.getEvent(navParams.data.uuid).subscribe( data => {
       this.event = data;
 
+      this.songs = this.event.songs;
       // TODO Paginate this in the backend. This pulls in all songs and song lists for the event.
-      for (let list of this.event.song_lists) {
-        this.songs = this.songs.concat(list.songs);
-      }
+      // for (let list of this.event.song_lists) {
+      //   this.songs = this.songs.concat(list.songs);
+      // }
 
       // TODO Filter songs via network request query. This only filters the list in the browser.
       this.filteredSongs = this.songs;
-      this.eventBridge = new WebSocketBridge();
-      this.eventBridge.connect(this.eventBridgeUri);
+
     });
   }
 
@@ -91,7 +96,11 @@ export class RequesterPage {
       //Success on http request. Update dj and open channel with session key.
       request.song = song;
       this.eventBridge.send(request);
-      this.requested.push(request);
+      this.requested.push(request)
+      this.filteredSongs.filter((reqForThisSong: Song) => {
+        // Request successful. Remove song from list.
+        return song.uuid != reqForThisSong.uuid;
+      });
       const toast = this.toast.create({
         message: "Your request has been sent!",
         duration: 3000,
@@ -138,8 +147,13 @@ export class RequesterPage {
 
     }, error => {
       // Error on http request. Most likely a network connection problem
+      let msg = "Unable to request a song at this time. Please check your network and try again.";
+
+      if(error.status === 409) {
+        msg = `A request for ${song.title} has recently been made. Please try again soon.`;
+      }
       const toast = this.toast.create({
-        message: "Unable to request a song at this time. Please check your network and try again.",
+        message: msg,
         duration: 3000,
         position: "top",
         cssClass: "error-toast"

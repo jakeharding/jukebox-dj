@@ -81,12 +81,16 @@ class SongRequestViewset(ModelViewSet):
     filter_fields = ('event__uuid', 'status', 'song__uuid')
 
     def create(self, request, *args, **kwargs):
+        """Override the create method to prevent recent requests to same song."""
+
         song_uuid = request.data.get('song')
 
         if SongRequest.objects.filter(
                         Q(song__uuid=song_uuid) &
-                        Q(created_at__gte=datetime.datetime.utcnow() - datetime.timedelta(days=1))):
-            return Response(status=409, data={"error": "Request for this song has been made within the last hour."})
+                        Q(created_at__gte=datetime.datetime.utcnow() - datetime.timedelta(days=1))).first():
+            return Response(status=409, data={
+                "error": "Request for this song has been made within the last hour.",
+                "song_uuid": song_uuid
+            })
 
-        """Override the create method to set the session on the song request."""
         return super(SongRequestViewset, self).create(request, args, kwargs)
