@@ -9,6 +9,9 @@ Author(s) of this file:
 Will hold the ViewSets and Serializers for songs.
 """
 import datetime
+
+from django.db.models import Q
+from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer, SlugRelatedField, SerializerMethodField
 from rest_framework.viewsets import ModelViewSet
 
@@ -63,7 +66,7 @@ class StandAloneSongRequestSerializer(ModelSerializer):
     def get_song_title(self, song_request):
         return song_request.song.title
 
-    def get_song_artist(selfself, song_request):
+    def get_song_artist(self, song_request):
         return song_request.song.artist
 
     class Meta:
@@ -72,14 +75,22 @@ class StandAloneSongRequestSerializer(ModelSerializer):
 
 
 class SongRequestViewset(ModelViewSet):
-    queryset = SongRequest.objects.all()
+    queryset = SongRequest.objects.filter()
     serializer_class = StandAloneSongRequestSerializer
     lookup_field = 'uuid'
-    filter_fields = ('event__uuid', 'status', 'song__uuid')
+    filter_fields = ('event__uuid', 'status', 'song__uuid', 'cookie__uuid')
 
     def create(self, request, *args, **kwargs):
-        """Override the create method to set the session on the song request."""
-        if not request.session.session_key:
-            request.session.save()
-        request.data["session"] = request.session.session_key
+        """Override the create method to prevent recent requests to same song."""
+
+        song_uuid = request.data.get('song')
+
+        if SongRequest.objects.filter(
+                        Q(song__uuid=song_uuid) &
+                        Q(created_at__gte=datetime.datetime.utcnow() - datetime.timedelta(hours=1))).exists():
+            return Response(status=409, data={
+                "error": "Request for this song has been made within the last hour.",
+                "song_uuid": song_uuid
+            })
+
         return super(SongRequestViewset, self).create(request, args, kwargs)

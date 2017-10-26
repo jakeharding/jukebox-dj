@@ -45,19 +45,36 @@ export class RequesterPage {
 
     this.eventBridgeUri = `/events/${this.navParams.data.uuid}`;
 
+    this.eventBridge = new WebSocketBridge();
+    this.eventBridge.connect(this.eventBridgeUri);
+    this.eventBridge.listen((songRequest: SongRequest) => {
+
+      // Listen on this bridge to remove songs from songs available for request.
+      this.removeSong(songRequest.song.uuid);
+    });
+
     // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
     this.eventProvider.getEvent(navParams.data.uuid).subscribe( data => {
       this.event = data;
 
       // TODO Paginate this in the backend. This pulls in all songs and song lists for the event.
-      for (let list of this.event.song_lists) {
-        this.songs = this.songs.concat(list.songs);
-      }
+      // TODO Make seperate network call to retrieve songs when song endpoint is ready.
+      this.songs = this.event.songs;
 
       // TODO Filter songs via network request query. This only filters the list in the browser.
       this.filteredSongs = this.songs;
-      this.eventBridge = new WebSocketBridge();
-      this.eventBridge.connect(this.eventBridgeUri);
+
+    });
+  }
+
+  removeSong(uuid:string) {
+    this.filteredSongs = this.filteredSongs.filter((underTest: Song) => {
+      return uuid !== underTest.uuid;
+    });
+
+    // Overall songs are filtered separately in case user has searched for song
+    this.songs = this.songs.filter((underTest: Song) => {
+      return uuid !== underTest.uuid;
     });
   }
 
@@ -66,7 +83,7 @@ export class RequesterPage {
       return value.indexOf('song_request') >= 0;
     }).split("=")[1];
 
-    this.reqProvider.list({cookie: this.requesterCookie}).subscribe( songRequests => {
+    this.reqProvider.list({cookie__uuid: this.requesterCookie}).subscribe( songRequests => {
       this.requested = songRequests;
     });
 
@@ -88,10 +105,17 @@ export class RequesterPage {
   createRequest(song: Song) {
     let req = new SongRequest(song.uuid, this.event.uuid, this.requesterCookie);
     this.reqProvider.create(req).subscribe((request: SongRequest) => {
-      //Success on http request. Update dj and open channel with session key.
+
       request.song = song;
+
+      //Success on http request. Update dj and other requesters and open channel with session key.
+      // This will also update this requester's list
       this.eventBridge.send(request);
+
+      // Add to list of requester's requests
       this.requested.push(request);
+
+      // Show a success message
       const toast = this.toast.create({
         message: "Your request has been sent!",
         duration: 3000,
@@ -138,8 +162,13 @@ export class RequesterPage {
 
     }, error => {
       // Error on http request. Most likely a network connection problem
+      let msg = "Unable to request a song at this time. Please check your network and try again.";
+
+      if(error.status === 409) {
+        msg = `A request for ${song.title} has recently been made. Please try again soon.`;
+      }
       const toast = this.toast.create({
-        message: "Unable to request a song at this time. Please check your network and try again.",
+        message: msg,
         duration: 3000,
         position: "top",
         cssClass: "error-toast"

@@ -19,3 +19,10 @@ DATABASES = {
         'HOST': 'localhost',
     }
 }
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "ROUTING": "jukebox_dj.events.routing.channel_routing",
+    },
+}
