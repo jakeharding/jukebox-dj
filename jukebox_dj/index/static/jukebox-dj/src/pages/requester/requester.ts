@@ -30,7 +30,6 @@ export class RequesterPage {
   event: Event;
   requesterLists: string = "songs";
   songs: Song[] = [];
-  // filteredSongs: Observable<Array<Song>>;
   filteredSongs: Song[] = [];
   requested: SongRequest[] = [];
 
@@ -54,11 +53,9 @@ export class RequesterPage {
     this.eventProvider.getEvent(navParams.data.uuid).subscribe( data => {
       this.event = data;
 
-      this.songs = this.event.songs;
       // TODO Paginate this in the backend. This pulls in all songs and song lists for the event.
-      // for (let list of this.event.song_lists) {
-      //   this.songs = this.songs.concat(list.songs);
-      // }
+      // TODO Make seperate network call to retrieve songs when song endpoint is ready.
+      this.songs = this.event.songs;
 
       // TODO Filter songs via network request query. This only filters the list in the browser.
       this.filteredSongs = this.songs;
@@ -93,14 +90,23 @@ export class RequesterPage {
   createRequest(song: Song) {
     let req = new SongRequest(song.uuid, this.event.uuid, this.requesterCookie);
     this.reqProvider.create(req).subscribe((request: SongRequest) => {
+
       //Success on http request. Update dj and open channel with session key.
       request.song = song;
       this.eventBridge.send(request);
-      this.requested.push(request)
-      this.filteredSongs.filter((reqForThisSong: Song) => {
-        // Request successful. Remove song from list.
-        return song.uuid != reqForThisSong.uuid;
+      this.requested.push(request);
+
+      // Song request successful. Remove song from filtered songs.
+      this.filteredSongs = this.filteredSongs.filter((underTest: Song) => {
+        return song.uuid !== underTest.uuid;
       });
+
+      // Overall songs are filtered separately in case user has searched for song
+      this.songs = this.songs.filter((underTest: Song) => {
+        return song.uuid !== underTest.uuid;
+      });
+
+      // Show a success message
       const toast = this.toast.create({
         message: "Your request has been sent!",
         duration: 3000,
