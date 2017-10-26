@@ -78,7 +78,7 @@ class SongRequestViewset(ModelViewSet):
     queryset = SongRequest.objects.filter()
     serializer_class = StandAloneSongRequestSerializer
     lookup_field = 'uuid'
-    filter_fields = ('event__uuid', 'status', 'song__uuid')
+    filter_fields = ('event__uuid', 'status', 'song__uuid', 'cookie__uuid')
 
     def create(self, request, *args, **kwargs):
         """Override the create method to prevent recent requests to same song."""
@@ -87,7 +87,7 @@ class SongRequestViewset(ModelViewSet):
 
         if SongRequest.objects.filter(
                         Q(song__uuid=song_uuid) &
-                        Q(created_at__gte=datetime.datetime.utcnow() - datetime.timedelta(days=1))).first():
+                        Q(created_at__gte=datetime.datetime.utcnow() - datetime.timedelta(hours=1))).exists():
             return Response(status=409, data={
                 "error": "Request for this song has been made within the last hour.",
                 "song_uuid": song_uuid
