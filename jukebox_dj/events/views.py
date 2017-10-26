@@ -10,9 +10,8 @@ ViewSet for events.
 """
 
 
-from _datetime import datetime, timedelta
+from datetime import datetime, timedelta
 
-from django.db.models import Q
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.serializers import ModelSerializer, SlugRelatedField, SerializerMethodField
 

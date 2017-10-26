@@ -7,7 +7,6 @@ import {SongRequest, SongRequestStatus} from "../../models/SongRequest";
 import {SongRequestProvider} from "../../providers/song-request/song-request";
 
 import  { WebSocketBridge } from 'django-channels';
-import {Observable} from "rxjs/Observable";
 
 
 /**
@@ -175,9 +174,6 @@ export class RequesterPage {
         cssClass: "error-toast"
       });
       toast.present();
-
-      // update other requesters in case they haven't heard about this song request yet
-      this.eventBridge.send({song:{uuid: req.song}});
     });
   }
 
