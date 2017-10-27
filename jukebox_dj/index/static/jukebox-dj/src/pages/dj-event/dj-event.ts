@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import {SongRequest} from '../../models/SongRequest';
 import {SongRequestStatus} from '../../models/SongRequest';
 import {SongRequestProvider} from "../../providers/song-request/song-request"
+import {EventProvider} from '../../providers/event/event'
 
 import  { WebSocketBridge } from 'django-channels';
 import {Song} from "../../models/Song";
@@ -45,6 +46,7 @@ export class DjEventPage {
     private http: Http,
     private dragulaService: DragulaService,
     private reqProvider: SongRequestProvider,
+    private eventProvider: EventProvider,
     private toast: ToastController
   ) {
     this.event = navParams.data;
@@ -71,16 +73,19 @@ export class DjEventPage {
     });
 
 
-    // Quick and dirty http request. Plenty of TODOs
     // TODO MUST - Hold the api version (dev in the url) in an environment specific way
-    // TODO MUST - Hold the url string in a symbolic constant
-    // TODO MUST - Model events and song requests into classes to remove the any
     // TODO Stretch - Use the ngrx store to store the state of objects and handle requests
-    this.http.get(`/api/dev/events/${this.event.uuid }`)
-      .map(res => res.json())
+    // this.http.get(`/api/dev/events/${this.event.uuid }`)
+    this.eventProvider.getEvent(this.event.uuid)
       .subscribe(data => {
         this.event = data;
         for (let request of data.song_requests) {
+          if(!this.requesterBridges[request.cookie]) {
+            let newBridge = new WebSocketBridge();
+            newBridge.connect(`${this.eventBridgeUri}/requester/${request.cookie}`);
+            this.requesterBridges[request.cookie] = newBridge;
+          }
+
           switch (request.status) {
             case SongRequestStatus.DENIED:
               this.deniedRequests.push(request);
@@ -122,9 +127,10 @@ export class DjEventPage {
 
   private updateRequestStatus(uuid:string, status:SongRequestStatus) {
     this.reqProvider.partialUpdate(uuid, status).subscribe((request: SongRequest) => {
-      //TODO: If update successful tell websocket channel and notify requester
       let bridge = this.requesterBridges[request.cookie];
-      bridge.send(request);
+      if (bridge) {
+        bridge.send(request);
+      }
     });
   }
 }

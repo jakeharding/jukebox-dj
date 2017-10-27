@@ -39,6 +39,10 @@ class NestedSongRequestSerializer(ModelSerializer):
     """This serializer is nested in the event response."""
 
     song = SongSerializer()
+    cookie = SlugRelatedField(
+        queryset=SongRequestCookie.objects.all(),
+        slug_field='uuid'
+    )
 
     class Meta:
         model = SongRequest

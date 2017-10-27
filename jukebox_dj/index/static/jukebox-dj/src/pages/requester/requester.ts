@@ -83,11 +83,49 @@ export class RequesterPage {
       return value.indexOf('song_request') >= 0;
     }).split("=")[1];
 
-    this.reqProvider.list({cookie__uuid: this.requesterCookie}).subscribe( songRequests => {
-      this.requested = songRequests;
-    });
+    this.reqProvider.list({cookie__uuid: this.requesterCookie, event__uuid: this.navParams.data.uuid})
+      .subscribe( songRequests => {
+        this.requested = songRequests;
+      });
 
     this.requesterBridgeUri = `${this.eventBridgeUri}/requester/${this.requesterCookie}`;
+    this.createRequesterBridge();
+  }
+
+  createRequesterBridge () {
+    this.requesterBridge = new WebSocketBridge();
+    this.requesterBridge.connect(this.requesterBridgeUri);
+
+    this.requesterBridge.listen((songRequest: SongRequest) => {
+      let toastClass, toastMsg;
+
+      switch (songRequest.status) {
+        case SongRequestStatus.DENIED:
+          toastClass = "error-toast";
+          toastMsg = `Sorry, your request for ${songRequest.song_title} has been denied.`;
+          break;
+        case SongRequestStatus.QUEUED:
+          toastClass = "success-toast";
+          toastMsg = `Your song has been queued! ${songRequest.song_title} will be played soon.`;
+          break;
+        case SongRequestStatus.PLAYED:
+          toastClass = 'played-request-toast';
+          toastMsg = `Your song, ${songRequest.song_title} has been played!`;
+          break;
+        default:
+          toastClass = '';
+          toastMsg = '';
+          break;
+      }
+
+      const toast = this.toast.create({
+        message: toastMsg,
+        duration: 3000,
+        position: 'top',
+        cssClass: toastClass
+      });
+      toast.present();
+    });
   }
 
   filterSongs (event: any) {
@@ -124,41 +162,41 @@ export class RequesterPage {
       });
       toast.present();
 
-      if (!this.requesterBridge) {
-        this.requesterBridge = new WebSocketBridge();
-        this.requesterBridge.connect(this.requesterBridgeUri);
-
-        this.requesterBridge.listen((songRequest: SongRequest) => {
-          let toastClass, toastMsg;
-
-          switch (songRequest.status) {
-            case SongRequestStatus.DENIED:
-              toastClass = "error-toast";
-              toastMsg = `Sorry, your request for ${songRequest.song_title} has been denied.`;
-              break;
-            case SongRequestStatus.QUEUED:
-              toastClass = "success-toast";
-              toastMsg = `Your song has been queued! ${songRequest.song_title} will be played soon.`;
-              break;
-            case SongRequestStatus.PLAYED:
-              toastClass = 'played-request-toast';
-              toastMsg = `Your song, ${songRequest.song_title} has been played!`;
-              break;
-            default:
-              toastClass = '';
-              toastMsg = '';
-              break;
-          }
-
-          const toast = this.toast.create({
-            message: toastMsg,
-            duration: 3000,
-            position: 'top',
-            cssClass: toastClass
-          });
-          toast.present();
-        });
-      }
+      // if (!this.requesterBridge) {
+        // this.requesterBridge = new WebSocketBridge();
+        // this.requesterBridge.connect(this.requesterBridgeUri);
+        //
+        // this.requesterBridge.listen((songRequest: SongRequest) => {
+        //   let toastClass, toastMsg;
+        //
+        //   switch (songRequest.status) {
+        //     case SongRequestStatus.DENIED:
+        //       toastClass = "error-toast";
+        //       toastMsg = `Sorry, your request for ${songRequest.song_title} has been denied.`;
+        //       break;
+        //     case SongRequestStatus.QUEUED:
+        //       toastClass = "success-toast";
+        //       toastMsg = `Your song has been queued! ${songRequest.song_title} will be played soon.`;
+        //       break;
+        //     case SongRequestStatus.PLAYED:
+        //       toastClass = 'played-request-toast';
+        //       toastMsg = `Your song, ${songRequest.song_title} has been played!`;
+        //       break;
+        //     default:
+        //       toastClass = '';
+        //       toastMsg = '';
+        //       break;
+        //   }
+        //
+        //   const toast = this.toast.create({
+        //     message: toastMsg,
+        //     duration: 3000,
+        //     position: 'top',
+        //     cssClass: toastClass
+        //   });
+        //   toast.present();
+        // });
+      // }
 
     }, error => {
       // Error on http request. Most likely a network connection problem
