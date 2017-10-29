@@ -4,12 +4,12 @@ import { Http } from '@angular/http';
 import { DragulaService } from 'ng2-dragula/components/dragula.provider'
 import 'rxjs/add/operator/map';
 
-import {SongRequest} from '../../models/SongRequest';
-import {SongRequestStatus} from '../../models/SongRequest';
-import {SongRequestProvider} from "../../providers/song-request/song-request"
+import { SongRequest } from '../../models/SongRequest';
+import { SongRequestStatus } from '../../models/SongRequest';
+import { SongRequestProvider } from "../../providers/song-request/song-request"
 
 import  { WebSocketBridge } from 'django-channels';
-import {Song} from "../../models/Song";
+import  { Song } from "../../models/Song";
 
 /**
  * Generated class for the DjEventPage page.
@@ -105,19 +105,7 @@ export class DjEventPage {
 
   private onDrop(args) {
     let [el, target, source, sibling] = args;
-    let status : SongRequestStatus;
-    switch (target.id) {
-      case "requested":
-        status = SongRequestStatus.REQUESTED;
-        break;
-      case "denied":
-        status = SongRequestStatus.DENIED;
-        break;
-      case "queued":
-        status = SongRequestStatus.QUEUED;
-        break;
-    }
-    this.updateRequestStatus(el.id, status);
+    this.updateRequestString(el.id, target.id);
   }
 
   private updateRequestStatus(uuid:string, status:SongRequestStatus) {
@@ -126,5 +114,21 @@ export class DjEventPage {
       let bridge = this.requesterBridges[request.cookie];
       bridge.send(request);
     });
+  }
+
+  private updateRequestString(uuid:string, requestString:string) {
+    let status : SongRequestStatus;
+    switch (requestString) {
+      case "REQUESTED":
+        status = SongRequestStatus.REQUESTED;
+        break;
+      case "DENIED":
+        status = SongRequestStatus.DENIED;
+        break;
+      case "QUEUED":
+        status = SongRequestStatus.QUEUED;
+        break;
+    }
+    this.updateRequestStatus(uuid, status);
   }
 }

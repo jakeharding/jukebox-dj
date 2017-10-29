@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, InfiniteScroll } from 'ionic-angular';
 import { Song } from '../../models/Song';
-import { EventProvider} from "../../providers/event/event";
+import { SongProvider } from "../../providers/song/song";
+import { EventProvider } from "../../providers/event/event";
 import { Event } from '../../models/Event';
-import {SongRequest, SongRequestStatus} from "../../models/SongRequest";
-import {SongRequestProvider} from "../../providers/song-request/song-request";
+import { SongRequest, SongRequestStatus } from "../../models/SongRequest";
+import { SongRequestProvider } from "../../providers/song-request/song-request";
 
-import  { WebSocketBridge } from 'django-channels';
+import { WebSocketBridge } from 'django-channels';
 
 
 /**
@@ -39,25 +40,37 @@ export class RequesterPage {
   requesterBridgeUri: string;
   requesterCookie: string;
 
+  //Variables for pagination
+  limit: number;
+  offset: number;
+  has_next: boolean = true;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private eventProvider: EventProvider, private reqProvider: SongRequestProvider,
-              private toast: ToastController) {
+    private songProvider: SongProvider, private reqProvider: SongRequestProvider,
+    private eventProvider: EventProvider, private toast: ToastController) {
 
     this.eventBridgeUri = `/events/${this.navParams.data.uuid}`;
 
+    this.eventProvider.getEvent(navParams.data.uuid).subscribe(event => {
+      this.event = event;
+    });
+
+    // TODO How to define a const for limit?
+    this.limit = 20;
+    this.offset = 0;
     // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
-    this.eventProvider.getEvent(navParams.data.uuid).subscribe( data => {
-      this.event = data;
-
-      // TODO Paginate this in the backend. This pulls in all songs and song lists for the event.
-      for (let list of this.event.song_lists) {
-        this.songs = this.songs.concat(list.songs);
+    this.songProvider.getEventSongs(navParams.data.uuid, this.limit, this.offset).subscribe(data => {
+      if (data.next == null) {
+        this.has_next = false;
       }
+      if (data.results.length) {
+        this.songs = data.results;
 
-      // TODO Filter songs via network request query. This only filters the list in the browser.
-      this.filteredSongs = this.songs;
-      this.eventBridge = new WebSocketBridge();
-      this.eventBridge.connect(this.eventBridgeUri);
+        // TODO Filter songs via network request query. This only filters the list in the browser.
+        this.filteredSongs = this.songs;
+        this.eventBridge = new WebSocketBridge();
+        this.eventBridge.connect(this.eventBridgeUri);
+      }
     });
   }
 
@@ -66,18 +79,18 @@ export class RequesterPage {
       return value.indexOf('song_request') >= 0;
     }).split("=")[1];
 
-    this.reqProvider.list({cookie: this.requesterCookie}).subscribe( songRequests => {
+    this.reqProvider.list({ cookie: this.requesterCookie }).subscribe(songRequests => {
       this.requested = songRequests;
     });
 
     this.requesterBridgeUri = `${this.eventBridgeUri}/requester/${this.requesterCookie}`;
   }
 
-  filterSongs (event: any) {
+  filterSongs(event: any) {
     let val = event.target.value;
 
     if (val) {
-      this.filteredSongs = this.filteredSongs.filter((song:Song) => {
+      this.filteredSongs = this.filteredSongs.filter((song: Song) => {
         return song.title.toLowerCase().includes(val.toLowerCase()) || song.artist.toLowerCase().includes(val.toLowerCase());
       })
     } else if (!val || val.length === 0) {
@@ -146,6 +159,27 @@ export class RequesterPage {
       });
       toast.present();
     });
+  }
+
+  doInfinite(infiniteScroll) {
+    this.offset += this.limit;
+    setTimeout(() => {
+      this.songProvider.getEventSongs(this.event.uuid, this.limit, this.offset)
+        .subscribe(
+        data => {
+          if (data.results.length) {
+            for (let i = 0; i < data.results.length; i++) {
+              this.songs.push(data.results[i]);
+            }
+          }
+          else {
+            this.has_next = false;
+          }
+          infiniteScroll.complete();
+        });
+
+      infiniteScroll.complete();
+    }, 1000);
   }
 
 }

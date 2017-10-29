@@ -9,6 +9,8 @@ Author(s) of this file:
 Will hold the ViewSets and Serializers for songs.
 """
 import datetime
+from django_filters import Filter
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.serializers import ModelSerializer, SlugRelatedField, SerializerMethodField
 from rest_framework.viewsets import ModelViewSet
 
@@ -83,3 +85,17 @@ class SongRequestViewset(ModelViewSet):
             request.session.save()
         request.data["session"] = request.session.session_key
         return super(SongRequestViewset, self).create(request, args, kwargs)
+
+class SongEventFilter(DjangoFilterBackend):
+    def filter_queryset(self, request, qs, view):
+        event_uuid = request.query_params.get("event")
+        if not event_uuid:
+            return qs
+        return qs.filter(song_lists__events__uuid=request.query_params.get("event"))
+
+class SongViewset(ModelViewSet):
+    queryset = Song.objects.all()
+    serializer_class = SongSerializer
+    lookup_field = 'uuid'
+    filter_backends = (SongEventFilter, DjangoFilterBackend)
+    filter_fields = ('song_lists__events',)
