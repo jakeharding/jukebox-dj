@@ -17,7 +17,7 @@ import { WebSocketBridge } from 'django-channels';
  * on Ionic pages and navigation.
  */
 
-export const LIMIT = 20;
+export const LIMIT = 2;
 
 @IonicPage({
   name: 'requester',
@@ -188,23 +188,24 @@ export class RequesterPage {
   }
 
   doInfinite(infiniteScroll) {
-    this.offset += LIMIT;
-    setTimeout(() => {
-      this.songProvider.getSongs({ event: this.event.uuid, limit: LIMIT, offset: this.offset }).subscribe(
-        data => {
-          if (data.results.length) {
-            for (let i = 0; i < data.results.length; i++) {
-              this.songs.push(data.results[i]);
+    if (this.requesterLists == 'songs') {
+      this.offset += LIMIT;
+      setTimeout(() => {
+        this.songProvider.getSongs({ event: this.event.uuid, limit: LIMIT, offset: this.offset }).subscribe(
+          data => {
+            if (data.results.length) {
+              for (let i = 0; i < data.results.length; i++) {
+                this.songs.push(data.results[i]);
+              }
             }
-          }
-          else {
-            this.hasNext = false;
-          }
-          infiniteScroll.complete();
-        });
+            else {
+              this.hasNext = false;
+            }
+            infiniteScroll.complete();
+          });
 
-      infiniteScroll.complete();
-    }, 1000);
+        infiniteScroll.complete();
+      }, 1000);
+    }
   }
-
 }
