@@ -24,16 +24,19 @@ import { LoginPage } from './login';
 describe('LoginPage', () => {
   let loginPageComp: LoginPage;
   let fixture: ComponentFixture<LoginPage>;
-  let de:      DebugElement;
-  let el:      HTMLElement;
+  let de: DebugElement;
+  let titleEle: HTMLElement;
+  let pwInput: HTMLElement;
+  let pwLabel: HTMLElement;
+  let usernameInput: HTMLElement;
+  let usernameLabel: HTMLElement;
+  let loginForm: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [LoginPage],
       imports: [
-
         IonicModule.forRoot(LoginPage)
-
       ],
       providers: [
         StatusBar,
@@ -47,7 +50,20 @@ describe('LoginPage', () => {
     fixture = TestBed.createComponent(LoginPage);
     loginPageComp = fixture.componentInstance;
     de = fixture.debugElement.query(By.css('ion-title'));
-    el = de.nativeElement;
+    titleEle = de.nativeElement;
+
+    de = fixture.debugElement.query(By.css("ion-input[tid=username-input]"));
+    usernameInput = de.nativeElement;
+    de = fixture.debugElement.query(By.css("ion-label[tid=username-label]"));
+    usernameLabel = de.nativeElement;
+
+    de = fixture.debugElement.query(By.css("ion-input[tid=password-input]"));
+    pwInput = de.nativeElement;
+    de = fixture.debugElement.query(By.css("ion-label[tid=password-label]"));
+    pwLabel = de.nativeElement;
+
+    de = fixture.debugElement.query(By.css("form[tid=login-form]"));
+    loginForm = de.nativeElement;
   });
 
   it ('should be created', () => {
@@ -55,6 +71,14 @@ describe('LoginPage', () => {
   });
 
   it('should say login in the title', () => {
-    expect(el.textContent).toBe('login');
-  })
+    expect(titleEle.textContent).toBe('Login');
+  });
+
+  it('should have username, password inputs, and form', () => {
+    expect(usernameInput).not.toBeUndefined();
+    expect(usernameLabel.textContent).toBe('Username or Email');
+    expect(pwInput).not.toBeUndefined();
+    expect(pwLabel.textContent).toBe('Password');
+    expect(loginForm).not.toBeUndefined();
+  });
 });

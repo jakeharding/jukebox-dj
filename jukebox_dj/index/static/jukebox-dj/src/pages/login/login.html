@@ -7,12 +7,29 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title></ion-title>
+    <ion-title>Login</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <form tid="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
 
+    <ion-item>
+      <ion-label tid="username-label" floating>Username or Email</ion-label>
+        <ion-input tid="username-input" formControlName="username"></ion-input>
+    </ion-item>
+    <ion-label
+      tid="username-error"
+      color="danger"
+      [hidden]="loginForm.controls['username'].valid || loginForm.controls['username'].untouched">{{usernameErr}}</ion-label>
+
+    <ion-item>
+      <ion-label tid="password-label" floating>Password</ion-label>
+        <ion-input tid="password-input" type="password" formControlName="password"></ion-input>
+    </ion-item>
+
+    <button ion-button type="submit" [disabled]="loginForm.invalid">Login</button>
+  </form>
 </ion-content>
