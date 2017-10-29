@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, URLSearchParams, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 import { Song } from '../../models/Song';
@@ -16,8 +16,16 @@ export class SongProvider {
   url:string = '/api/dev/songs';
   constructor(public http: Http) {}
 
-  getEventSongs(uuid:string, limit:number, offset:number): Observable<any> {
-    return this.http.get(`${this.url}?event=${uuid}&limit=${limit}&offset=${offset}`).map(res => res.json());
-  }
+  getSongs(params:any): Observable<any> {
+    let searchParams = new URLSearchParams();
+    for (let param in params) {
+      searchParams.set(param, params[param]);
+    }
 
+    let options = new RequestOptions({
+      search: searchParams
+    });
+
+    return this.http.get(this.url, options).map(res => res.json());
+  }
 }

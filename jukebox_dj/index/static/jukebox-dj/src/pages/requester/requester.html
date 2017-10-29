@@ -97,7 +97,7 @@
 
   </ion-grid>
 
-  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="has_next">
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="hasNext">
     <ion-infinite-scroll-content loadingSpinnger="bubbles" loadText="Loading more data...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>

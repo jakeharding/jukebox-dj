@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, InfiniteScroll } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { Song } from '../../models/Song';
 import { SongProvider } from "../../providers/song/song";
 import { EventProvider } from "../../providers/event/event";
@@ -17,6 +17,8 @@ import { WebSocketBridge } from 'django-channels';
  * on Ionic pages and navigation.
  */
 
+export const LIMIT = 20;
+
 @IonicPage({
   name: 'requester',
   segment: 'requester-events/:uuid'
@@ -25,6 +27,7 @@ import { WebSocketBridge } from 'django-channels';
   selector: 'page-requester',
   templateUrl: 'requester.html',
 })
+
 export class RequesterPage {
   event: Event;
   requesterLists: string = "songs";
@@ -40,9 +43,8 @@ export class RequesterPage {
   requesterCookie: string;
 
   //Variables for pagination
-  limit: number;
   offset: number;
-  has_next: boolean = true;
+  hasNext: boolean = true;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private songProvider: SongProvider, private reqProvider: SongRequestProvider,
@@ -55,19 +57,17 @@ export class RequesterPage {
       // Listen on this bridge to remove songs from songs available for request.
       this.removeSong(songRequest.song.uuid);
     });
-    
+
     // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
     this.eventProvider.getEvent(navParams.data.uuid).subscribe(event => {
       this.event = event;
     });
 
-    // TODO How to define a const for limit?
-    this.limit = 20;
     this.offset = 0;
     // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
-    this.songProvider.getEventSongs(navParams.data.uuid, this.limit, this.offset).subscribe(data => {
+    this.songProvider.getSongs({ event: navParams.data.uuid, limit: LIMIT, offset: this.offset }).subscribe(data => {
       if (data.next == null) {
-        this.has_next = false;
+        this.hasNext = false;
       }
       if (data.results.length) {
         this.songs = data.results;
@@ -76,7 +76,7 @@ export class RequesterPage {
     });
   }
 
-  removeSong(uuid:string) {
+  removeSong(uuid: string) {
     this.filteredSongs = this.filteredSongs.filter((underTest: Song) => {
       return uuid !== underTest.uuid;
     });
@@ -92,8 +92,8 @@ export class RequesterPage {
       return value.indexOf('song_request') >= 0;
     }).split("=")[1];
 
-    this.reqProvider.list({cookie__uuid: this.requesterCookie, event__uuid: this.navParams.data.uuid})
-      .subscribe( songRequests => {
+    this.reqProvider.list({ cookie__uuid: this.requesterCookie, event__uuid: this.navParams.data.uuid })
+      .subscribe(songRequests => {
         this.requested = songRequests;
       });
 
@@ -101,7 +101,7 @@ export class RequesterPage {
     this.createRequesterBridge();
   }
 
-  createRequesterBridge () {
+  createRequesterBridge() {
     this.requesterBridge = new WebSocketBridge();
     this.requesterBridge.connect(this.requesterBridgeUri);
 
@@ -174,7 +174,7 @@ export class RequesterPage {
       // Error on http request. Most likely a network connection problem
       let msg = "Unable to request a song at this time. Please check your network and try again.";
 
-      if(error.status === 409) {
+      if (error.status === 409) {
         msg = `A request for ${song.title} has recently been made. Please try again soon.`;
       }
       const toast = this.toast.create({
@@ -188,10 +188,9 @@ export class RequesterPage {
   }
 
   doInfinite(infiniteScroll) {
-    this.offset += this.limit;
+    this.offset += LIMIT;
     setTimeout(() => {
-      this.songProvider.getEventSongs(this.event.uuid, this.limit, this.offset)
-        .subscribe(
+      this.songProvider.getSongs({ event: this.event.uuid, limit: LIMIT, offset: this.offset }).subscribe(
         data => {
           if (data.results.length) {
             for (let i = 0; i < data.results.length; i++) {
@@ -199,7 +198,7 @@ export class RequesterPage {
             }
           }
           else {
-            this.has_next = false;
+            this.hasNext = false;
           }
           infiniteScroll.complete();
         });
