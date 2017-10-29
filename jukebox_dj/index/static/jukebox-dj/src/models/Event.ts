@@ -21,4 +21,5 @@ export interface Event {
   is_active: boolean;
   song_lists: SongList[];
   song_requests: SongRequest[];
+  songs: Song [];
 }

@@ -23,7 +23,7 @@ class JukeboxUser(AbstractUser):
 class DjProfile(m.Model):
     user = m.OneToOneField('users.JukeboxUser')
     dj_id = m.CharField(max_length=4, unique=True)
-    display_name = m.CharField(max_length=255, blank=True, null=True)
+    display_name = m.CharField(max_length=255)
     bio = m.TextField(blank=True, null=True)
 
     def __str__(self):
