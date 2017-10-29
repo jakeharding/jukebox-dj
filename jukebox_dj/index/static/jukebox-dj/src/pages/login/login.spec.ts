@@ -11,7 +11,9 @@
  *
  */
 
-import { async, TestBed } from '@angular/core/testing';
+import { async, TestBed, ComponentFixture } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { DebugElement }    from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -20,8 +22,10 @@ import { NavController } from 'ionic-angular';
 import { LoginPage } from './login';
 
 describe('LoginPage', () => {
-  let fixture;
-  let component;
+  let loginPageComp: LoginPage;
+  let fixture: ComponentFixture<LoginPage>;
+  let de:      DebugElement;
+  let el:      HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -36,15 +40,21 @@ describe('LoginPage', () => {
         SplashScreen,
         NavController
       ]
-    })
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginPage);
-    component = fixture.componentInstance;
+    loginPageComp = fixture.componentInstance;
+    de = fixture.debugElement.query(By.css('ion-title'));
+    el = de.nativeElement;
   });
 
   it ('should be created', () => {
-    expect(component instanceof LoginPage).toBe(true);
+    expect(loginPageComp instanceof LoginPage).toBe(true);
   });
+
+  it('should say login in the title', () => {
+    expect(el.textContent).toBe('login');
+  })
 });
