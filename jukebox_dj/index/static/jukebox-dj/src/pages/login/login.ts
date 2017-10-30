@@ -33,6 +33,6 @@ export class LoginPage {
   }
 
   login () {
-    console.log(this.loginForm);
+    console.log(this.loginForm, this.user);
   }
 }
