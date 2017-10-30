@@ -17,8 +17,6 @@ import { WebSocketBridge } from 'django-channels';
  * on Ionic pages and navigation.
  */
 
-export const LIMIT = 2;
-
 @IonicPage({
   name: 'requester',
   segment: 'requester-events/:uuid'
@@ -31,7 +29,7 @@ export const LIMIT = 2;
 export class RequesterPage {
   event: Event;
   requesterLists: string = "songs";
-  songs: Song[] = [];
+  songs: Song[];
   filteredSongs: Song[] = [];
   requested: SongRequest[] = [];
 
@@ -44,7 +42,8 @@ export class RequesterPage {
 
   //Variables for pagination
   offset: number;
-  hasNext: boolean = true;
+  limit: number;
+  endScroll: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private songProvider: SongProvider, private reqProvider: SongRequestProvider,
@@ -64,14 +63,15 @@ export class RequesterPage {
     });
 
     this.offset = 0;
+    this.limit = songProvider.getLimit();
     // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
-    this.songProvider.getSongs({ event: navParams.data.uuid, limit: LIMIT, offset: this.offset }).subscribe(data => {
-      if (data.next == null) {
-        this.hasNext = false;
-      }
-      if (data.results.length) {
-        this.songs = data.results;
+    this.songProvider.getSongs({ event: navParams.data.uuid, limit: this.limit, offset: this.offset }).subscribe(songs => {
+      if (songs.length != 0) {
+        this.songs = songs;
         this.filteredSongs = this.songs;
+      }
+      else {
+        this.endScroll = true;
       }
     });
   }
@@ -189,17 +189,17 @@ export class RequesterPage {
 
   doInfinite(infiniteScroll) {
     if (this.requesterLists == 'songs') {
-      this.offset += LIMIT;
+      this.offset += this.limit;
       setTimeout(() => {
-        this.songProvider.getSongs({ event: this.event.uuid, limit: LIMIT, offset: this.offset }).subscribe(
-          data => {
-            if (data.results.length) {
-              for (let i = 0; i < data.results.length; i++) {
-                this.songs.push(data.results[i]);
+        this.songProvider.getSongs({ event: this.event.uuid, limit: this.limit, offset: this.offset }).subscribe(songs => {
+            if (songs.length != 0) {
+              //this.songs.concat(songs);
+              for (let i = 0; i < songs.length; i++) {
+                this.songs.push(songs[i]);
               }
             }
             else {
-              this.hasNext = false;
+              this.endScroll = true;
             }
             infiniteScroll.complete();
           });
