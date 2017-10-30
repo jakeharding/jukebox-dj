@@ -65,7 +65,7 @@
               </ion-list-header>
 
               <div class="song-container">
-                <button ion-item *ngFor="let song of filteredSongs" (click)="createRequest(song);">
+                <button ion-item *ngFor="let song of songs | async" (click)="createRequest(song);">
                   <ion-label text-center>{{ song.title }}</ion-label><ion-label text-center>{{ song.artist }}</ion-label>
                 </button>
               </div>
@@ -97,7 +97,7 @@
 
   </ion-grid>
 
-  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="!endScroll">
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
     <ion-infinite-scroll-content loadingSpinnger="bubbles" loadText="Loading more data...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>

@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { Song } from '../../models/Song';
-import { SongProvider } from "../../providers/song/song";
+import { SongProvider, LIMIT } from "../../providers/song/song";
 import { EventProvider } from "../../providers/event/event";
 import { Event } from '../../models/Event';
 import { SongRequest, SongRequestStatus } from "../../models/SongRequest";
 import { SongRequestProvider } from "../../providers/song-request/song-request";
+import { Observable } from "rxjs/Observable";
+import 'rxjs/add/operator/scan';
 
 import { WebSocketBridge } from 'django-channels';
 
@@ -29,7 +31,7 @@ import { WebSocketBridge } from 'django-channels';
 export class RequesterPage {
   event: Event;
   requesterLists: string = "songs";
-  songs: Song[];
+  songs: Observable<Song[]>;
   filteredSongs: Song[] = [];
   requested: SongRequest[] = [];
 
@@ -42,8 +44,6 @@ export class RequesterPage {
 
   //Variables for pagination
   offset: number;
-  limit: number;
-  endScroll: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private songProvider: SongProvider, private reqProvider: SongRequestProvider,
@@ -62,18 +62,17 @@ export class RequesterPage {
       this.event = event;
     });
 
-    this.offset = 0;
-    this.limit = songProvider.getLimit();
     // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
-    this.songProvider.getSongs({ event: navParams.data.uuid, limit: this.limit, offset: this.offset }).subscribe(songs => {
-      if (songs.length != 0) {
-        this.songs = songs;
-        this.filteredSongs = this.songs;
-      }
-      else {
-        this.endScroll = true;
-      }
-    });
+    this.songs = this.songProvider.getSongs({ event: navParams.data.uuid});
+    // .subscribe(songs => {
+    //   if (songs.length != 0) {
+    //     //this.songs = songs;
+    //     //this.filteredSongs = this.songs;
+    //   }
+    //   else {
+    //     this.endScroll = true;
+    //   }
+    // });
   }
 
   removeSong(uuid: string) {
@@ -82,9 +81,9 @@ export class RequesterPage {
     });
 
     // Overall songs are filtered separately in case user has searched for song
-    this.songs = this.songs.filter((underTest: Song) => {
-      return uuid !== underTest.uuid;
-    });
+    // this.songs = this.songs.filter((underTest: Song) => {
+    //   return uuid !== underTest.uuid;
+    // });
   }
 
   ionViewWillLoad() {
@@ -138,15 +137,15 @@ export class RequesterPage {
   }
 
   filterSongs(event: any) {
-    let val = event.target.value;
+    //let val = event.target.value;
 
-    if (val) {
-      this.filteredSongs = this.filteredSongs.filter((song: Song) => {
-        return song.title.toLowerCase().includes(val.toLowerCase()) || song.artist.toLowerCase().includes(val.toLowerCase());
-      })
-    } else if (!val || val.length === 0) {
-      this.filteredSongs = this.songs;
-    }
+    // if (val) {
+    //   this.filteredSongs = this.filteredSongs.filter((song: Song) => {
+    //     return song.title.toLowerCase().includes(val.toLowerCase()) || song.artist.toLowerCase().includes(val.toLowerCase());
+    //   })
+    // } else if (!val || val.length === 0) {
+    //   this.filteredSongs = this.songs;
+    // }
   }
 
   createRequest(song: Song) {
@@ -189,23 +188,32 @@ export class RequesterPage {
 
   doInfinite(infiniteScroll) {
     if (this.requesterLists == 'songs') {
-      this.offset += this.limit;
-      setTimeout(() => {
-        this.songProvider.getSongs({ event: this.event.uuid, limit: this.limit, offset: this.offset }).subscribe(songs => {
-            if (songs.length != 0) {
-              //this.songs.concat(songs);
-              for (let i = 0; i < songs.length; i++) {
-                this.songs.push(songs[i]);
-              }
-            }
-            else {
-              this.endScroll = true;
-            }
-            infiniteScroll.complete();
+      this.offset += LIMIT;
+      this.songProvider.getSongs({ event: this.event.uuid, limit: LIMIT, offset: this.offset }).subscribe(songs => {
+        if (songs.length > 0) {
+          this.songs.scan((acc, value) => {
+            console.log(acc, value);
           });
-
+        }
         infiniteScroll.complete();
-      }, 1000);
+      });
+      infiniteScroll.complete();
+      // setTimeout(() => {
+      //   this.songProvider.getSongs({ event: this.event.uuid, limit: this.limit, offset: this.offset }).subscribe(songs => {
+      //       if (songs.length != 0) {
+      //         //this.songs.concat(songs);
+      //         for (let i = 0; i < songs.length; i++) {
+      //           this.songs.push(songs[i]);
+      //         }
+      //       }
+      //       else {
+      //         this.endScroll = true;
+      //       }
+      //       infiniteScroll.complete();
+      //     });
+      //
+      //   infiniteScroll.complete();
+      // }, 1000);
     }
   }
 }
