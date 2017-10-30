@@ -49,11 +49,11 @@
                 </div>
               </ion-item>
               <ion-item-options side="left">
-                <button ion-button (click)="updateRequestString(r.uuid, 'REQUESTED')">Current</button>
+                <button ion-button (click)="updateItems(r.uuid, 'DENIED', 'REQUESTED')">Current</button>
               </ion-item-options>
 
               <ion-item-options side="right">
-                <button ion-button (click)="updateRequestString(r.uuid, 'QUEUED')">Queued</button>
+                <button ion-button (click)="updateItems(r.uuid, 'DENIED', 'QUEUED')">Queued</button>
               </ion-item-options>
             </ion-item-sliding>
           </ion-item-group>
@@ -84,11 +84,11 @@
                 </div>
               </ion-item>
               <ion-item-options side="left">
-                <button ion-button color="danger" (click)="updateRequestString(r.uuid, 'DENIED')">Denied</button>
+                <button ion-button color="danger" (click)="updateItems(r.uuid, 'REQUESTED', 'DENIED')">Denied</button>
               </ion-item-options>
 
               <ion-item-options side="right">
-                <button ion-button (click)="updateRequestString(r.uuid, 'QUEUED')">Queued</button>
+                <button ion-button (click)="updateItems(r.uuid, 'REQUESTED', 'QUEUED')">Queued</button>
               </ion-item-options>
             </ion-item-sliding>
           </ion-item-group>
@@ -119,11 +119,11 @@
                 </div>
               </ion-item>
               <ion-item-options side="left">
-                <button ion-button color="danger" (click)="updateRequestString(r.uuid, 'DENIED')">Denied</button>
+                <button ion-button color="danger" (click)="updateItems(r.uuid, 'QUEUED', 'DENIED')">Denied</button>
               </ion-item-options>
 
               <ion-item-options side="right">
-                <button ion-button (click)="updateRequestString(r.uuid, 'REQUESTED')">Current</button>
+                <button ion-button (click)="updateItems(r.uuid, 'QUEUED', 'REQUESTED')">Current</button>
               </ion-item-options>
             </ion-item-sliding>
           </ion-item-group>
