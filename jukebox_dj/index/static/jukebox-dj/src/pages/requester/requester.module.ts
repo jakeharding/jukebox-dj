@@ -2,17 +2,16 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { RequesterPage } from './requester';
 import { ComponentsModule } from "../../components/components.module";
-
-import { InfiniteScrollerDirective } from './infinite-scroller.directive';
+import { DirectivesModule } from "../../directives/directives.module"
 
 @NgModule({
   declarations: [
-    RequesterPage,
-    InfiniteScrollerDirective
+    RequesterPage
   ],
   imports: [
     IonicPageModule.forChild(RequesterPage),
-    ComponentsModule
+    ComponentsModule,
+    DirectivesModule
   ],
 })
 export class RequesterPageModule {}

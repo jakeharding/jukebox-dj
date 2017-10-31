@@ -1,5 +1,4 @@
 // Code taken from https://github.com/ashwin-sureshkumar/angular-infinite-scroller
-
 import { Directive, AfterViewInit, ElementRef, Input } from '@angular/core';
 
 import { Observable } from 'rxjs/Rx';
@@ -22,17 +21,20 @@ const DEFAULT_SCROLL_POSITION: ScrollPosition = {
   cH: 0
 };
 
+/**
+ * Generated class for the InfiniteScrollerDirective directive.
+ *
+ * See https://angular.io/docs/ts/latest/api/core/index/DirectiveMetadata-class.html
+ * for more info on Angular Directives.
+ */
+
 @Directive({
-  selector: '[appInfiniteScroller]'
+  selector: '[infinite-scroller]' // Attribute selector
 })
-export class InfiniteScrollerDirective implements AfterViewInit {
-
+export class InfiniteScrollerDirective {
   private scrollEvent$;
-
   private userScrolledDown$;
-
   private requestStream$;
-
   private requestOnScroll$;
 
   @Input()
@@ -47,19 +49,13 @@ export class InfiniteScrollerDirective implements AfterViewInit {
   constructor(private elm: ElementRef) { }
 
   ngAfterViewInit() {
-
     this.registerScrollEvent();
-
     this.streamScrollEvents();
-
     this.requestCallbackOnScroll();
-
   }
 
   private registerScrollEvent() {
-
     this.scrollEvent$ = Observable.fromEvent(this.elm.nativeElement, 'scroll');
-
   }
 
   private streamScrollEvents() {
@@ -85,7 +81,7 @@ export class InfiniteScrollerDirective implements AfterViewInit {
       .exhaustMap(() => {
         return this.scrollCallback();
       })
-      .subscribe((data) => { console.log(data) }, (err) => console.log(err));
+      .subscribe((data) => {}, (err) => console.log(err));
 
   }
 
