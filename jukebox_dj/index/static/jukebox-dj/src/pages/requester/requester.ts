@@ -6,9 +6,7 @@ import { EventProvider } from "../../providers/event/event";
 import { Event } from '../../models/Event';
 import { SongRequest, SongRequestStatus } from "../../models/SongRequest";
 import { SongRequestProvider } from "../../providers/song-request/song-request";
-import { Observable } from "rxjs/Observable";
-import 'rxjs/add/operator/scan';
-
+import { Observable } from "rxjs/Rx";
 import { WebSocketBridge } from 'django-channels';
 
 
@@ -31,7 +29,7 @@ import { WebSocketBridge } from 'django-channels';
 export class RequesterPage {
   event: Event;
   requesterLists: string = "songs";
-  songs: Observable<Song[]>;
+  songs: Array<any> = [];
   filteredSongs: Song[] = [];
   requested: SongRequest[] = [];
 
@@ -44,6 +42,8 @@ export class RequesterPage {
 
   //Variables for pagination
   offset: number;
+  scrollCallback;
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private songProvider: SongProvider, private reqProvider: SongRequestProvider,
@@ -57,22 +57,24 @@ export class RequesterPage {
       this.removeSong(songRequest.song.uuid);
     });
 
+    this.offset = 0;
+
     // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
     this.eventProvider.getEvent(navParams.data.uuid).subscribe(event => {
       this.event = event;
     });
 
     // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
-    this.songs = this.songProvider.getSongs({ event: navParams.data.uuid});
-    // .subscribe(songs => {
-    //   if (songs.length != 0) {
-    //     //this.songs = songs;
-    //     //this.filteredSongs = this.songs;
-    //   }
-    //   else {
-    //     this.endScroll = true;
-    //   }
-    // });
+    this.scrollCallback = this.getEventSongs.bind(this);
+  }
+
+  getEventSongs() {
+    return this.songProvider.getSongs({uuid: this.navParams.data.uuid, limit: LIMIT, offset: this.offset}).do(this.processData);
+  }
+
+  private processData = (songs) => {
+    this.offset += LIMIT;
+    this.songs = this.songs.concat(songs);
   }
 
   removeSong(uuid: string) {
@@ -184,36 +186,5 @@ export class RequesterPage {
       });
       toast.present();
     });
-  }
-
-  doInfinite(infiniteScroll) {
-    if (this.requesterLists == 'songs') {
-      this.offset += LIMIT;
-      this.songProvider.getSongs({ event: this.event.uuid, limit: LIMIT, offset: this.offset }).subscribe(songs => {
-        if (songs.length > 0) {
-          this.songs.scan((acc, value) => {
-            console.log(acc, value);
-          });
-        }
-        infiniteScroll.complete();
-      });
-      infiniteScroll.complete();
-      // setTimeout(() => {
-      //   this.songProvider.getSongs({ event: this.event.uuid, limit: this.limit, offset: this.offset }).subscribe(songs => {
-      //       if (songs.length != 0) {
-      //         //this.songs.concat(songs);
-      //         for (let i = 0; i < songs.length; i++) {
-      //           this.songs.push(songs[i]);
-      //         }
-      //       }
-      //       else {
-      //         this.endScroll = true;
-      //       }
-      //       infiniteScroll.complete();
-      //     });
-      //
-      //   infiniteScroll.complete();
-      // }, 1000);
-    }
   }
 }
