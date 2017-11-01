@@ -4,13 +4,14 @@ import { Http } from '@angular/http';
 import { DragulaService } from 'ng2-dragula/components/dragula.provider'
 import 'rxjs/add/operator/map';
 
-import {SongRequest} from '../../models/SongRequest';
-import {SongRequestStatus} from '../../models/SongRequest';
-import {SongRequestProvider} from "../../providers/song-request/song-request"
-import {EventProvider} from '../../providers/event/event'
+import { SongRequest } from '../../models/SongRequest';
+import { SongRequestStatus } from '../../models/SongRequest';
+import { SongRequestProvider } from "../../providers/song-request/song-request"
+import { EventProvider } from '../../providers/event/event'
+
 
 import  { WebSocketBridge } from 'django-channels';
-import {Song} from "../../models/Song";
+import  { Song } from "../../models/Song";
 
 /**
  * Generated class for the DjEventPage page.
@@ -77,9 +78,9 @@ export class DjEventPage {
     // TODO Stretch - Use the ngrx store to store the state of objects and handle requests
     // this.http.get(`/api/dev/events/${this.event.uuid }`)
     this.eventProvider.getEvent(this.event.uuid)
-      .subscribe(data => {
-        this.event = data;
-        for (let request of data.song_requests) {
+      .subscribe(event => {
+        this.event = event;
+        for (let request of event.song_requests) {
           if(!this.requesterBridges[request.cookie]) {
             let newBridge = new WebSocketBridge();
             newBridge.connect(`${this.eventBridgeUri}/requester/${request.cookie}`);
@@ -110,18 +111,7 @@ export class DjEventPage {
 
   private onDrop(args) {
     let [el, target, source, sibling] = args;
-    let status : SongRequestStatus;
-    switch (target.id) {
-      case "requested":
-        status = SongRequestStatus.REQUESTED;
-        break;
-      case "denied":
-        status = SongRequestStatus.DENIED;
-        break;
-      case "queued":
-        status = SongRequestStatus.QUEUED;
-        break;
-    }
+    let status : SongRequestStatus = this.getRequestStatus(target.id);
     this.updateRequestStatus(el.id, status);
   }
 
@@ -132,5 +122,80 @@ export class DjEventPage {
         bridge.send(request);
       }
     });
+  }
+
+  private getRequestStatus(requestString:string): SongRequestStatus {
+    let status : SongRequestStatus;
+    switch (requestString) {
+      case "REQUESTED":
+        status = SongRequestStatus.REQUESTED;
+        break;
+      case "DENIED":
+        status = SongRequestStatus.DENIED;
+        break;
+      case "QUEUED":
+        status = SongRequestStatus.QUEUED;
+        break;
+      default:
+        status = SongRequestStatus.PLAYED;
+    }
+    return status;
+  }
+
+  // Called when an item is being moved via the slider buttons in mobile
+  private updateItems(uuid:string, requestFrom:string, requestTo:string) {
+    let item : SongRequest;
+    switch (requestFrom) {
+      case "REQUESTED":
+        for (let i = 0; i < this.requestedRequests.length; i++)
+        {
+          if (this.requestedRequests[i].uuid == uuid) {
+            item = this.requestedRequests[i];
+            this.requestedRequests.splice(i, 1);
+            break;
+          }
+        }
+        break;
+      case "DENIED":
+        for (let i = 0; i < this.deniedRequests.length; i++)
+        {
+          if (this.deniedRequests[i].uuid == uuid) {
+            item = this.deniedRequests[i];
+            this.deniedRequests.splice(i, 1);
+            break;
+          }
+        }
+        break;
+      case "QUEUED":
+        for (let i = 0; i < this.queuedRequests.length; i++)
+        {
+          if (this.queuedRequests[i].uuid == uuid) {
+            item = this.queuedRequests[i];
+            this.queuedRequests.splice(i, 1);
+            break;
+          }
+        }
+        break;
+    }
+
+    let itemTo : SongRequestStatus;
+    switch (requestTo) {
+      case "REQUESTED":
+        itemTo = SongRequestStatus.REQUESTED;
+        this.requestedRequests.push(item);
+        break;
+      case "DENIED":
+        itemTo = SongRequestStatus.DENIED;
+        this.deniedRequests.push(item);
+        break;
+      case "QUEUED":
+        itemTo = SongRequestStatus.QUEUED;
+        this.queuedRequests.push(item);
+        break;
+      default:
+        itemTo = SongRequestStatus.PLAYED;
+        this.playedRequests.push(item);
+    }
+    this.updateRequestStatus(uuid, itemTo);
   }
 }

@@ -1,17 +1,26 @@
 page-dj-event {
-  @media (max-width: map-get($grid-breakpoints, sm)) {
-    .hidden-xs-down {
+  @media (max-width: map-get($grid-breakpoints, lg)) {
+    .request-container {
+      overflow-y: auto;
+      position: relative;
+      min-height: 10px;
+      max-height: 200px;
+    }
+    .hidden-sm-down {
       display: none !important;
     }
   }
-  @media (min-width: map-get($grid-breakpoints, sm) + 1) {
-    .hidden-sm-up {
+
+  @media (min-width: map-get($grid-breakpoints, lg) + 1) {
+    .request-container {
+      overflow-y: auto;
+      position: relative;
+      min-height: 10px;
+      max-height: 60vh;
+    }
+    .hidden-md-up {
       display: none !important;
     }
-  }
-  
-  ion-item-group {
-    min-height: 50px;		
   }
 
   .toolbar-background {

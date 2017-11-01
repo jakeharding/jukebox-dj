@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { Song } from '../../models/Song';
-import { EventProvider} from "../../providers/event/event";
+import { SongProvider, LIMIT } from "../../providers/song/song";
+import { EventProvider } from "../../providers/event/event";
 import { Event } from '../../models/Event';
-import {SongRequest, SongRequestStatus} from "../../models/SongRequest";
-import {SongRequestProvider} from "../../providers/song-request/song-request";
-
-import  { WebSocketBridge } from 'django-channels';
+import { SongRequest, SongRequestStatus } from "../../models/SongRequest";
+import { SongRequestProvider } from "../../providers/song-request/song-request";
+import { Observable } from "rxjs/Rx";
+import { WebSocketBridge } from 'django-channels';
 
 
 /**
@@ -24,11 +25,11 @@ import  { WebSocketBridge } from 'django-channels';
   selector: 'page-requester',
   templateUrl: 'requester.html',
 })
-export class RequesterPage {
 
+export class RequesterPage {
   event: Event;
   requesterLists: string = "songs";
-  songs: Song[] = [];
+  songs: Array<Song> = [];
   filteredSongs: Song[] = [];
   requested: SongRequest[] = [];
 
@@ -39,43 +40,61 @@ export class RequesterPage {
   requesterBridgeUri: string;
   requesterCookie: string;
 
+  //Variables for pagination
+  offset: number;
+  scrollCallback;
+  loadMore: boolean;
+
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private eventProvider: EventProvider, private reqProvider: SongRequestProvider,
-              private toast: ToastController) {
+    private songProvider: SongProvider, private reqProvider: SongRequestProvider,
+    private eventProvider: EventProvider, private toast: ToastController) {
 
     this.eventBridgeUri = `/events/${this.navParams.data.uuid}`;
-
     this.eventBridge = new WebSocketBridge();
     this.eventBridge.connect(this.eventBridgeUri);
     this.eventBridge.listen((songRequest: SongRequest) => {
-
       // Listen on this bridge to remove songs from songs available for request.
       this.removeSong(songRequest.song.uuid);
     });
 
+    this.offset = 0;
+    this.loadMore = true;
+
     // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
-    this.eventProvider.getEvent(navParams.data.uuid).subscribe( data => {
-      this.event = data;
-
-      // TODO Paginate this in the backend. This pulls in all songs and song lists for the event.
-      // TODO Make seperate network call to retrieve songs when song endpoint is ready.
-      this.songs = this.event.songs;
-
-      // TODO Filter songs via network request query. This only filters the list in the browser.
-      this.filteredSongs = this.songs;
-
+    this.eventProvider.getEvent(navParams.data.uuid).subscribe(event => {
+      this.event = event;
     });
+
+    // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
+    this.scrollCallback = this.getEventSongs.bind(this);
   }
 
-  removeSong(uuid:string) {
+  getEventSongs() {
+    if (this.loadMore) {
+      return this.songProvider.getSongs({ event: this.navParams.data.uuid, limit: LIMIT, offset: this.offset }).do(this.processData);
+    }
+    return Observable.empty();
+  }
+
+  private processData = (songs) => {
+    if (songs.length == 0) {
+      this.loadMore = false;
+      return;
+    }
+    this.offset += LIMIT;
+    this.songs = this.songs.concat(songs);
+  }
+
+  removeSong(uuid: string) {
     this.filteredSongs = this.filteredSongs.filter((underTest: Song) => {
       return uuid !== underTest.uuid;
     });
 
     // Overall songs are filtered separately in case user has searched for song
-    this.songs = this.songs.filter((underTest: Song) => {
-      return uuid !== underTest.uuid;
-    });
+    // this.songs = this.songs.filter((underTest: Song) => {
+    //   return uuid !== underTest.uuid;
+    // });
   }
 
   ionViewWillLoad() {
@@ -83,8 +102,8 @@ export class RequesterPage {
       return value.indexOf('song_request') >= 0;
     }).split("=")[1];
 
-    this.reqProvider.list({cookie__uuid: this.requesterCookie, event__uuid: this.navParams.data.uuid})
-      .subscribe( songRequests => {
+    this.reqProvider.list({ cookie__uuid: this.requesterCookie, event__uuid: this.navParams.data.uuid })
+      .subscribe(songRequests => {
         this.requested = songRequests;
       });
 
@@ -92,7 +111,7 @@ export class RequesterPage {
     this.createRequesterBridge();
   }
 
-  createRequesterBridge () {
+  createRequesterBridge() {
     this.requesterBridge = new WebSocketBridge();
     this.requesterBridge.connect(this.requesterBridgeUri);
 
@@ -128,16 +147,16 @@ export class RequesterPage {
     });
   }
 
-  filterSongs (event: any) {
-    let val = event.target.value;
+  filterSongs(event: any) {
+    //let val = event.target.value;
 
-    if (val) {
-      this.filteredSongs = this.filteredSongs.filter((song:Song) => {
-        return song.title.toLowerCase().includes(val.toLowerCase()) || song.artist.toLowerCase().includes(val.toLowerCase());
-      })
-    } else if (!val || val.length === 0) {
-      this.filteredSongs = this.songs;
-    }
+    // if (val) {
+    //   this.filteredSongs = this.filteredSongs.filter((song: Song) => {
+    //     return song.title.toLowerCase().includes(val.toLowerCase()) || song.artist.toLowerCase().includes(val.toLowerCase());
+    //   })
+    // } else if (!val || val.length === 0) {
+    //   this.filteredSongs = this.songs;
+    // }
   }
 
   createRequest(song: Song) {
@@ -165,7 +184,7 @@ export class RequesterPage {
       // Error on http request. Most likely a network connection problem
       let msg = "Unable to request a song at this time. Please check your network and try again.";
 
-      if(error.status === 409) {
+      if (error.status === 409) {
         msg = `A request for ${song.title} has recently been made. Please try again soon.`;
       }
       const toast = this.toast.create({
@@ -177,5 +196,4 @@ export class RequesterPage {
       toast.present();
     });
   }
-
 }

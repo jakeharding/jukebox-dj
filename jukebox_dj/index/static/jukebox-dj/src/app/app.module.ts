@@ -4,11 +4,12 @@ import { HttpModule, XSRFStrategy, CookieXSRFStrategy } from '@angular/http';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import {DragulaModule} from "ng2-dragula/ng2-dragula"
+import { DragulaModule } from "ng2-dragula/ng2-dragula"
 
 import { MyApp } from './app.component';
 import { EventProvider } from '../providers/event/event';
-import {SongRequestProvider} from "../providers/song-request/song-request";
+import { SongRequestProvider } from "../providers/song-request/song-request";
+import { SongProvider } from "../providers/song/song"
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import {SongRequestProvider} from "../providers/song-request/song-request";
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: XSRFStrategy, useValue: new CookieXSRFStrategy('csrftoken', 'X-CSRFToken')},
     EventProvider,
-    SongRequestProvider
+    SongRequestProvider,
+    SongProvider
   ]
 })
 export class AppModule {}

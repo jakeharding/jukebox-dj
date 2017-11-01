@@ -5,10 +5,10 @@
   Ionic pages and navigation.
 -->
 
-<jukebox-header class="hidden-xs-down"></jukebox-header>
+<jukebox-header class="hidden-sm-down"></jukebox-header>
 
 
-<ion-header class="hidden-sm-up">
+<ion-header class="hidden-md-up">
   <ion-navbar>
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
@@ -26,12 +26,12 @@
     </ion-row>
     <ion-row>
       <!--Denied requests-->
-      <ion-col col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-4 offset-lg-0 col-xl-4 offset-xl-0>
+      <ion-col col-12 col-sm-10 offset-sm-1 col-md-10 offset-md-1 col-lg-4 offset-lg-0 col-xl-4 offset-xl-0>
         <ion-list>
           <ion-list-header>
             <h2>Denied Requests</h2>
           </ion-list-header>
-          <ion-item-group [dragula]='"request-bag"' [dragulaModel]="deniedRequests" id="denied">
+          <ion-item-group [dragula]='"request-bag"' [dragulaModel]="deniedRequests" id="DENIED" class="request-container hidden-sm-down">
             <ion-item color="dark" *ngFor="let r of deniedRequests" id="{{ r.uuid }}">
               <ion-label> Title: {{ r.song.title}}</ion-label>
               <div item-content>
@@ -39,16 +39,34 @@
               </div>
             </ion-item>
           </ion-item-group>
+
+          <ion-item-group class="request-container hidden-md-up">
+            <ion-item-sliding *ngFor="let r of deniedRequests" #slidingItem>
+              <ion-item color="dark" id="{{ r.uuid }}">
+                <ion-label> Title: {{ r.song.title}}</ion-label>
+                <div item-content>
+                  Artist: {{ r.song.artist }}
+                </div>
+              </ion-item>
+              <ion-item-options side="left">
+                <button ion-button (click)="updateItems(r.uuid, 'DENIED', 'REQUESTED')">Current</button>
+              </ion-item-options>
+
+              <ion-item-options side="right">
+                <button ion-button (click)="updateItems(r.uuid, 'DENIED', 'QUEUED')">Queued</button>
+              </ion-item-options>
+            </ion-item-sliding>
+          </ion-item-group>
         </ion-list>
       </ion-col>
 
       <!--Incoming Requests-->
-      <ion-col col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-4 offset-lg-0 col-xl-4 offset-xl-0>
+      <ion-col col-12 col-sm-10 offset-sm-1 col-md-10 offset-md-1 col-lg-4 offset-lg-0 col-xl-4 offset-xl-0>
         <ion-list>
           <ion-list-header>
             <h2>Current Requests</h2>
           </ion-list-header>
-          <ion-item-group [dragula]='"request-bag"' [dragulaModel]="requestedRequests" id="requested">
+          <ion-item-group [dragula]='"request-bag"' [dragulaModel]="requestedRequests" id="REQUESTED" class="request-container hidden-sm-down">
             <ion-item color="dark" *ngFor="let r of requestedRequests" id="{{ r.uuid }}">
               <ion-label> Title: {{ r.song.title}}</ion-label>
               <div item-content>
@@ -56,22 +74,58 @@
               </div>
             </ion-item>
           </ion-item-group>
+
+          <ion-item-group class="request-container hidden-md-up">
+            <ion-item-sliding *ngFor="let r of requestedRequests" #slidingItem>
+              <ion-item color="dark" id="{{ r.uuid }}">
+                <ion-label> Title: {{ r.song.title}}</ion-label>
+                <div item-content>
+                  Artist: {{ r.song.artist }}
+                </div>
+              </ion-item>
+              <ion-item-options side="left">
+                <button ion-button color="danger" (click)="updateItems(r.uuid, 'REQUESTED', 'DENIED')">Denied</button>
+              </ion-item-options>
+
+              <ion-item-options side="right">
+                <button ion-button (click)="updateItems(r.uuid, 'REQUESTED', 'QUEUED')">Queued</button>
+              </ion-item-options>
+            </ion-item-sliding>
+          </ion-item-group>
         </ion-list>
       </ion-col>
 
       <!--Queued Requests-->
-      <ion-col col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-4 offset-lg-0 col-xl-4 offset-xl-0>
+      <ion-col col-12 col-sm-10 offset-sm-1 col-md-10 offset-md-1 col-lg-4 offset-lg-0 col-xl-4 offset-xl-0>
         <ion-list>
           <ion-list-header>
             <h2>Queued Requests</h2>
           </ion-list-header>
-          <ion-item-group [dragula]='"request-bag"' [dragulaModel]="queuedRequests" id="queued">
+          <ion-item-group [dragula]='"request-bag"' [dragulaModel]="queuedRequests" id="QUEUED" class="request-container hidden-sm-down">
             <ion-item color="dark" *ngFor="let r of queuedRequests" id="{{ r.uuid }}">
               <ion-label> Title: {{ r.song.title}}</ion-label>
               <div item-content>
                 Artist: {{ r.song.artist }}
               </div>
             </ion-item>
+          </ion-item-group>
+
+          <ion-item-group class="request-container hidden-md-up">
+            <ion-item-sliding *ngFor="let r of queuedRequests" #slidingItem>
+              <ion-item color="dark" id="{{ r.uuid }}">
+                <ion-label> Title: {{ r.song.title}}</ion-label>
+                <div item-content>
+                  Artist: {{ r.song.artist }}
+                </div>
+              </ion-item>
+              <ion-item-options side="left">
+                <button ion-button color="danger" (click)="updateItems(r.uuid, 'QUEUED', 'DENIED')">Denied</button>
+              </ion-item-options>
+
+              <ion-item-options side="right">
+                <button ion-button (click)="updateItems(r.uuid, 'QUEUED', 'REQUESTED')">Current</button>
+              </ion-item-options>
+            </ion-item-sliding>
           </ion-item-group>
         </ion-list>
       </ion-col>
