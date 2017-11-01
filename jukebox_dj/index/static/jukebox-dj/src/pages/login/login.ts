@@ -22,7 +22,7 @@ import {User} from "../../models/User";
 export class LoginPage {
   private loginForm: FormGroup;
   private user: User;
-  public usernameErr = "Username invalid";
+  public usernameErr = "Please provide a valid username.";
 
   constructor(public navCtrl: NavController, private formBuilder: FormBuilder) {
     this.user = new User("", "");
