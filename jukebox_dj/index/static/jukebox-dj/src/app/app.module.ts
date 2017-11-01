@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { HttpModule, XSRFStrategy, CookieXSRFStrategy } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -10,6 +11,9 @@ import { MyApp } from './app.component';
 import { EventProvider } from '../providers/event/event';
 import { SongRequestProvider } from "../providers/song-request/song-request";
 import { SongProvider } from "../providers/song/song"
+import {SongRequestProvider} from "../providers/song-request/song-request";
+import { AuthProvider } from '../providers/auth/auth';
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -18,6 +22,7 @@ import { SongProvider } from "../providers/song/song"
   imports: [
     BrowserModule,
     HttpModule,
+    HttpClientModule,
     IonicModule.forRoot(MyApp),
     DragulaModule
   ],
@@ -30,9 +35,11 @@ import { SongProvider } from "../providers/song/song"
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: XSRFStrategy, useValue: new CookieXSRFStrategy('csrftoken', 'X-CSRFToken')},
+    {provide: HTTP_INTERCEPTORS, useClass: AuthProvider, multi: true},
     EventProvider,
     SongRequestProvider,
-    SongProvider
+    SongProvider,
+    AuthProvider
   ]
 })
 export class AppModule {}

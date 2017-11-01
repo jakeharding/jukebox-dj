@@ -4,10 +4,14 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<jukebox-header (user)="user"></jukebox-header>
 
 
 <ion-content padding>
+  <ion-row>
+    <ion-col>
+      <h1 text-center>Jukebox DJ</h1>
+    </ion-col>
+  </ion-row>
   <ion-row>
     <ion-col col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4>
       <form tid="login-form" [formGroup]="loginForm" (ngSubmit)="login()">
