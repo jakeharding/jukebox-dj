@@ -46,6 +46,9 @@ export class InfiniteScrollerDirective {
   @Input()
   scrollPercent = 70;
 
+  @Input()
+  loadMore;
+
   constructor(private elm: ElementRef) { }
 
   ngAfterViewInit() {
@@ -70,19 +73,20 @@ export class InfiniteScrollerDirective {
   }
 
   private requestCallbackOnScroll() {
-    this.requestOnScroll$ = this.userScrolledDown$;
+    if (this.loadMore) {
+      this.requestOnScroll$ = this.userScrolledDown$;
 
-    if (this.immediateCallback) {
-      this.requestOnScroll$ = this.requestOnScroll$
-        .startWith([DEFAULT_SCROLL_POSITION, DEFAULT_SCROLL_POSITION]);
+      if (this.immediateCallback) {
+        this.requestOnScroll$ = this.requestOnScroll$
+          .startWith([DEFAULT_SCROLL_POSITION, DEFAULT_SCROLL_POSITION]);
+      }
+
+      this.requestOnScroll$
+        .exhaustMap(() => {
+          return this.scrollCallback();
+        })
+        .subscribe((data) => { }, (err) => console.log(err));
     }
-
-    this.requestOnScroll$
-      .exhaustMap(() => {
-        return this.scrollCallback();
-      })
-      .subscribe((data) => {}, (err) => console.log(err));
-
   }
 
   private isUserScrollingDown = (positions) => {

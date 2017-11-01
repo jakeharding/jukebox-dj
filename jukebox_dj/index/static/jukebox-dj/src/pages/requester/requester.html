@@ -64,7 +64,7 @@
                 <ion-label><h2>Song Titles</h2></ion-label><ion-label><h2>Artists</h2></ion-label>
               </ion-list-header>
 
-              <div class="song-container" id="infinite-scroller" infinite-scroller [immediateCallback]="true" [scrollCallback]="scrollCallback">
+              <div class="song-container" id="infinite-scroller" infinite-scroller [immediateCallback]="true" [scrollCallback]="scrollCallback" [loadMore]="loadMore">
                 <button ion-item *ngFor="let song of songs" (click)="createRequest(song);">
                   <ion-label text-center>{{ song.title }}</ion-label><ion-label text-center>{{ song.artist }}</ion-label>
                 </button>

@@ -43,7 +43,7 @@ export class RequesterPage {
   //Variables for pagination
   offset: number;
   scrollCallback;
-  loadMore : boolean;
+  loadMore: boolean;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -59,6 +59,7 @@ export class RequesterPage {
     });
 
     this.offset = 0;
+    this.loadMore = true;
 
     // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
     this.eventProvider.getEvent(navParams.data.uuid).subscribe(event => {
@@ -67,18 +68,17 @@ export class RequesterPage {
 
     // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
     this.scrollCallback = this.getEventSongs.bind(this);
-    this.loadMore = true;
   }
 
   getEventSongs() {
     if (this.loadMore) {
-      return this.songProvider.getSongs({event: this.navParams.data.uuid, limit: LIMIT, offset: this.offset}).do(this.processData);
+      return this.songProvider.getSongs({ event: this.navParams.data.uuid, limit: LIMIT, offset: this.offset }).do(this.processData);
     }
   }
 
   private processData = (songs) => {
     if (songs.length == 0) {
-      this.loadMore == false;
+      this.loadMore = false;
       return;
     }
     this.offset += LIMIT;
