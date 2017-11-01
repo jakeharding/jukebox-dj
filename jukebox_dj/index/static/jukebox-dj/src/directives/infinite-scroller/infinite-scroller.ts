@@ -73,9 +73,9 @@ export class InfiniteScrollerDirective {
   }
 
   private requestCallbackOnScroll() {
-    if (this.loadMore) {
-      this.requestOnScroll$ = this.userScrolledDown$;
+    this.requestOnScroll$ = this.userScrolledDown$;
 
+    if (this.loadMore) {
       if (this.immediateCallback) {
         this.requestOnScroll$ = this.requestOnScroll$
           .startWith([DEFAULT_SCROLL_POSITION, DEFAULT_SCROLL_POSITION]);

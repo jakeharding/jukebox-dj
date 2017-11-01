@@ -29,7 +29,7 @@ import { WebSocketBridge } from 'django-channels';
 export class RequesterPage {
   event: Event;
   requesterLists: string = "songs";
-  songs: Array<any> = [];
+  songs: Array<Song> = [];
   filteredSongs: Song[] = [];
   requested: SongRequest[] = [];
 
@@ -74,6 +74,7 @@ export class RequesterPage {
     if (this.loadMore) {
       return this.songProvider.getSongs({ event: this.navParams.data.uuid, limit: LIMIT, offset: this.offset }).do(this.processData);
     }
+    return Observable.empty();
   }
 
   private processData = (songs) => {
