@@ -3,6 +3,7 @@ import { IonicPage, NavController } from 'ionic-angular';
 
 import {Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import {User} from "../../models/User";
+import {AuthProvider} from "../../providers/auth/auth";
 
 /**
  * Generated class for the LoginPage page.
@@ -21,18 +22,21 @@ import {User} from "../../models/User";
 })
 export class LoginPage {
   private loginForm: FormGroup;
-  private user: User;
+  private username: string = "";
+  private password: string = "";
   public usernameErr = "Please provide a valid username.";
 
-  constructor(public navCtrl: NavController, private formBuilder: FormBuilder) {
-    this.user = new User("", "");
+  constructor(public navCtrl: NavController,
+              private formBuilder: FormBuilder,
+              private authProvider: AuthProvider) {
     this.loginForm = this.formBuilder.group({
-      username: new FormControl(this.user.username, [Validators.required, Validators.pattern(/[a-zA-Z0-9]{4}/)]),
-      password: [this.user.password, Validators.required]
+      username: new FormControl(this.username, [Validators.required, Validators.pattern(/[a-zA-Z0-9]{4}/)]),
+      password: [this.password, Validators.required]
     })
   }
 
   login () {
-    console.log(this.loginForm, this.user);
+    // this.authProvider.login();
+
   }
 }

@@ -20,6 +20,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { NavController } from 'ionic-angular';
 
 import { LoginPage } from './login';
+import {AuthProvider} from "../../providers/auth/auth";
+import {HttpClientModule} from "@angular/common/http";
 
 describe('LoginPage', () => {
   let loginPageComp: LoginPage;
@@ -36,12 +38,14 @@ describe('LoginPage', () => {
     TestBed.configureTestingModule({
       declarations: [LoginPage],
       imports: [
-        IonicModule.forRoot(LoginPage)
+        IonicModule.forRoot(LoginPage),
+        HttpClientModule
       ],
       providers: [
         StatusBar,
         SplashScreen,
-        NavController
+        NavController,
+        AuthProvider
       ]
     }).compileComponents();
   }));
@@ -49,7 +53,7 @@ describe('LoginPage', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginPage);
     loginPageComp = fixture.componentInstance;
-    de = fixture.debugElement.query(By.css('ion-title'));
+    de = fixture.debugElement.query(By.css('h1'));
     titleEle = de.nativeElement;
 
     de = fixture.debugElement.query(By.css("ion-input[tid=username-input]"));
@@ -70,8 +74,8 @@ describe('LoginPage', () => {
     expect(loginPageComp instanceof LoginPage).toBe(true);
   });
 
-  it('should say login in the title', () => {
-    expect(titleEle.textContent).toBe('Login');
+  it('should say Jukebox DJ in the title', () => {
+    expect(titleEle.textContent).toBe('Jukebox DJ');
   });
 
   it('should have username, password inputs, and form', () => {
@@ -81,4 +85,12 @@ describe('LoginPage', () => {
     expect(pwLabel.textContent).toBe('Password');
     expect(loginForm).not.toBeUndefined();
   });
+
+  it('should call the authProvider login method', () => {
+    let authProvider = TestBed.get(AuthProvider);
+    spyOn(authProvider, 'login');
+    loginPageComp.login();
+
+    expect(authProvider.login).toHaveBeenCalled();
+  })
 });

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import {User} from "../../models/User";
 import {Observable} from "rxjs/Observable";
@@ -14,7 +13,7 @@ import {Observable} from "rxjs/Observable";
 @Injectable()
 export class AuthProvider implements HttpInterceptor {
 
-  constructor(public http: Http) {}
+  constructor(public http: HttpClient) {}
 
   intercept (request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     request = request.clone({
@@ -30,7 +29,11 @@ export class AuthProvider implements HttpInterceptor {
   }
 
   login (user: User) {
+    //TODO Login to REST api
+  }
 
+  isLoggedIn() {
+    return !(this.getToken() === "");
   }
 
 }
