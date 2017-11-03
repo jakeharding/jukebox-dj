@@ -4,6 +4,7 @@ import { HttpModule, XSRFStrategy, CookieXSRFStrategy } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { IonicStorageModule } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -13,10 +14,10 @@ import { MyApp } from './app.component';
 import { EventProvider } from '../providers/event/event';
 import { SongRequestProvider } from "../providers/song-request/song-request";
 import { SongProvider } from "../providers/song/song"
-import {SongRequestProvider} from "../providers/song-request/song-request";
 import { AuthProvider } from '../providers/auth/auth';
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthEffects, AuthReducer } from "../providers/auth/auth.store";
+import { UserProvider } from '../providers/user/user';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { AuthEffects, AuthReducer } from "../providers/auth/auth.store";
     IonicModule.forRoot(MyApp),
     StoreModule.forRoot({auth: AuthReducer}),
     EffectsModule.forRoot([AuthEffects]),
+    IonicStorageModule.forRoot(),
     DragulaModule
   ],
   bootstrap: [IonicApp],
@@ -44,7 +46,8 @@ import { AuthEffects, AuthReducer } from "../providers/auth/auth.store";
     EventProvider,
     SongRequestProvider,
     SongProvider,
-    AuthProvider
+    AuthProvider,
+    UserProvider
   ]
 })
 export class AppModule {}

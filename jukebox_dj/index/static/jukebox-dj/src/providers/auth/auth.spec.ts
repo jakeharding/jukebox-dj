@@ -22,11 +22,9 @@ describe("Auth Provider", () => {
       providers: [AuthProvider],
       imports: [HttpModule]
     });
-  });
-
-  beforeEach( () => {
     authProvider = TestBed.get(AuthProvider);
   });
+
 
   describe("isLoggedIn", () => {
     it('should return false if the token is not there', () =>{

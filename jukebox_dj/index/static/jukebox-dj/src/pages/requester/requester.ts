@@ -103,7 +103,7 @@ export class RequesterPage {
     }).split("=")[1];
 
     this.reqProvider.list({ cookie__uuid: this.requesterCookie, event__uuid: this.navParams.data.uuid })
-      .subscribe(songRequests => {
+      .subscribe((songRequests: SongRequest[]) => {
         this.requested = songRequests;
       });
 
