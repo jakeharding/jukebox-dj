@@ -5,7 +5,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import { DragulaModule } from "ng2-dragula/ng2-dragula"
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { DragulaModule } from "ng2-dragula/ng2-dragula";
 
 import { MyApp } from './app.component';
 import { EventProvider } from '../providers/event/event';
@@ -13,7 +15,8 @@ import { SongRequestProvider } from "../providers/song-request/song-request";
 import { SongProvider } from "../providers/song/song"
 import {SongRequestProvider} from "../providers/song-request/song-request";
 import { AuthProvider } from '../providers/auth/auth';
-import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { AuthEffects, AuthReducer } from "../providers/auth/auth.store";
 
 @NgModule({
   declarations: [
@@ -24,6 +27,8 @@ import {HTTP_INTERCEPTORS} from "@angular/common/http";
     HttpModule,
     HttpClientModule,
     IonicModule.forRoot(MyApp),
+    StoreModule.forRoot({auth: AuthReducer}),
+    EffectsModule.forRoot([AuthEffects]),
     DragulaModule
   ],
   bootstrap: [IonicApp],

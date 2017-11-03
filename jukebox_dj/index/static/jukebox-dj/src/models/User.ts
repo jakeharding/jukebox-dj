@@ -12,12 +12,12 @@
 
 export class User {
   public username: string;
-  public password: string;
   public displayName: string;
+  public firstName: string;
+  public lastName: string;
 
   constructor (username:string, password: string, displayName?: string) {
     this.username = username;
-    this.password = password;
     this.displayName = displayName;
   }
 }

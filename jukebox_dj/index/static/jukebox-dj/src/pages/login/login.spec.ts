@@ -11,17 +11,22 @@
  *
  */
 
-import { async, TestBed, ComponentFixture } from '@angular/core/testing';
+import {async, TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement }    from '@angular/core';
-import { IonicModule } from 'ionic-angular';
+import {IonicModule, ToastController} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { NavController } from 'ionic-angular';
 
 import { LoginPage } from './login';
-import {AuthProvider} from "../../providers/auth/auth";
-import {HttpClientModule} from "@angular/common/http";
+import { AuthProvider } from "../../providers/auth/auth";
+import { HttpClientModule } from "@angular/common/http";
+import { HttpModule } from "@angular/http";
+import {AuthReducer, AuthState} from "../../providers/auth/auth.store";
+import {Store, StoreModule} from "@ngrx/store";
+import "rxjs/add/observable/of";
+import {Observable} from "rxjs/Observable";
 
 describe('LoginPage', () => {
   let loginPageComp: LoginPage;
@@ -39,7 +44,9 @@ describe('LoginPage', () => {
       declarations: [LoginPage],
       imports: [
         IonicModule.forRoot(LoginPage),
-        HttpClientModule
+        StoreModule.forRoot({auth: AuthReducer}),
+        HttpClientModule,
+        HttpModule
       ],
       providers: [
         StatusBar,
@@ -86,11 +93,19 @@ describe('LoginPage', () => {
     expect(loginForm).not.toBeUndefined();
   });
 
-  it('should call the authProvider login method', () => {
+  it('should call the authProvider login method', inject([Store], (store: Store<AuthState>) => {
     let authProvider = TestBed.get(AuthProvider);
-    spyOn(authProvider, 'login');
+    // let toast = TestBed.get(ToastController);
+    // spyOn(toast, 'create').and.returnValue({present: () => {}});
+    // let store = TestBed.get(Store);
+
+    spyOn(store, 'dispatch');
+    spyOn(store, 'select').and.returnValue(Observable.of({}));
+    // spyOn(authProvider, 'login');
     loginPageComp.login();
 
-    expect(authProvider.login).toHaveBeenCalled();
-  })
+    expect(store.dispatch).toHaveBeenCalled();
+    expect(store.select).toHaveBeenCalled();
+
+  }))
 });

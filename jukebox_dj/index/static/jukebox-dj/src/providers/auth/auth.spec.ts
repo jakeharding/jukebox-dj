@@ -12,14 +12,15 @@
 
 import { TestBed } from '@angular/core/testing';
 import { AuthProvider } from './auth';
-import {HttpClientModule, HttpRequest, HttpXhrBackend, XhrFactory} from "@angular/common/http";
+import {HttpRequest, HttpXhrBackend, XhrFactory} from "@angular/common/http";
+import { Http, HttpModule } from "@angular/http";
 
 describe("Auth Provider", () => {
   let authProvider;
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [AuthProvider],
-      imports: [HttpClientModule]
+      imports: [HttpModule]
     });
   });
 
@@ -51,4 +52,15 @@ describe("Auth Provider", () => {
       expect(mockHandler.handle).toHaveBeenCalled();
     });
   });
+
+  describe("login", () => {
+    it("should call the webservice to login", () => {
+      let client = TestBed.get(Http);
+      spyOn(client, 'post');
+      let mockCreds = {username: "Username", password: "password"};
+      authProvider.login(mockCreds);
+
+      expect(client.post).toHaveBeenCalledWith(authProvider.loginUrl, mockCreds);
+    })
+  })
 });

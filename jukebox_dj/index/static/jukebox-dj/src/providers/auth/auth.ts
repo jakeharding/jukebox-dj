@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import {User} from "../../models/User";
 import {Observable} from "rxjs/Observable";
+import {Http} from "@angular/http";
 
 /*
   Generated class for the AuthProvider provider.
@@ -12,8 +13,9 @@ import {Observable} from "rxjs/Observable";
 */
 @Injectable()
 export class AuthProvider implements HttpInterceptor {
+  loginUrl = "/api/dev/login";
 
-  constructor(public http: HttpClient) {}
+  constructor(public http: Http) {}
 
   intercept (request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     request = request.clone({
@@ -28,8 +30,9 @@ export class AuthProvider implements HttpInterceptor {
     return '';
   }
 
-  login (user: User) {
+  login (creds: any): Observable<any> {
     //TODO Login to REST api
+    return this.http.post(this.loginUrl, creds);
   }
 
   isLoggedIn() {

@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import {IonicPage, NavController, ToastController} from 'ionic-angular';
+import {Store} from "@ngrx/store";
+import 'rxjs/add/operator/catch';
 
 import {Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import {User} from "../../models/User";
 import {AuthProvider} from "../../providers/auth/auth";
+import {AuthReducer, AuthState, LOGIN} from "../../providers/auth/auth.store";
 
 /**
  * Generated class for the LoginPage page.
@@ -28,15 +31,29 @@ export class LoginPage {
 
   constructor(public navCtrl: NavController,
               private formBuilder: FormBuilder,
-              private authProvider: AuthProvider) {
+              private authProvider: AuthProvider,
+              private store: Store<AuthState>,
+              private toastCtrl: ToastController
+  ) {
+
     this.loginForm = this.formBuilder.group({
       username: new FormControl(this.username, [Validators.required, Validators.pattern(/[a-zA-Z0-9]{4}/)]),
-      password: [this.password, Validators.required]
+      password: new FormControl(this.password, [Validators.required, Validators.minLength(4)])
     })
   }
 
   login () {
-    // this.authProvider.login();
-
+    this.store.dispatch({type:LOGIN});
+    this.store.select(state=>state.user).subscribe(user => {
+      if(!user) {
+        let toast = this.toastCtrl.create({
+          message: "Invalid username or password. Please try again.",
+          position: "middle",
+          cssClass: "error-toast",
+          duration: 3000
+        });
+        toast.present();
+      }
+    })
   }
 }
