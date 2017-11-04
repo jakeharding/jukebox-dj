@@ -3,12 +3,12 @@ import { InfiniteScrollerDirective } from './infinite-scroller/infinite-scroller
 import { LoginRequiredDirective } from './login-required/login-required';
 
 @NgModule({
-	declarations: [
+  declarations: [
     InfiniteScrollerDirective,
     LoginRequiredDirective,
   ],
-	imports: [],
-	exports: [
+  imports: [],
+  exports: [
     InfiniteScrollerDirective,
     LoginRequiredDirective,
   ]

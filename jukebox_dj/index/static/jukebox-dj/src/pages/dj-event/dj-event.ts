@@ -1,6 +1,5 @@
-import {Component, ReflectiveInjector} from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
-import { Http } from '@angular/http';
+import {Component} from '@angular/core';
+import {IonicPage, NavParams, ToastController} from 'ionic-angular';
 import { DragulaService } from 'ng2-dragula/components/dragula.provider'
 import 'rxjs/add/operator/map';
 
@@ -29,11 +28,11 @@ import  { WebSocketBridge } from 'django-channels';
   templateUrl: 'dj-event.html',
 })
 export class DjEventPage {
-  event: any; //TODO Model event into a class and remove any
-  queuedRequests: any[] = []; // TODO Model songs and song requests and remove any
-  deniedRequests: any[] = []; // TODO Model songs and song requests and remove any
-  playedRequests: any[] = []; // TODO Model songs and song requests and remove any
-  requestedRequests: any[] = []; // TODO Model songs and song requests and remove any
+  event: Event;
+  queuedRequests: SongRequest[] = [];
+  deniedRequests: SongRequest[] = [];
+  playedRequests: SongRequest[] = [];
+  requestedRequests: SongRequest[] = [];
 
   eventBridge: WebSocketBridge;
   eventBridgeUri: string;

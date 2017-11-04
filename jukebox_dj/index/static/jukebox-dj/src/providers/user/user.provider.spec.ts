@@ -35,13 +35,7 @@ describe("User Provider", () => {
       spyOn(authProvider, "isLoggedIn").and.returnValue(true);
       spyOn(http, "get");
       userProvider.get();
-      expect(http.get).toHaveBeenCalledWith(jasmine.stringMatching(/api\/\w+\/user\/me/));
-    });
-
-    it("should return an empty observable if not logged in", () => {
-      let authProvider = TestBed.get(AuthProvider);
-      spyOn(authProvider, "isLoggedIn").and.returnValue(false);
-      expect(userProvider.get()).toEqual(Observable.empty())
+      expect(http.get).toHaveBeenCalledWith(jasmine.stringMatching(/api\/\w+\/users\/me/));
     });
   });
 });
