@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { DjEventPage } from './dj-event';
 import {ComponentsModule} from "../../components/components.module";
 import {DragulaModule} from "ng2-dragula/ng2-dragula";
+import {DirectivesModule} from "../../directives/directives.module";
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import {DragulaModule} from "ng2-dragula/ng2-dragula";
   imports: [
     IonicPageModule.forChild(DjEventPage),
     ComponentsModule,
-    DragulaModule
+    DragulaModule,
+    DirectivesModule
   ],
 })
 export class DjEventPageModule {}

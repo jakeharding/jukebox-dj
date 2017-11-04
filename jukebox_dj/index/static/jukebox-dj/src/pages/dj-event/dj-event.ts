@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import {Component, ReflectiveInjector} from '@angular/core';
+import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import { Http } from '@angular/http';
 import { DragulaService } from 'ng2-dragula/components/dragula.provider'
 import 'rxjs/add/operator/map';
@@ -11,7 +11,7 @@ import { EventProvider } from '../../providers/event/event'
 
 
 import  { WebSocketBridge } from 'django-channels';
-import  { Song } from "../../models/Song";
+
 
 /**
  * Generated class for the DjEventPage page.
@@ -42,13 +42,11 @@ export class DjEventPage {
 
 
   constructor(
-    public navCtrl: NavController,
     public navParams: NavParams,
-    private http: Http,
     private dragulaService: DragulaService,
     private reqProvider: SongRequestProvider,
     private eventProvider: EventProvider,
-    private toast: ToastController
+    private toast: ToastController,
   ) {
     this.event = navParams.data;
     this.eventBridgeUri = `/events/${this.event.uuid}`;
@@ -76,7 +74,6 @@ export class DjEventPage {
 
     // TODO MUST - Hold the api version (dev in the url) in an environment specific way
     // TODO Stretch - Use the ngrx store to store the state of objects and handle requests
-    // this.http.get(`/api/dev/events/${this.event.uuid }`)
     this.eventProvider.getEvent(this.event.uuid)
       .subscribe(event => {
         this.event = event;

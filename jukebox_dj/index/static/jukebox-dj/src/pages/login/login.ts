@@ -44,7 +44,7 @@ export class LoginPage {
 
   login () {
     this.store.dispatch({type:LOGIN});
-    this.store.select(state=>state.user).subscribe(user => {
+    this.store.select(state=>state['auth']).subscribe(user => {
       if(!user) {
         let toast = this.toastCtrl.create({
           message: "Invalid username or password. Please try again.",

@@ -4,6 +4,7 @@ import 'rxjs/add/operator/map';
 import {AuthProvider} from "../auth/auth";
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/observable/empty";
+import {User} from "../../models/User";
 
 /*
   Generated class for the UserProvider provider.
@@ -13,13 +14,11 @@ import "rxjs/add/observable/empty";
 */
 @Injectable()
 export class UserProvider {
-  private userUrl = "/api/dev/user";
+  private userUrl = "/api/dev/users";
 
-  constructor(public http: HttpClient, private authProvider: AuthProvider) {}
+  constructor(public http: HttpClient) {}
 
-  get () {
-    if (!this.authProvider.isLoggedIn()) { return Observable.empty() }
-
-    return this.http.get(`${this.userUrl}/me`)
+  get (): Observable<User> {
+    return this.http.get(`${this.userUrl}/me`);
   }
 }

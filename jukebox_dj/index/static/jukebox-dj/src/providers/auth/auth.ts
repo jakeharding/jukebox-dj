@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import 'rxjs/add/operator/map';
-import {User} from "../../models/User";
 import {Observable} from "rxjs/Observable";
 import {Http} from "@angular/http";
+import {AuthToken} from "../../models/Token";
 
 /*
   Generated class for the AuthProvider provider.
@@ -26,8 +26,8 @@ export class AuthProvider implements HttpInterceptor {
     return next.handle(request);
   }
 
-  getToken():string {
-    return '';
+  getToken(): AuthToken {
+    return {token: ''};
   }
 
   login (creds: any): Observable<any> {
@@ -36,7 +36,7 @@ export class AuthProvider implements HttpInterceptor {
   }
 
   isLoggedIn() {
-    return !(this.getToken() === "");
+    return !(this.getToken().token === "");
   }
 
 }

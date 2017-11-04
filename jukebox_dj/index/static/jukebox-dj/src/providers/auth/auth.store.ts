@@ -10,7 +10,7 @@
  * Auth reducer.
  */
 
-import { Action } from '@ngrx/store';
+import {Action, Store} from '@ngrx/store';
 import {User} from "../../models/User";
 import {Injectable} from "@angular/core";
 import {AuthProvider} from "./auth";
@@ -23,7 +23,6 @@ import {AuthToken} from "../../models/Token";
 import { Storage } from '@ionic/storage';
 import {UserProvider} from "../user/user";
 
-
 export const TOKEN_STO_KEY = "djToken";
 
 export interface AuthState {
@@ -35,19 +34,25 @@ export const InitialAuthState: AuthState = {
 };
 
 export const GET_AUTH = '[Auth] Get';
-export const RECEIVE_AUTH = '[Auth] Receive';
+export const HAS_AUTH = '[Auth] Has';
+export const RECEIVE_TOKEN = '[Token] Receive';
 export const LOGIN = '[Auth] Login';
 export const LOGIN_FAIL = '[Auth] Login Fail';
 
 
 export class GetAuthAction implements Action {
   readonly type = GET_AUTH;
-  constructor(public payload: User) {}
+  constructor(public payload: any) {}
 }
 
-export class ReceiveAuthAction implements Action {
-  readonly type = RECEIVE_AUTH;
+export class ReceiveTokenAction implements Action {
+  readonly type = RECEIVE_TOKEN;
   constructor(public payload: AuthToken) {}
+}
+
+export class HasAuthAction implements Action {
+  readonly type = HAS_AUTH;
+  constructor(public payload: User) {}
 }
 
 export class LoginFailedAction implements Action {
@@ -56,12 +61,18 @@ export class LoginFailedAction implements Action {
 }
 
 export function AuthReducer (state = InitialAuthState, action: Action) {
-  let user = "action.payload";
-  // let user = action.payload;
-  if (action.type == GET_AUTH) {
-    user = null;
+  switch (action.type) {
+    case LOGIN_FAIL:
+      state.user = null;
+      break;
+    case GET_AUTH:
+    case RECEIVE_TOKEN:
+    case HAS_AUTH:
+    default:
+      state = Object.assign({}, state, action);
+      break;
   }
-  return user;
+  return state;
 }
 
 @Injectable()
@@ -69,19 +80,38 @@ export class AuthEffects {
   constructor(
     private authProvider: AuthProvider,
     private actions$: Actions,
-    private store: Storage,
-    private userProvider: UserProvider
+    private storage: Storage,
+    private userProvider: UserProvider,
+    private store: Store<AuthState>
   ) {}
 
   @Effect () login$: Observable<Action> = this.actions$.ofType(LOGIN)
-    .map((action: GetAuthAction) => action.payload)
     .exhaustMap(auth =>
       this.authProvider.login(auth)
-        .map(loginResp => new ReceiveAuthAction(loginResp))
+        .map(loginResp => new ReceiveTokenAction(loginResp))
         .map((receiveAuth) => {
-          this.store.set(TOKEN_STO_KEY, receiveAuth.payload.token);
-          this.userProvider.get()
+          this.storage.set(TOKEN_STO_KEY, receiveAuth.payload.token);
+          this.store.dispatch({type: GET_AUTH});
         })
         .catch(err => Observable.throw(new LoginFailedAction(err)))
-    )
+    );
+
+  @Effect () getUser$: Observable<Action> = this.actions$.ofType(GET_AUTH)
+    .map((action) => {
+      if (this.authProvider.isLoggedIn()) {
+        return new ReceiveTokenAction(this.authProvider.getToken());
+      } else {
+        return new LoginFailedAction("Not logged in");
+      }
+    })
+    .exhaustMap(action => {
+      if (action instanceof ReceiveTokenAction) {
+        this.userProvider.get()
+          .map(user => new HasAuthAction(user))
+          .catch(error => Observable.throw(new LoginFailedAction(error)));
+      } else {
+        return of(action);
+      }
+    })
+
 }
