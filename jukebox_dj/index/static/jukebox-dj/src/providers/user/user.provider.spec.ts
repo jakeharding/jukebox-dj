@@ -13,12 +13,12 @@
 import { TestBed } from '@angular/core/testing';
 import { UserProvider } from "./user";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
-import {AuthProvider} from "../auth/auth";
+import { AuthProvider } from "../auth/auth";
 import { HttpModule } from "@angular/http";
-import {Observable} from "rxjs/Observable";
+import { Observable } from "rxjs/Observable";
 import "rxjs/add/observable/empty";
 
-fdescribe("User Provider", () => {
+describe("User Provider", () => {
   let userProvider: UserProvider;
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -42,6 +42,6 @@ fdescribe("User Provider", () => {
       let authProvider = TestBed.get(AuthProvider);
       spyOn(authProvider, "isLoggedIn").and.returnValue(false);
       expect(userProvider.get()).toEqual(Observable.empty())
-    })
+    });
   });
 });

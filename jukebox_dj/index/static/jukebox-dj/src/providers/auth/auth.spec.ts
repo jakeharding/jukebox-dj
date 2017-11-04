@@ -10,10 +10,50 @@
  * Unit test auth provider.
  */
 
-import { TestBed } from '@angular/core/testing';
+import { inject, TestBed} from '@angular/core/testing';
 import { AuthProvider } from './auth';
-import {HttpRequest, HttpXhrBackend, XhrFactory} from "@angular/common/http";
+import { HttpClientModule, HttpRequest, HttpXhrBackend, XhrFactory} from "@angular/common/http";
 import { Http, HttpModule } from "@angular/http";
+import { provideMockActions } from '@ngrx/effects/testing';
+import { Storage } from '@ionic/storage';
+import {AuthEffects, LOGIN, LoginFailedAction} from "./auth.store";
+import {UserProvider} from "../user/user";
+import {Observable} from "rxjs/Observable";
+import { hot, cold } from 'jasmine-marbles';
+import 'rxjs/add/observable/throw';
+
+
+
+describe("Auth effects", () => {
+  let authProvider, userProvider;
+  let authEffects: AuthEffects;
+  let actions: Observable<any>;
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [ AuthEffects,
+        AuthProvider, UserProvider,
+        provideMockActions(() => actions),
+        { provide: Storage, useClass: jasmine.createSpy("StorageMock", () => {}) }
+      ],
+      imports: [HttpModule, HttpClientModule]
+    });
+    authProvider = TestBed.get(AuthProvider);
+    userProvider = TestBed.get(UserProvider);
+    authEffects = TestBed.get(AuthEffects);
+  });
+
+  // TODO comeback and finish marble testing observables
+  // describe("login$", () => {
+  //   it("should call auth provider login", () => {
+  //     spyOn(authProvider, "login").and.returnValue(Observable.throw("Bad Username"));
+  //
+  //     actions =      cold('a|', {a: { type: LOGIN }});
+  //     let expected = cold('a', {a: new LoginFailedAction("Bad username")});
+  //     expect(authEffects.login$).toBeObservable(expected);
+  //     // expect(authProvider.login).toHaveBeenCalled();
+  //   })
+  // })
+});
 
 describe("Auth Provider", () => {
   let authProvider;
@@ -24,7 +64,6 @@ describe("Auth Provider", () => {
     });
     authProvider = TestBed.get(AuthProvider);
   });
-
 
   describe("isLoggedIn", () => {
     it('should return false if the token is not there', () =>{

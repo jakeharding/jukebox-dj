@@ -23,6 +23,9 @@ import {AuthToken} from "../../models/Token";
 import { Storage } from '@ionic/storage';
 import {UserProvider} from "../user/user";
 
+
+export const TOKEN_STO_KEY = "djToken";
+
 export interface AuthState {
   user: User;
 }
@@ -76,9 +79,9 @@ export class AuthEffects {
       this.authProvider.login(auth)
         .map(loginResp => new ReceiveAuthAction(loginResp))
         .map((receiveAuth) => {
-          this.store.set("dj_token", receiveAuth.payload.token);
-          // this.userProvider.get()
+          this.store.set(TOKEN_STO_KEY, receiveAuth.payload.token);
+          this.userProvider.get()
         })
-        .catch(err => of(new LoginFailedAction(err)))
+        .catch(err => Observable.throw(new LoginFailedAction(err)))
     )
 }
