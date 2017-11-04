@@ -1,13 +1,13 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavParams, ToastController} from 'ionic-angular';
-import { DragulaService } from 'ng2-dragula/components/dragula.provider'
+import { DragulaService } from 'ng2-dragula/components/dragula.provider';
 import 'rxjs/add/operator/map';
 
 import { SongRequest } from '../../models/SongRequest';
 import { SongRequestStatus } from '../../models/SongRequest';
-import { SongRequestProvider } from "../../providers/song-request/song-request"
-import { EventProvider } from '../../providers/event/event'
-
+import { SongRequestProvider } from "../../providers/song-request/song-request";
+import { EventProvider } from '../../providers/event/event';
+import { Event } from '../../models/Event';
 
 import  { WebSocketBridge } from 'django-channels';
 

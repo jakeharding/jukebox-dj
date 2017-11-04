@@ -4,9 +4,8 @@ import {Store} from "@ngrx/store";
 import 'rxjs/add/operator/catch';
 
 import {Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import {User} from "../../models/User";
 import {AuthProvider} from "../../providers/auth/auth";
-import {AuthReducer, AuthState, LOGIN} from "../../providers/auth/auth.store";
+import {AuthState, LOGIN} from "../../providers/auth/auth.store";
 
 /**
  * Generated class for the LoginPage page.
@@ -29,11 +28,11 @@ export class LoginPage {
   private password: string = "";
   public usernameErr = "Please provide a valid username.";
 
-  constructor(public navCtrl: NavController,
-              private formBuilder: FormBuilder,
-              private authProvider: AuthProvider,
-              private store: Store<AuthState>,
-              private toastCtrl: ToastController
+  constructor(
+    public navCtrl: NavController,
+    private formBuilder: FormBuilder,
+    private store: Store<AuthState>,
+    private toastCtrl: ToastController
   ) {
 
     this.loginForm = this.formBuilder.group({
@@ -43,8 +42,8 @@ export class LoginPage {
   }
 
   login () {
-    this.store.dispatch({type:LOGIN});
-    this.store.select(state=>state['auth']).subscribe(user => {
+    this.store.dispatch({type:LOGIN, payload: this.loginForm.value});
+    this.store.select(state=>state['auth']).subscribe(({ user }) => {
       if(!user) {
         let toast = this.toastCtrl.create({
           message: "Invalid username or password. Please try again.",

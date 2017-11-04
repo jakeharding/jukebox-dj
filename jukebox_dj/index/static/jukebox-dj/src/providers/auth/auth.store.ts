@@ -45,6 +45,11 @@ export class GetAuthAction implements Action {
   constructor(public payload: any) {}
 }
 
+export class LoginAction implements Action {
+  readonly type = LOGIN;
+  constructor(public payload: any) {}
+}
+
 export class ReceiveTokenAction implements Action {
   readonly type = RECEIVE_TOKEN;
   constructor(public payload: AuthToken) {}
@@ -86,14 +91,15 @@ export class AuthEffects {
   ) {}
 
   @Effect () login$: Observable<Action> = this.actions$.ofType(LOGIN)
-    .exhaustMap(auth =>
-      this.authProvider.login(auth)
+    .exhaustMap(({ payload }: LoginAction) =>
+      this.authProvider.login(payload)
         .map(loginResp => new ReceiveTokenAction(loginResp))
         .map((receiveAuth) => {
           this.storage.set(TOKEN_STO_KEY, receiveAuth.payload.token);
           this.store.dispatch({type: GET_AUTH});
+          return new GetAuthAction(this.authProvider.getToken());
         })
-        .catch(err => Observable.throw(new LoginFailedAction(err)))
+        .catch(err => of(new LoginFailedAction(err)))
     );
 
   @Effect () getUser$: Observable<Action> = this.actions$.ofType(GET_AUTH)

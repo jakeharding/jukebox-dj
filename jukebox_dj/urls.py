@@ -18,6 +18,7 @@ from django.conf import settings
 from django.contrib import admin
 
 from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken.views import obtain_auth_token
 
 from jukebox_dj.index.views import IndexView
 from jukebox_dj.events.views import EventViewSet
@@ -32,4 +33,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', IndexView.as_view()),
     url(r'^api/%s/' % settings.REST_API_VERSION, include(router.urls)),
+    url(r'^api/%s/login$' % settings.REST_API_VERSION, obtain_auth_token),
 ]
