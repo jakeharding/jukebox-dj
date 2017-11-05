@@ -100,12 +100,14 @@ class SongRequestViewset(ModelViewSet):
 
         return super(SongRequestViewset, self).create(request, args, kwargs)
 
+
 class SongEventFilter(DjangoFilterBackend):
     def filter_queryset(self, request, qs, view):
         event_uuid = request.query_params.get("event")
         if not event_uuid:
             return qs
         return qs.filter(song_lists__events__uuid=request.query_params.get("event"))
+
 
 class SongViewset(ModelViewSet):
     queryset = Song.objects.all()

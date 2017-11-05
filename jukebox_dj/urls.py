@@ -20,6 +20,7 @@ from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken.views import obtain_auth_token
 
+from jukebox_dj.users.views import DjViewSet
 from jukebox_dj.index.views import IndexView
 from jukebox_dj.events.views import EventViewSet
 from jukebox_dj.songs.views import SongRequestViewset, SongViewset
@@ -28,6 +29,7 @@ router = DefaultRouter(trailing_slash=False)
 router.register('events', EventViewSet)
 router.register('song-requests', SongRequestViewset)
 router.register('songs', SongViewset)
+router.register('djs', DjViewSet)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),

@@ -41,7 +41,7 @@
     "model": "users.djprofile",
     "pk": 1,
     "fields": {
-        "user": 2,
+        "user": 1,
         "dj_id": "1234",
         "display_name": "Dj Rockstar",
         "bio": "Heres some cool stuff"
