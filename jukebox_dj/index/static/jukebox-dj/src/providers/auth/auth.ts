@@ -44,6 +44,10 @@ export class AuthProvider implements HttpInterceptor {
     localStorage.setItem(TOKEN_STO_KEY, token);
   }
 
+  clearToken() {
+    localStorage.removeItem(TOKEN_STO_KEY);
+  }
+
   login (creds: any): Observable<any> {
     return this.http.post(this.loginUrl, creds);
   }

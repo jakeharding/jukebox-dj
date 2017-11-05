@@ -1,6 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {User} from "../../models/User";
 import {NavController} from "ionic-angular";
+import {AuthProvider} from "../../providers/auth/auth";
 
 /**
  * Generated class for the JukeboxHeaderComponent component.
@@ -17,11 +18,17 @@ export class JukeboxHeaderComponent {
   @Input() user: User;
 
   constructor(
-    private nav: NavController
+    private nav: NavController,
+    private authProvider: AuthProvider
   ) {}
 
   goToLogin () {
     this.nav.push('login');
+  }
+
+  logout () {
+    this.authProvider.clearToken();
+    this.nav.setRoot('home');
   }
 
 }
