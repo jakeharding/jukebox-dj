@@ -14,11 +14,11 @@ import {User} from "../../models/User";
 */
 @Injectable()
 export class UserProvider {
-  private userUrl = "/api/dev/users";
+  private djsUrl = "/api/dev/djs";
 
   constructor(public http: HttpClient) {}
 
   get (): Observable<User> {
-    return this.http.get(`${this.userUrl}/me`);
+    return this.http.get(`${this.djsUrl}/me`);
   }
 }

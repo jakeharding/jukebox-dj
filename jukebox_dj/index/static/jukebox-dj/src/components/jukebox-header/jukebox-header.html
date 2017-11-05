@@ -5,9 +5,9 @@
     </ion-buttons>
 
     <ion-buttons end>
-      <button ion-button text-capitalize color="white" *ngIf="user">{{ user.djprofile.display_name }}</button>
+      <button ion-button text-capitalize color="white" *ngIf="user">{{ user.display_name }}</button>
       <button ion-button text-capitalize color="white" *ngIf="user; else notLoggedIn">Logout</button>
-      <ng-template #notLoggedIn><button text-capitalize ion-button>Login</button></ng-template>
+      <ng-template #notLoggedIn><button text-capitalize ion-button (click)="goToLogin()">Login</button></ng-template>
     </ion-buttons>
   </ion-navbar>
 </ion-header>

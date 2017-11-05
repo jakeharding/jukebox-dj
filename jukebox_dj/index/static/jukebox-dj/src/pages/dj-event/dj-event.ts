@@ -10,6 +10,7 @@ import { EventProvider } from '../../providers/event/event';
 import { Event } from '../../models/Event';
 
 import  { WebSocketBridge } from 'django-channels';
+import {User} from "../../models/User";
 
 
 /**
@@ -28,6 +29,7 @@ import  { WebSocketBridge } from 'django-channels';
   templateUrl: 'dj-event.html',
 })
 export class DjEventPage {
+  user: User;
   event: Event;
   queuedRequests: SongRequest[] = [];
   deniedRequests: SongRequest[] = [];
@@ -103,6 +105,11 @@ export class DjEventPage {
     dragulaService.drop.subscribe((value) => {
       this.onDrop(value.slice(1));
     });
+  }
+
+  userEvent(user: User) {
+    console.log(user);
+    this.user = user;
   }
 
   private onDrop(args) {

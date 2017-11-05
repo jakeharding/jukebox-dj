@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {User} from "../../models/User";
+import {NavController} from "ionic-angular";
 
 /**
  * Generated class for the JukeboxHeaderComponent component.
@@ -13,21 +14,14 @@ import {User} from "../../models/User";
 })
 export class JukeboxHeaderComponent {
 
-  user: User = null;
+  @Input user: User;
 
-  constructor() {
-    // TODO This is a rough model of what the user will look like. Formally define when we add login
-    // TODO Use an ngRx store to manage this state
-    // this.user = {
-      // first_name: "Default",
-      // last_name: "DJ",
-      // username: "someDj@AwesomeSauce",
-      // email: "someDj@AwesomeSauce",
-      // djprofile: {
-      //   display_name: "DJ Awesome Sauce",
-      //   dj_id: "1234"
-      // }
-    // }
+  constructor(
+    private nav: NavController
+  ) {}
+
+  goToLogin () {
+    this.nav.push('login');
   }
 
 }
