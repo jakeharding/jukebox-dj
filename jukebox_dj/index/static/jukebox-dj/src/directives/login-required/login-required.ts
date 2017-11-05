@@ -32,8 +32,6 @@ export class LoginRequiredDirective {
 
     this.user$.subscribe((action: AuthAction) => {
 
-      console.log(action);
-
       if(action.type === LOGIN_FAIL) {
         this.navCtrl.setRoot('login');
       } else if (action.type === HAS_AUTH) {

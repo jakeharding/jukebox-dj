@@ -14,7 +14,7 @@ import {NavController} from "ionic-angular";
 })
 export class JukeboxHeaderComponent {
 
-  @Input user: User;
+  @Input() user: User;
 
   constructor(
     private nav: NavController
