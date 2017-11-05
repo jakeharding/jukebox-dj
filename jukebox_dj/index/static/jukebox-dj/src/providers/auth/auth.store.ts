@@ -10,20 +10,24 @@
  * Auth reducer.
  */
 
-import {Action, Store} from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import {User} from "../../models/User";
 import {Injectable} from "@angular/core";
 import {AuthProvider} from "./auth";
 import {Actions, Effect} from "@ngrx/effects";
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/operator/exhaustMap';
+import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw'
 import { of } from 'rxjs/observable/of';
-import {AuthToken} from "../../models/Token";
+
 import { Storage } from '@ionic/storage';
 import {UserProvider} from "../user/user";
+import * as AuthActions from './auth.actions';
 
-export const TOKEN_STO_KEY = "djToken";
+export type AuthAction = AuthActions.AuthAction;
+
 
 export interface AuthState {
   user: User;
@@ -33,51 +37,8 @@ export const InitialAuthState: AuthState = {
   user: null
 };
 
-export const GET_AUTH = '[Auth] Get';
-export const HAS_AUTH = '[Auth] Has';
-export const RECEIVE_TOKEN = '[Token] Receive';
-export const LOGIN = '[Auth] Login';
-export const LOGIN_FAIL = '[Auth] Login Fail';
-
-
-export class GetAuthAction implements Action {
-  readonly type = GET_AUTH;
-  constructor(public payload: any) {}
-}
-
-export class LoginAction implements Action {
-  readonly type = LOGIN;
-  constructor(public payload: any) {}
-}
-
-export class ReceiveTokenAction implements Action {
-  readonly type = RECEIVE_TOKEN;
-  constructor(public payload: AuthToken) {}
-}
-
-export class HasAuthAction implements Action {
-  readonly type = HAS_AUTH;
-  constructor(public payload: User) {}
-}
-
-export class LoginFailedAction implements Action {
-  readonly type = LOGIN_FAIL;
-  constructor(public payload: any) {}
-}
-
-export function AuthReducer (state = InitialAuthState, action: Action) {
-  switch (action.type) {
-    case LOGIN_FAIL:
-      state.user = null;
-      break;
-    case GET_AUTH:
-    case RECEIVE_TOKEN:
-    case HAS_AUTH:
-    default:
-      state = Object.assign({}, state, action);
-      break;
-  }
-  return state;
+export function AuthReducer (state = InitialAuthState, action: AuthAction) {
+  return Object.assign({}, state, action);
 }
 
 @Injectable()
@@ -90,34 +51,32 @@ export class AuthEffects {
     private store: Store<AuthState>
   ) {}
 
-  @Effect () login$: Observable<Action> = this.actions$.ofType(LOGIN)
-    .exhaustMap(({ payload }: LoginAction) =>
+  @Effect () login$: Observable<AuthAction> = this.actions$.ofType(AuthActions.LOGIN)
+    .switchMap(({ payload }: AuthAction) =>
       this.authProvider.login(payload)
-        .map(loginResp => new ReceiveTokenAction(loginResp))
+        .map(loginResp => new AuthActions.ReceiveTokenAction(loginResp.json()))
         .map((receiveAuth) => {
-          this.storage.set(TOKEN_STO_KEY, receiveAuth.payload.token);
-          this.store.dispatch({type: GET_AUTH});
-          return new GetAuthAction(this.authProvider.getToken());
-        })
-        .catch(err => of(new LoginFailedAction(err)))
+          this.authProvider.setToken(receiveAuth.payload.token);
+          this.store.dispatch({type: AuthActions.GET_AUTH});
+          return receiveAuth;
+        }).catch(err => of(new AuthActions.LoginFailedAction(err.json())))
     );
 
-  @Effect () getUser$: Observable<Action> = this.actions$.ofType(GET_AUTH)
-    .map((action) => {
+  @Effect () getUser$: Observable<AuthAction> = this.actions$.ofType(AuthActions.GET_AUTH)
+    .map((action: AuthAction) => {
       if (this.authProvider.isLoggedIn()) {
-        return new ReceiveTokenAction(this.authProvider.getToken());
+        return new AuthActions.ReceiveTokenAction(this.authProvider.getToken());
       } else {
-        return new LoginFailedAction("Not logged in");
+        return new AuthActions.LoginFailedAction("Not logged in");
       }
     })
-    .exhaustMap(action => {
-      if (action instanceof ReceiveTokenAction) {
+    .switchMap(action => {
+      if ( action.type === AuthActions.RECEIVE_TOKEN ) {
         this.userProvider.get()
-          .map(user => new HasAuthAction(user))
-          .catch(error => Observable.throw(new LoginFailedAction(error)));
+          .map(user => new AuthActions.HasAuthAction(user))
+          .catch(error => of(new AuthActions.LoginFailedAction(error.json())));
       } else {
         return of(action);
       }
     })
-
 }

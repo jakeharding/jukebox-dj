@@ -15,14 +15,19 @@ import { UserProvider } from "./user";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { AuthProvider } from "../auth/auth";
 import { HttpModule } from "@angular/http";
-import { Observable } from "rxjs/Observable";
 import "rxjs/add/observable/empty";
+import { Storage } from "@ionic/storage";
+
 
 describe("User Provider", () => {
   let userProvider: UserProvider;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UserProvider, AuthProvider],
+      providers: [
+        UserProvider,
+        AuthProvider,
+       { provide: Storage, useClass: jasmine.createSpy("StorageMock", () => {}) }
+      ],
       imports: [HttpClientModule, HttpModule]
     });
     userProvider = TestBed.get(UserProvider);

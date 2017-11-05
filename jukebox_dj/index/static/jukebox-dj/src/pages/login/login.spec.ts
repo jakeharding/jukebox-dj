@@ -14,7 +14,7 @@
 import {async, TestBed, ComponentFixture, inject} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement }    from '@angular/core';
-import {IonicModule, ToastController} from 'ionic-angular';
+import {IonicModule, NavParams, ToastController} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { NavController } from 'ionic-angular';
@@ -27,6 +27,8 @@ import {AuthReducer, AuthState} from "../../providers/auth/auth.store";
 import {Store, StoreModule} from "@ngrx/store";
 import "rxjs/add/observable/of";
 import {Observable} from "rxjs/Observable";
+import {Storage} from "@ionic/storage";
+
 
 describe('LoginPage', () => {
   let loginPageComp: LoginPage;
@@ -52,7 +54,9 @@ describe('LoginPage', () => {
         StatusBar,
         SplashScreen,
         NavController,
-        AuthProvider
+        NavParams,
+        AuthProvider,
+        { provide: Storage, useClass: jasmine.createSpy("StorageMock", () => {}) }
       ]
     }).compileComponents();
   }));

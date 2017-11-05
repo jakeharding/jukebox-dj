@@ -1,8 +1,10 @@
-import {Directive} from '@angular/core';
-import {AuthState, GET_AUTH, HAS_AUTH} from "../../providers/auth/auth.store";
-import {Action, Store} from "@ngrx/store";
-import {NavController, NavParams} from "ionic-angular";
-import {Observable} from "rxjs/Observable";
+import { Directive } from '@angular/core';
+import { Action, Store } from "@ngrx/store";
+import { NavController, NavParams } from "ionic-angular";
+import { Observable } from "rxjs/Observable";
+
+import { AuthState } from "../../providers/auth/auth.store";
+import { HAS_AUTH, GET_AUTH } from "../../providers/auth/auth.actions";
 
 /**
  * Generated class for the LoginRequiredDirective directive.

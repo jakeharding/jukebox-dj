@@ -1,9 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
+import {Http} from "@angular/http";
+
+import { Storage } from "@ionic/storage";
+
 import 'rxjs/add/operator/map';
 import {Observable} from "rxjs/Observable";
-import {Http} from "@angular/http";
+
 import {AuthToken} from "../../models/Token";
+// import {TOKEN_STO_KEY} from "./auth.store";
+
+export const TOKEN_STO_KEY = "djToken";
 
 /*
   Generated class for the AuthProvider provider.
@@ -14,8 +21,11 @@ import {AuthToken} from "../../models/Token";
 @Injectable()
 export class AuthProvider implements HttpInterceptor {
   loginUrl = "/api/dev/login";
+  token: string;
 
-  constructor(public http: Http) {}
+  constructor(public http: Http,
+              private storage: Storage
+              ) {}
 
   intercept (request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     request = request.clone({
@@ -26,17 +36,20 @@ export class AuthProvider implements HttpInterceptor {
     return next.handle(request);
   }
 
-  getToken(): AuthToken {
-    return {token: ''};
+  getToken(): string {
+    return localStorage.getItem(TOKEN_STO_KEY);
+  }
+
+  setToken(token: string) {
+    localStorage.setItem(TOKEN_STO_KEY, token);
   }
 
   login (creds: any): Observable<any> {
-    //TODO Login to REST api
     return this.http.post(this.loginUrl, creds);
   }
 
   isLoggedIn() {
-    return !(this.getToken().token === "");
+    return  !!this.getToken();
   }
 
 }

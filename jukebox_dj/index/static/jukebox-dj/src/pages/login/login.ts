@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import {IonicPage, NavController, ToastController} from 'ionic-angular';
-import {Store} from "@ngrx/store";
+import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
+import { Store} from "@ngrx/store";
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw'
 
 import {Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import {AuthProvider} from "../../providers/auth/auth";
-import {AuthState, LOGIN} from "../../providers/auth/auth.store";
+import {AuthState, AuthAction} from "../../providers/auth/auth.store";
+import { LOGIN, LOGIN_FAIL, RECEIVE_TOKEN } from '../../providers/auth/auth.actions';
 
 /**
  * Generated class for the LoginPage page.
@@ -29,30 +30,44 @@ export class LoginPage {
   public usernameErr = "Please provide a valid username.";
 
   constructor(
-    public navCtrl: NavController,
     private formBuilder: FormBuilder,
     private store: Store<AuthState>,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private navParams: NavParams,
+    private nav: NavController
   ) {
 
     this.loginForm = this.formBuilder.group({
-      username: new FormControl(this.username, [Validators.required, Validators.pattern(/[a-zA-Z0-9]{4}/)]),
+      username: new FormControl(this.username, [Validators.required, Validators.pattern(/[a-zA-Z0-9]/)]),
       password: new FormControl(this.password, [Validators.required, Validators.minLength(4)])
-    })
-  }
+    });
 
-  login () {
-    this.store.dispatch({type:LOGIN, payload: this.loginForm.value});
-    this.store.select(state=>state['auth']).subscribe(({ user }) => {
-      if(!user) {
+    this.store.select(state=>state['auth']).subscribe(( action: AuthAction ) => {
+      console.log(action);
+      if(action.type === LOGIN_FAIL ) {
         let toast = this.toastCtrl.create({
-          message: "Invalid username or password. Please try again.",
+          message: action.payload.non_field_errors, //Django default response when bad creds are submitted
           position: "middle",
           cssClass: "error-toast",
           duration: 3000
         });
         toast.present();
+      } else if (action.type === RECEIVE_TOKEN) {
+        if (this.navParams.data.next) {
+          this.nav.setRoot(this.navParams.data.next);
+        } else {
+          this.nav.setRoot('dashboard');
+        }
       }
+    })
+
+  }
+
+  login () {
+    this.store.dispatch({type:LOGIN, payload: this.loginForm.value});
+
+    this.store.select(state=>state['auth']).subscribe(( user ) => {
+      console.log(user);
     })
   }
 }

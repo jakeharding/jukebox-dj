@@ -16,10 +16,9 @@ import { HttpClientModule, HttpRequest, HttpXhrBackend, XhrFactory} from "@angul
 import { Http, HttpModule } from "@angular/http";
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Storage } from '@ionic/storage';
-import {AuthEffects, LOGIN, LoginFailedAction} from "./auth.store";
-import {UserProvider} from "../user/user";
-import {Observable} from "rxjs/Observable";
-import { hot, cold } from 'jasmine-marbles';
+import { AuthEffects } from "./auth.store";
+import { UserProvider } from "../user/user";
+import { Observable } from "rxjs/Observable";
 import 'rxjs/add/observable/throw';
 
 
@@ -30,8 +29,10 @@ describe("Auth effects", () => {
   let actions: Observable<any>;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ AuthEffects,
-        AuthProvider, UserProvider,
+      providers: [
+        AuthEffects,
+        AuthProvider,
+        UserProvider,
         provideMockActions(() => actions),
         { provide: Storage, useClass: jasmine.createSpy("StorageMock", () => {}) }
       ],
@@ -58,8 +59,15 @@ describe("Auth effects", () => {
 describe("Auth Provider", () => {
   let authProvider;
   beforeEach(() => {
+    class storageMock {
+      get(key:string): string {return "";}
+    }
+
     TestBed.configureTestingModule({
-      providers: [AuthProvider],
+      providers: [
+        AuthProvider,
+        { provide: Storage, useClass: storageMock }
+      ],
       imports: [HttpModule]
     });
     authProvider = TestBed.get(AuthProvider);
@@ -67,6 +75,7 @@ describe("Auth Provider", () => {
 
   describe("isLoggedIn", () => {
     it('should return false if the token is not there', () =>{
+      console.log(authProvider.isLoggedIn())
       expect(authProvider.isLoggedIn()).toBe(false);
 
       spyOn(authProvider, "getToken").and.returnValue("A TOKEN");
