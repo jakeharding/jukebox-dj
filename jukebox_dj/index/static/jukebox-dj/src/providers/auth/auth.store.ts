@@ -22,7 +22,6 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw'
 import { of } from 'rxjs/observable/of';
 
-import { Storage } from '@ionic/storage';
 import {UserProvider} from "../user/user";
 import * as AuthActions from './auth.actions';
 
@@ -46,7 +45,6 @@ export class AuthEffects {
   constructor(
     private authProvider: AuthProvider,
     private actions$: Actions,
-    private storage: Storage,
     private userProvider: UserProvider,
     private store: Store<AuthState>
   ) {}
@@ -63,20 +61,11 @@ export class AuthEffects {
     );
 
   @Effect () getUser$: Observable<AuthAction> = this.actions$.ofType(AuthActions.GET_AUTH)
-    .map((action: AuthAction) => {
-      if (this.authProvider.isLoggedIn()) {
-        return new AuthActions.ReceiveTokenAction(this.authProvider.getToken());
-      } else {
-        return new AuthActions.LoginFailedAction("Not logged in");
-      }
-    })
-    .switchMap(action => {
-      if ( action.type === AuthActions.RECEIVE_TOKEN ) {
-        this.userProvider.get()
-          .map(user => new AuthActions.HasAuthAction(user))
-          .catch(error => of(new AuthActions.LoginFailedAction(error.json())));
-      } else {
-        return of(action);
-      }
-    })
+    .switchMap((action: AuthAction) =>
+      this.userProvider.get()
+        .map(user => new AuthActions.HasAuthAction(user))
+        .map(hasAuth => {
+          return hasAuth;
+        }).catch(error => of(new AuthActions.LoginFailedAction(error.status)))
+    );
 }

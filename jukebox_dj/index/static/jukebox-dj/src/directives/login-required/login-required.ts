@@ -27,15 +27,15 @@ export class LoginRequiredDirective {
   ) {
     this.user$ = this.store.select(state => state["auth"]);
 
-    if(!this.navParams.data.user) {
-      this.store.dispatch({type:GET_AUTH});
+    this.store.dispatch({type:GET_AUTH});
 
-      this.user$.subscribe((action) => {
-        if(action.type !== HAS_AUTH) {
-          this.navCtrl.setRoot('login');
-        }
-      });
-    }
+    this.user$.subscribe((action) => {
+
+      console.log(action);
+      if(action.type !== HAS_AUTH) {
+        this.navCtrl.setRoot('login');
+      }
+    });
 
   }
 

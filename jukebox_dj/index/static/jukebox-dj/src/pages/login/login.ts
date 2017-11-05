@@ -43,7 +43,6 @@ export class LoginPage {
     });
 
     this.store.select(state=>state['auth']).subscribe(( action: AuthAction ) => {
-      console.log(action);
       if(action.type === LOGIN_FAIL ) {
         let toast = this.toastCtrl.create({
           message: action.payload.non_field_errors, //Django default response when bad creds are submitted
