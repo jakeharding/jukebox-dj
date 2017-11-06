@@ -55,7 +55,7 @@ export class LoginPage {
         if (this.navParams.data.next) {
           this.nav.setRoot(this.navParams.data.next);
         } else {
-          this.nav.setRoot('dashboard');
+          this.nav.setRoot('home');
         }
       }
     })

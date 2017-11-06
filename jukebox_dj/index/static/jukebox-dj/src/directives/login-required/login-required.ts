@@ -1,4 +1,4 @@
-import {Directive, EventEmitter, Output} from '@angular/core';
+import {Directive, EventEmitter} from '@angular/core';
 import { Action, Store } from "@ngrx/store";
 import { NavController, NavParams } from "ionic-angular";
 import { Observable } from "rxjs/Observable";

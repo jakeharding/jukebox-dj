@@ -1,4 +1,6 @@
-<jukebox-header (user)="user"></jukebox-header>
+<jukebox-header class="hidden-sm-down" [user]="user"></jukebox-header>
+
+<check-auth (userEvent)="userEvent($event)"></check-auth>
 
 <ion-content padding padding-top padding-top text-center>
   <ion-list>

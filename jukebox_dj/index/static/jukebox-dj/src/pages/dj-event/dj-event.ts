@@ -108,7 +108,6 @@ export class DjEventPage {
   }
 
   userEvent(user: User) {
-    console.log(user);
     this.user = user;
   }
 
