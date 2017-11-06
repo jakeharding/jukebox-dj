@@ -16,7 +16,7 @@ export class HomePage {
 
 
   constructor(public navCtrl: NavController, private eventProvider: EventProvider) {
-    eventProvider.getEvents().subscribe(events => {
+    eventProvider.getEvents({}).subscribe(events => {
       this.events = events;
     })
   }
