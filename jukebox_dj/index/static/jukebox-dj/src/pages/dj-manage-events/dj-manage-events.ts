@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { EventProvider } from "../../providers/event/event";
 import { Event } from '../../models/Event';
+import { DatePipe } from '@angular/common';
 
 
 /**
@@ -32,5 +33,4 @@ export class DjManageEventsPage {
         this.events = events;
       });
   }
-
 }

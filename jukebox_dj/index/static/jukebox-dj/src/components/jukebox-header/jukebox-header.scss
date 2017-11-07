@@ -13,4 +13,16 @@ jukebox-header {
   ion-header ion-icon.back-button-icon.icon {
     color: map-get($colors, white);
   }
+
+  @media (max-width: map-get($grid-breakpoints, lg)) {
+    .hidden-sm-down {
+      display: none !important;
+    }
+  }
+
+  @media (min-width: map-get($grid-breakpoints, lg) + 1) {
+    .hidden-md-up {
+      display: none !important;
+    }
+  }
 }

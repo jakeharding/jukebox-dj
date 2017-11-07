@@ -4,24 +4,14 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<jukebox-header class="hidden-sm-down"></jukebox-header>
-
-
-<ion-header class="hidden-md-up">
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Jukebox DJ</ion-title>
-  </ion-navbar>
-</ion-header>
+<jukebox-header></jukebox-header>
 
 <ion-content padding padding-top padding-top text-center>
   <h1>Event Manager</h1>
   <ion-list>
     <button ion-item *ngFor="let e of events" color="dark">
       <ion-label col-4> {{ e.name }}</ion-label>
-      <ion-label col-4> Created at {{ e.created_at | slice:0:10}} </ion-label>
+      <ion-label col-4> Created {{ e.created_at | date:'short' }} </ion-label>
       <button class="active" *ngIf="e.is_active" ion-button item-end></button>
       <button class="inactive" *ngIf="!e.is_active" color="danger" ion-button item-end></button>
     </button>
