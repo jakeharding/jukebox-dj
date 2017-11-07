@@ -30,8 +30,8 @@ export class RequesterPage {
   event: Event;
   requesterLists: string = "songs";
   songs: Array<Song> = [];
-  filteredSongs: Song[] = [];
   requested: SongRequest[] = [];
+  searchText: string;
 
   eventBridge: WebSocketBridge;
   eventBridgeUri: string;
@@ -69,9 +69,35 @@ export class RequesterPage {
     this.scrollCallback = this.getEventSongs.bind(this);
   }
 
+  filterSongs() {
+    // let val = event.target.value;
+    console.log(this.searchText);
+    if (this.searchText.length >= 2) {
+      this.songProvider.getSongs({ search: this.searchText, event: this.event.uuid }).subscribe( (songs) =>{
+        this.songs = songs;
+      });
+    }
+  }
+
+  clearFilteredSongs () {
+    this.offset = 0;
+    this.loadMore = true;
+    this.searchText = null;
+    this.getEventSongs().subscribe((songs => {this.songs = songs}));
+  }
+
   getEventSongs() {
     if (this.loadMore) {
-      return this.songProvider.getSongs({ event: this.navParams.data.uuid, limit: LIMIT, offset: this.offset }).do(this.processData);
+      let queryParams = {
+        event: this.navParams.data.uuid,
+        limit: LIMIT,
+        offset: this.offset
+      };
+
+      if (this.searchText) {
+        queryParams['search'] = this.searchText;
+      }
+      return this.songProvider.getSongs(queryParams).do(this.processData);
     }
     return Observable.empty();
   }
@@ -83,14 +109,9 @@ export class RequesterPage {
     }
     this.offset += LIMIT;
     this.songs = this.songs.concat(songs);
-  }
+  };
 
   removeSong(uuid: string) {
-    // this.filteredSongs = this.filteredSongs.filter((underTest: Song) => {
-    //   return uuid !== underTest.uuid;
-    // });
-
-    // Overall songs are filtered separately in case user has searched for song
     this.songs = this.songs.filter((underTest: Song) => {
       return uuid !== underTest.uuid;
     });
@@ -114,13 +135,8 @@ export class RequesterPage {
     this.requesterBridge = new WebSocketBridge();
     this.requesterBridge.connect(this.requesterBridgeUri);
 
-
-
     this.requesterBridge.listen((songRequest: SongRequest) => {
       let toastClass, toastMsg;
-
-      //Remove any song request from available songs
-      this.removeSong(songRequest.uuid);
 
       switch (songRequest.status) {
         case SongRequestStatus.DENIED:
@@ -149,18 +165,6 @@ export class RequesterPage {
       });
       toast.present();
     });
-  }
-
-  filterSongs(event: any) {
-    //let val = event.target.value;
-
-    // if (val) {
-    //   this.filteredSongs = this.filteredSongs.filter((song: Song) => {
-    //     return song.title.toLowerCase().includes(val.toLowerCase()) || song.artist.toLowerCase().includes(val.toLowerCase());
-    //   })
-    // } else if (!val || val.length === 0) {
-    //   this.filteredSongs = this.songs;
-    // }
   }
 
   createRequest(song: Song) {

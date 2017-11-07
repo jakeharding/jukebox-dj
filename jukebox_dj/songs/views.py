@@ -11,6 +11,7 @@ Will hold the ViewSets and Serializers for songs.
 from datetime import datetime, timedelta
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
+from rest_framework.filters import SearchFilter
 
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -115,7 +116,8 @@ class SongViewset(ModelViewSet):
     queryset = Song.objects.all()
     serializer_class = SongSerializer
     lookup_field = 'uuid'
-    filter_backends = (SongEventFilter, DjangoFilterBackend)
+    filter_backends = (SongEventFilter, SearchFilter)
+    search_fields = ['title', 'artist']
 
     def get_queryset(self):
         qs = super().get_queryset()
