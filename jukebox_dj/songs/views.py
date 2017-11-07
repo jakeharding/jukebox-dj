@@ -8,7 +8,7 @@ Author(s) of this file:
 
 Will hold the ViewSets and Serializers for songs.
 """
-import datetime
+from datetime import datetime, timedelta
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
 
@@ -94,7 +94,7 @@ class SongRequestViewset(ModelViewSet):
 
         if SongRequest.objects.filter(
                         Q(song__uuid=song_uuid) &
-                        Q(created_at__gte=datetime.datetime.utcnow() - datetime.timedelta(hours=1))).exists():
+                        Q(created_at__gte=datetime.utcnow() - timedelta(hours=1))).exists():
             return Response(status=409, data={
                 "error": "Request for this song has been made within the last hour.",
                 "song_uuid": song_uuid
@@ -116,3 +116,9 @@ class SongViewset(ModelViewSet):
     serializer_class = SongSerializer
     lookup_field = 'uuid'
     filter_backends = (SongEventFilter, DjangoFilterBackend)
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        one_hour_ago = datetime.utcnow() - timedelta(hours=1)
+        return qs.exclude(
+            song_requests__created_at__gte=one_hour_ago)

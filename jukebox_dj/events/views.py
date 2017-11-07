@@ -27,17 +27,6 @@ class EventSerializer(ModelSerializer):
         slug_field='dj_id'
     )
 
-    song_lists = SongListSerializer(many=True, read_only=True)
-    song_requests = NestedSongRequestSerializer(many=True, read_only=True)
-    songs = SerializerMethodField()
-
-    def get_songs(self, event):
-        one_hour_ago = datetime.utcnow() - timedelta(hours=1)
-        song_list_ids = event.song_lists.values_list('id', flat=True)
-        return SongSerializer(Song.objects.filter(
-            song_lists__id__in=song_list_ids).exclude(
-            song_requests__created_at__gte=one_hour_ago).distinct(), many=True).data
-
     class Meta:
         model = Event
         exclude = ['id', ]
