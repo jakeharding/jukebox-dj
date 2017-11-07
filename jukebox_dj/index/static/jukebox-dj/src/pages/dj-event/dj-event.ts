@@ -78,6 +78,7 @@ export class DjEventPage {
     this.eventProvider.getEvent(this.event.uuid)
       .subscribe(event => {
         this.event = event;
+
         for (let request of event.song_requests) {
           if(!this.requesterBridges[request.cookie]) {
             let newBridge = new WebSocketBridge();

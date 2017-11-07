@@ -75,6 +75,11 @@ class TestEventApi(APITestCase, RestApiTestCaseMixin):
         RestApiTestCaseMixin.setUp(self)
         self.test_object = Event.objects.first()
 
+    def test_get(self):
+        r = super().test_get()
+        self.assertIsNotNone(r.data.get("song_requests"), r.data)
+        self.assertTrue(len(r.data.get('song_requests')) > 0, r.data.get('song_requests'))
+
     def test_create(self):
 
         new_obj_data = {

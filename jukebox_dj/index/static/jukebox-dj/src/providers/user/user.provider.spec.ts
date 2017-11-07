@@ -40,7 +40,7 @@ describe("User Provider", () => {
       spyOn(authProvider, "isLoggedIn").and.returnValue(true);
       spyOn(http, "get");
       userProvider.get();
-      expect(http.get).toHaveBeenCalledWith(jasmine.stringMatching(/api\/\w+\/users\/me/));
+      expect(http.get).toHaveBeenCalledWith(jasmine.stringMatching(/api\/\w+\/djs\/me/));
     });
   });
 });

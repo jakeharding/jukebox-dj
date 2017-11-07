@@ -27,6 +27,8 @@ class EventSerializer(ModelSerializer):
         slug_field='dj_id'
     )
 
+    song_requests = NestedSongRequestSerializer(many=True, read_only=True)
+
     class Meta:
         model = Event
         exclude = ['id', ]
