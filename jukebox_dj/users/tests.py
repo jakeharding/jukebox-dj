@@ -32,19 +32,21 @@ class TestDjApi(APITestCase, RestApiTestCaseMixin):
     fixtures = ['jukebox_dj/users/fixtures/users.json']
 
     def setUp(self):
+        RestApiTestCaseMixin.setUp(self)
         self.test_object = DjProfile.objects.first()
 
     def test_get_me(self):
-        # Not logged in should get a 404
-        r = self.client.get("/api/dev/djs/me")
-        self.assertTrue(status.is_client_error(r.status_code), r.status_code)
-
         # Logged in should return user info
         self.client.login(username="admin", password="admin")
         r = self.client.get("/api/dev/djs/me")
         user = JukeboxUser.objects.get(username="admin")
         self.assertTrue(status.is_success(r.status_code), r.status_code)
         self.assertEqual(r.data.get('dj_id'), user.djprofile.dj_id, r.data)
+
+        # Not logged in should get a 404
+        self.client.logout()
+        r = self.client.get("/api/dev/djs/me")
+        self.assertTrue(status.is_client_error(r.status_code), r.status_code)
 
     def test_get(self):
         r = self.client.get(reverse(self.detail_url_name, args=[self.test_object.dj_id]))

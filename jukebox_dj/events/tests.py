@@ -14,6 +14,7 @@ from rest_framework.test import APITestCase
 from rest_framework.reverse import reverse
 
 from jukebox_dj.events.models import Event
+from jukebox_dj.users.models import JukeboxUser
 
 
 class RestApiTestException(Exception):
@@ -31,6 +32,10 @@ class RestApiTestCaseMixin:
     detail_url_name = ""
     model_under_test = None
     test_object = None
+
+    def setUp(self):
+        user = JukeboxUser.objects.get(username="admin")
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + user.auth_token.key)
 
     def test_list(self):
         r = self.client.get(reverse(self.list_url_name))
@@ -64,18 +69,14 @@ class TestEventApi(APITestCase, RestApiTestCaseMixin):
                 ]
     list_url_name = 'event-list'
     detail_url_name = 'event-detail'
+    creds = {"username": "admin", "password": "admin"}
 
     def setUp(self):
+        RestApiTestCaseMixin.setUp(self)
         self.test_object = Event.objects.first()
 
-    def test_get(self):
-        r = super().test_get()
-        self.assertIsNotNone(r.data.get('song_lists'), r.data)
-        self.assertTrue(len(r.data.get('song_lists')) > 0, r.data.get('song_lists'))
-        self.assertIsNotNone(r.data.get("song_requests"), r.data)
-        self.assertTrue(len(r.data.get('song_requests')) > 0, r.data.get('song_requests'))
-
     def test_create(self):
+
         new_obj_data = {
             "name": "A party",
             "dj": "1234"

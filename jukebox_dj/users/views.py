@@ -60,5 +60,5 @@ class DjViewSet(ModelViewSet):
             if getattr(request.user, 'djprofile', None):
                 serial = DjProfileSerializer(request.user.djprofile)
                 return Response(serial.data)
-        super().retrieve(request, *args, **kwargs)
+        return super().retrieve(request, *args, **kwargs)
 
