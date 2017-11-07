@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header class="hidden-sm-down">
   <ion-navbar>
     <ion-buttons>
       <button ion-button [navPush]="'home'" color="white">Jukebox DJ</button>
@@ -9,5 +9,14 @@
       <button ion-button text-capitalize color="white" *ngIf="user; else notLoggedIn">Logout</button>
       <ng-template #notLoggedIn><button text-capitalize ion-button>Login</button></ng-template>
     </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-header class="hidden-md-up">
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Jukebox DJ</ion-title>
   </ion-navbar>
 </ion-header>

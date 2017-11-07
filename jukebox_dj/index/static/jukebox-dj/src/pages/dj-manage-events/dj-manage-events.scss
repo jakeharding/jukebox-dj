@@ -1,0 +1,17 @@
+page-dj-manage-events {
+  .circle {
+    border-radius: 25px;
+    width: 25px;
+  }
+
+  .active {
+    @extend .circle;
+    background: radial-gradient($NAVBAR_RIGHT 25%, $NAVBAR_LEFT 75%);
+  }
+  
+  .inactive {
+    @extend .circle;
+    background: radial-gradient(#ff1919 25%, #4c0000 75%);
+    color: color($colors, danger)!important;
+  }
+}

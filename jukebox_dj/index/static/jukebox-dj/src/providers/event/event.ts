@@ -24,7 +24,7 @@ export class EventProvider {
     return this.http.post(this.url, event).map(res => res.json());
   }
 
-  getEvents(): Observable<Event[]> {
-    return this.http.get(this.url).map(res => res.json());
+  getEvents(params: any): Observable<Event[]> {
+    return this.http.get(this.url, {params}).map(res => res.json());
   }
 }

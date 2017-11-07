@@ -48,4 +48,4 @@ class EventViewSet(ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     lookup_field = 'uuid'
-    filter_fields = ('dj_id', 'is_active', 'dj__user__uuid', )
+    filter_fields = ('dj__dj_id', 'is_active', 'dj__user__uuid', )

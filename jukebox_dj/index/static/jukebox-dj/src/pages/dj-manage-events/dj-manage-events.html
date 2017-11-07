@@ -1,0 +1,19 @@
+<!--
+  Generated template for the DjManageEventsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<jukebox-header></jukebox-header>
+
+<ion-content padding padding-top padding-top text-center>
+  <h1>Event Manager</h1>
+  <ion-list>
+    <button ion-item *ngFor="let e of events" color="dark" [navPush]="'events'" [navParams]="e">
+      <ion-label col-4> {{ e.name }}</ion-label>
+      <ion-label col-4> Created {{ e.created_at | date:'short' }} </ion-label>
+      <button [ngClass]="(e.is_active) ? 'active' : 'inactive'" ion-button item-end></button>
+    </button>
+  </ion-list>
+  <button ion-item color="primary" [navPush]="'create-event'" text-center>Create Event</button>
+</ion-content>
