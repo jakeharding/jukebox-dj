@@ -25,10 +25,6 @@ export class DjManageEventsPage {
   events: Event[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private eventProvider: EventProvider) {
-      // TODO This does not update the URL and therefore going back after navigating from the homepage linked by this page causes an error
-      if (!this.navParams.data.dj_id) {
-        this.navCtrl.push('');
-      }
       this.eventProvider.getEvents({dj__dj_id: this.navParams.data.dj_id}).subscribe(events => {
         this.events = events;
       });
