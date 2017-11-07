@@ -75,19 +75,25 @@ describe("Auth Provider", () => {
 
   describe("isLoggedIn", () => {
     it('should return false if the token is not there', () =>{
-      console.log(authProvider.isLoggedIn())
+      spyOn(authProvider, "getToken").and.returnValue(null);
+
       expect(authProvider.isLoggedIn()).toBe(false);
 
-      spyOn(authProvider, "getToken").and.returnValue("A TOKEN");
+      authProvider.getToken.and.returnValue("A TOKEN");
 
       expect(authProvider.isLoggedIn()).toBe(true);
     });
   });
 
   describe('intercept', () => {
+    afterEach(() => {
+      localStorage.removeItem("djToken");
+    });
+
     it('should clone the request', () => {
       let mockReq = new HttpRequest<any>('POST, "A URL', "BODY", {});
       let mockHandler = new HttpXhrBackend({} as XhrFactory);
+      localStorage.setItem("djToken", "A token");
 
       spyOn(mockReq, 'clone').and.callThrough();
       spyOn(mockHandler, 'handle').and.callThrough();

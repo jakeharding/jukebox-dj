@@ -54,9 +54,9 @@ describe('LoginPage', () => {
         StatusBar,
         SplashScreen,
         NavController,
-        NavParams,
         AuthProvider,
         { provide: Storage, useClass: jasmine.createSpy("StorageMock", () => {}) }
+        { provide: NavParams, useClass: jasmine.createSpy("NavParams", () => {}) }
       ]
     }).compileComponents();
   }));
