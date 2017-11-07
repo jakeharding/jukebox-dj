@@ -91,16 +91,24 @@ class SongRequestViewset(ModelViewSet):
     def create(self, request, *args, **kwargs):
         """Override the create method to prevent recent requests to same song."""
 
-        song_uuid = request.data.get('song')
-
+        song = Song.objects.get(uuid=request.data.get('song'))
+        cookie = SongRequestCookie.objects.get(uuid=request.data.get('cookie'))
+        error_message = None
+        one_hour_ago = datetime.utcnow() - timedelta(hours=1)
         if SongRequest.objects.filter(
-                        Q(song__uuid=song_uuid) &
-                        Q(created_at__gte=datetime.utcnow() - timedelta(hours=1))).exists():
-            return Response(status=409, data={
-                "error": "Request for this song has been made within the last hour.",
-                "song_uuid": song_uuid
-            })
+                        Q(song=song) &
+                        Q(created_at__gte=one_hour_ago)).exists():
+            error_message = 'A request for %s has recently been made. Please try again soon.' % song.title
+        elif SongRequest.objects.filter(
+            Q(cookie=cookie) & Q(created_at__gte=one_hour_ago)
+        ).count() >= 5:
+            error_message = "You have reached the song request limit. Please try again later."
 
+        if error_message:
+            return Response(status=409, data={
+                "message": error_message,
+                "song_uuid": song.uuid
+            })
         return super(SongRequestViewset, self).create(request, args, kwargs)
 
 

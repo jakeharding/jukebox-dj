@@ -189,9 +189,8 @@ export class RequesterPage {
     }, error => {
       // Error on http request. Most likely a network connection problem
       let msg = "Unable to request a song at this time. Please check your network and try again.";
-
       if (error.status === 409) {
-        msg = `A request for ${song.title} has recently been made. Please try again soon.`;
+        msg = error.error.message;
       }
       const toast = this.toast.create({
         message: msg,
