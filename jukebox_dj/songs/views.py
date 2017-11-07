@@ -9,7 +9,6 @@ Author(s) of this file:
 Will hold the ViewSets and Serializers for songs.
 """
 import datetime
-from django_filters import Filter
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
 

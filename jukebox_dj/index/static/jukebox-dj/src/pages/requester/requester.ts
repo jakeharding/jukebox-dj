@@ -66,7 +66,6 @@ export class RequesterPage {
       this.event = event;
     });
 
-    // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
     this.scrollCallback = this.getEventSongs.bind(this);
   }
 
@@ -87,14 +86,14 @@ export class RequesterPage {
   }
 
   removeSong(uuid: string) {
-    this.filteredSongs = this.filteredSongs.filter((underTest: Song) => {
-      return uuid !== underTest.uuid;
-    });
-
-    // Overall songs are filtered separately in case user has searched for song
-    // this.songs = this.songs.filter((underTest: Song) => {
+    // this.filteredSongs = this.filteredSongs.filter((underTest: Song) => {
     //   return uuid !== underTest.uuid;
     // });
+
+    // Overall songs are filtered separately in case user has searched for song
+    this.songs = this.songs.filter((underTest: Song) => {
+      return uuid !== underTest.uuid;
+    });
   }
 
   ionViewWillLoad() {
@@ -115,8 +114,13 @@ export class RequesterPage {
     this.requesterBridge = new WebSocketBridge();
     this.requesterBridge.connect(this.requesterBridgeUri);
 
+
+
     this.requesterBridge.listen((songRequest: SongRequest) => {
       let toastClass, toastMsg;
+
+      //Remove any song request from available songs
+      this.removeSong(songRequest.uuid);
 
       switch (songRequest.status) {
         case SongRequestStatus.DENIED:
