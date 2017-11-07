@@ -37,7 +37,6 @@ class TestDjApi(APITestCase, RestApiTestCaseMixin):
 
     def test_get_me(self):
         # Logged in should return user info
-        self.client.login(username="admin", password="admin")
         r = self.client.get("/api/dev/djs/me")
         user = JukeboxUser.objects.get(username="admin")
         self.assertTrue(status.is_success(r.status_code), r.status_code)
