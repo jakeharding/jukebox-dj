@@ -65,8 +65,6 @@ export class LoginPage {
   login () {
     this.store.dispatch({type:LOGIN, payload: this.loginForm.value});
 
-    this.store.select(state=>state['auth']).subscribe(( user ) => {
-      console.log(user);
-    })
+    this.store.select(state=>state['auth']).subscribe(( user ) => {/* Noop to  trigger obeservable */})
   }
 }

@@ -28,11 +28,13 @@ export class AuthProvider implements HttpInterceptor {
               ) {}
 
   intercept (request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    request = request.clone({
-      setHeaders: {
-        Authorization: `Token ${this.getToken()}`
-      }
-    });
+    if (this.isLoggedIn()) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Token ${this.getToken()}`
+        }
+      });
+    }
     return next.handle(request);
   }
 

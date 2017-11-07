@@ -12,6 +12,8 @@ import datetime
 from django_filters import Filter
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
+
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer, SlugRelatedField, SerializerMethodField
 from rest_framework.viewsets import ModelViewSet
@@ -82,6 +84,7 @@ class StandAloneSongRequestSerializer(ModelSerializer):
 class SongRequestViewset(ModelViewSet):
     queryset = SongRequest.objects.filter()
     serializer_class = StandAloneSongRequestSerializer
+    permission_classes = [AllowAny]
     lookup_field = 'uuid'
     filter_fields = ('event__uuid', 'status', 'song__uuid', 'cookie__uuid')
 
