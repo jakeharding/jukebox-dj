@@ -70,8 +70,6 @@ export class RequesterPage {
   }
 
   filterSongs() {
-    // let val = event.target.value;
-    console.log(this.searchText);
     if (this.searchText.length >= 2) {
       this.songProvider.getSongs({ search: this.searchText, event: this.event.uuid }).subscribe( (songs) =>{
         this.songs = songs;
