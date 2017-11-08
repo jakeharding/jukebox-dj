@@ -7,7 +7,7 @@
  * Author(s) of this file:
  *   jake
  *
- * Brief description of the file.
+ * Model user. Focuses on the DJ.
  */
 
 export class User {

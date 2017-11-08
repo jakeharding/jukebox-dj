@@ -6,21 +6,21 @@ jukebox-header {
     background: linear-gradient(to right, $NAVBAR_LEFT, $NAVBAR_RIGHT);
   }
 
-  #title-button {
-    font-weight: bold;
+  ion-icon.icon {
+    color: white!important;
   }
 
   ion-header ion-icon.back-button-icon.icon {
     color: map-get($colors, white);
   }
 
-  @media (max-width: map-get($grid-breakpoints, lg)) {
+  @media (max-width: map-get($grid-breakpoints, sm)) {
     .hidden-sm-down {
       display: none !important;
     }
   }
 
-  @media (min-width: map-get($grid-breakpoints, lg) + 1) {
+  @media (min-width: map-get($grid-breakpoints, sm) + 1) {
     .hidden-md-up {
       display: none !important;
     }
