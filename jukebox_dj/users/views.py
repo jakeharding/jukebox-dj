@@ -47,7 +47,7 @@ class DjProfileSerializer(ModelSerializer):
 
     class Meta:
         model = DjProfile
-        exclude = ["user"]
+        exclude = ["user", "id"]
 
 
 class DjViewSet(ModelViewSet):

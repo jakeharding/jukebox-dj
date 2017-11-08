@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {User} from "../../models/User";
 
 /**
  * Generated class for the DjCreateEventPage page.
@@ -18,11 +19,14 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class DjCreateEventPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  user: User;
+  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+
+  userEvent (user:User) {
+    this.user = user;
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad DjCreateEventPage');
   }
 
 }

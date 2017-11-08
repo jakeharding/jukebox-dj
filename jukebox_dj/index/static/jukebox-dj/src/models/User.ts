@@ -11,13 +11,9 @@
  */
 
 export class User {
-  public username: string;
-  public displayName: string;
-  public firstName: string;
-  public lastName: string;
+  bio:string;
+  display_name: string;
+  dj_id: string;
 
-  constructor (username:string, password: string, displayName?: string) {
-    this.username = username;
-    this.displayName = displayName;
-  }
+  constructor (username:string, password: string, displayName?: string) {}
 }
