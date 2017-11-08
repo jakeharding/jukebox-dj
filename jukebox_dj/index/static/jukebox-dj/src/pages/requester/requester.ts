@@ -51,13 +51,6 @@ export class RequesterPage {
     private eventProvider: EventProvider, private toast: ToastController) {
 
     this.eventBridgeUri = `/events/${this.navParams.data.uuid}`;
-    this.eventBridge = new WebSocketBridge();
-    this.eventBridge.connect(this.eventBridgeUri);
-    this.eventBridge.listen((songRequest: SongRequest) => {
-      // Listen on this bridge to remove songs from songs available for request.
-      this.removeSong(songRequest.song.uuid);
-    });
-
     this.offset = 0;
     this.loadMore = true;
 
@@ -129,6 +122,15 @@ export class RequesterPage {
     this.createRequesterBridge();
   }
 
+  ionViewWillEnter () {
+    this.eventBridge = new WebSocketBridge();
+    this.eventBridge.connect(this.eventBridgeUri);
+    this.eventBridge.listen((songRequest: SongRequest) => {
+      // Listen on this bridge to remove songs from songs available for request.
+      this.removeSong(songRequest.song.uuid);
+    });
+  }
+
   createRequesterBridge() {
     this.requesterBridge = new WebSocketBridge();
     this.requesterBridge.connect(this.requesterBridgeUri);
@@ -170,6 +172,7 @@ export class RequesterPage {
     this.reqProvider.create(req).subscribe((request: SongRequest) => {
 
       request.song = song;
+      this.removeSong(song.uuid);
 
       //Success on http request. Update dj and other requesters and open channel with session key.
       // This will also update this requester's list

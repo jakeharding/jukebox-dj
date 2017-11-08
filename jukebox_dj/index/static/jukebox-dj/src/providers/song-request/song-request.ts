@@ -3,6 +3,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import {SongRequest, SongRequestStatus} from "../../models/SongRequest";
 import {Observable} from "rxjs/Observable";
+import {BaseProvider} from "../BaseProvider";
 
 /*
   Generated class for the SongRequestProvider provider.
@@ -11,11 +12,11 @@ import {Observable} from "rxjs/Observable";
   for more info on providers and Angular DI.
 */
 @Injectable()
-export class SongRequestProvider {
+export class SongRequestProvider extends BaseProvider {
 
   uri: string = '/api/dev/song-requests';
 
-  constructor(public http: HttpClient) {}
+  constructor(public http: HttpClient) { super(); }
 
   create(request: SongRequest): Observable<SongRequest>{
     return this.http.post(this.uri, request);
@@ -30,12 +31,7 @@ export class SongRequestProvider {
   }
 
   list(paramsObj:any) {
-    // HttpClient only accepts HttpParams. Github says This is fixed in Angular 5.
-    let params = new HttpParams();
-    Object.keys(paramsObj).forEach((k) => {
-      params = params.append(k, paramsObj[k]);
-    });
-
+    let params = this.buildQueryParams(paramsObj);
     return this.http.get(this.uri, {params});
   }
 }
