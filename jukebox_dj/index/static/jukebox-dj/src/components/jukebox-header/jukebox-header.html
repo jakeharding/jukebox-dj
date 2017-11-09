@@ -1,22 +1,28 @@
-<ion-header class="hidden-sm-down">
+<ion-header>
   <ion-navbar>
+
     <ion-buttons>
-      <button ion-button [navPush]="'home'" color="white">Jukebox DJ</button>
+
+      <ion-title class="hidden-sm-down" [navPush]="'home'">Jukebox DJ</ion-title>
+      <ion-title class="hidden-md-up" [navPush]="'home'" text-center>Jukebox DJ</ion-title>
     </ion-buttons>
 
     <ion-buttons end>
-      <button ion-button text-capitalize color="white" *ngIf="user">{{ user.djprofile.display_name }}</button>
-      <button ion-button text-capitalize color="white" *ngIf="user; else notLoggedIn">Logout</button>
-      <ng-template #notLoggedIn><button text-capitalize ion-button>Login</button></ng-template>
+
+      <button class="hidden-sm-down" ion-button text-capitalize color="white" *ngIf="user">
+        <ion-title>{{ user.display_name }}</ion-title>
+      </button>
+
+      <button class="hidden-sm-down" (click)="logout()" ion-button text-capitalize color="white" *ngIf="user; else notLoggedIn">
+        <ion-title>Logout</ion-title>
+      </button>
+      <ng-template #notLoggedIn><button class="hidden-sm-down" text-capitalize ion-button (click)="goToLogin()">Login</button></ng-template>
+
+      <button ion-button class="hidden-md-up" menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-header class="hidden-md-up">
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Jukebox DJ</ion-title>
-  </ion-navbar>
-</ion-header>

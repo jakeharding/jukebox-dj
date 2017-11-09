@@ -4,18 +4,12 @@ page-dj-event {
       min-height: 10px;
       max-height: 200px;
     }
-    .hidden-sm-down {
-      display: none !important;
-    }
   }
 
   @media (min-width: map-get($grid-breakpoints, lg) + 1) {
     .request-container {
       min-height: 10px;
       max-height: 60vh;
-    }
-    .hidden-md-up {
-      display: none !important;
     }
   }
 

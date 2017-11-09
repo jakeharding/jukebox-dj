@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+
 import { EventProvider } from "../../providers/event/event";
 import { Event } from '../../models/Event';
+import {User} from "../../models/User";
+
 
 /**
  * Generated class for the DjCreateEventPage page.
@@ -26,9 +29,13 @@ export class DjCreateEventPage {
 
   event: Event;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  user: User;
+  constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
+  userEvent (user:User) {
+    this.user = user;
+  }
+  
   verifyInput(eventName: string) {
     if (eventName == '') {
       this.eventNameCorrect = false;
@@ -38,7 +45,6 @@ export class DjCreateEventPage {
   }
 
   createEvent(event: Event) {
-
   }
 
 }

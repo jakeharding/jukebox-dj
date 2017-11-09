@@ -30,8 +30,8 @@ export class RequesterPage {
   event: Event;
   requesterLists: string = "songs";
   songs: Array<Song> = [];
-  filteredSongs: Song[] = [];
   requested: SongRequest[] = [];
+  searchText: string;
 
   eventBridge: WebSocketBridge;
   eventBridgeUri: string;
@@ -51,13 +51,6 @@ export class RequesterPage {
     private eventProvider: EventProvider, private toast: ToastController) {
 
     this.eventBridgeUri = `/events/${this.navParams.data.uuid}`;
-    this.eventBridge = new WebSocketBridge();
-    this.eventBridge.connect(this.eventBridgeUri);
-    this.eventBridge.listen((songRequest: SongRequest) => {
-      // Listen on this bridge to remove songs from songs available for request.
-      this.removeSong(songRequest.song.uuid);
-    });
-
     this.offset = 0;
     this.loadMore = true;
 
@@ -66,13 +59,36 @@ export class RequesterPage {
       this.event = event;
     });
 
-    // TODO Index page may get the event and pass event data to this page. Add condition when index page is ready.
     this.scrollCallback = this.getEventSongs.bind(this);
+  }
+
+  filterSongs() {
+    if (this.searchText.length >= 2) {
+      this.songProvider.getSongs({ search: this.searchText, event: this.event.uuid }).subscribe( (songs) =>{
+        this.songs = songs;
+      });
+    }
+  }
+
+  clearFilteredSongs () {
+    this.offset = 0;
+    this.loadMore = true;
+    this.searchText = null;
+    this.getEventSongs().subscribe((songs => {this.songs = songs}));
   }
 
   getEventSongs() {
     if (this.loadMore) {
-      return this.songProvider.getSongs({ event: this.navParams.data.uuid, limit: LIMIT, offset: this.offset }).do(this.processData);
+      let queryParams = {
+        event: this.navParams.data.uuid,
+        limit: LIMIT,
+        offset: this.offset
+      };
+
+      if (this.searchText) {
+        queryParams['search'] = this.searchText;
+      }
+      return this.songProvider.getSongs(queryParams).do(this.processData);
     }
     return Observable.empty();
   }
@@ -84,17 +100,12 @@ export class RequesterPage {
     }
     this.offset += LIMIT;
     this.songs = this.songs.concat(songs);
-  }
+  };
 
   removeSong(uuid: string) {
-    this.filteredSongs = this.filteredSongs.filter((underTest: Song) => {
+    this.songs = this.songs.filter((underTest: Song) => {
       return uuid !== underTest.uuid;
     });
-
-    // Overall songs are filtered separately in case user has searched for song
-    // this.songs = this.songs.filter((underTest: Song) => {
-    //   return uuid !== underTest.uuid;
-    // });
   }
 
   ionViewWillLoad() {
@@ -103,12 +114,21 @@ export class RequesterPage {
     }).split("=")[1];
 
     this.reqProvider.list({ cookie__uuid: this.requesterCookie, event__uuid: this.navParams.data.uuid })
-      .subscribe(songRequests => {
+      .subscribe((songRequests: SongRequest[]) => {
         this.requested = songRequests;
       });
 
     this.requesterBridgeUri = `${this.eventBridgeUri}/requester/${this.requesterCookie}`;
     this.createRequesterBridge();
+  }
+
+  ionViewWillEnter () {
+    this.eventBridge = new WebSocketBridge();
+    this.eventBridge.connect(this.eventBridgeUri);
+    this.eventBridge.listen((songRequest: SongRequest) => {
+      // Listen on this bridge to remove songs from songs available for request.
+      this.removeSong(songRequest.song.uuid);
+    });
   }
 
   createRequesterBridge() {
@@ -147,23 +167,12 @@ export class RequesterPage {
     });
   }
 
-  filterSongs(event: any) {
-    //let val = event.target.value;
-
-    // if (val) {
-    //   this.filteredSongs = this.filteredSongs.filter((song: Song) => {
-    //     return song.title.toLowerCase().includes(val.toLowerCase()) || song.artist.toLowerCase().includes(val.toLowerCase());
-    //   })
-    // } else if (!val || val.length === 0) {
-    //   this.filteredSongs = this.songs;
-    // }
-  }
-
   createRequest(song: Song) {
     let req = new SongRequest(song.uuid, this.event.uuid, this.requesterCookie);
     this.reqProvider.create(req).subscribe((request: SongRequest) => {
 
       request.song = song;
+      this.removeSong(song.uuid);
 
       //Success on http request. Update dj and other requesters and open channel with session key.
       // This will also update this requester's list
@@ -183,9 +192,8 @@ export class RequesterPage {
     }, error => {
       // Error on http request. Most likely a network connection problem
       let msg = "Unable to request a song at this time. Please check your network and try again.";
-
       if (error.status === 409) {
-        msg = `A request for ${song.title} has recently been made. Please try again soon.`;
+        msg = error.error.message;
       }
       const toast = this.toast.create({
         message: msg,

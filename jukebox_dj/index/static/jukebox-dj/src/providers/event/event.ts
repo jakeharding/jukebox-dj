@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import 'rxjs/add/operator/map';
 
 import { Event } from '../../models/Event';
 import {Observable} from "rxjs/Observable";
+import {BaseProvider} from "../BaseProvider";
 
 /*
   Generated class for the EventProvider provider.
@@ -12,19 +13,21 @@ import {Observable} from "rxjs/Observable";
   for more info on providers and Angular DI.
 */
 @Injectable()
-export class EventProvider {
+export class EventProvider extends BaseProvider {
   url:string = '/api/dev/events';
-  constructor(public http: Http) {}
+  constructor(public http: HttpClient) { super(); }
 
   getEvent(uuid:string): Observable<Event> {
-    return this.http.get(`${this.url}/${uuid}`).map(res => res.json());
+    return this.http.get(`${this.url}/${uuid}`);
   }
 
   createEvent(event: Event): Observable<Event>  {
-    return this.http.post(this.url, event).map(res => res.json());
+    return this.http.post(this.url, event);
   }
 
-  getEvents(params: any): Observable<Event[]> {
-    return this.http.get(this.url, {params}).map(res => res.json());
+  getEvents(paramsObj:any): Observable<Event[]> {
+    let params: HttpParams;
+    params = this.buildQueryParams(paramsObj);
+    return this.http.get(this.url, { params });
   }
 }

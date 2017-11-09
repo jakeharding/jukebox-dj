@@ -1,17 +1,17 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
-import { Http } from '@angular/http';
-import { DragulaService } from 'ng2-dragula/components/dragula.provider'
+import {Component} from '@angular/core';
+import {IonicPage, NavParams, ToastController} from 'ionic-angular';
+import { DragulaService } from 'ng2-dragula/components/dragula.provider';
 import 'rxjs/add/operator/map';
 
 import { SongRequest } from '../../models/SongRequest';
 import { SongRequestStatus } from '../../models/SongRequest';
-import { SongRequestProvider } from "../../providers/song-request/song-request"
-import { EventProvider } from '../../providers/event/event'
-
+import { SongRequestProvider } from "../../providers/song-request/song-request";
+import { EventProvider } from '../../providers/event/event';
+import { Event } from '../../models/Event';
 
 import  { WebSocketBridge } from 'django-channels';
-import  { Song } from "../../models/Song";
+import {User} from "../../models/User";
+
 
 /**
  * Generated class for the DjEventPage page.
@@ -29,11 +29,12 @@ import  { Song } from "../../models/Song";
   templateUrl: 'dj-event.html',
 })
 export class DjEventPage {
-  event: any; //TODO Model event into a class and remove any
-  queuedRequests: any[] = []; // TODO Model songs and song requests and remove any
-  deniedRequests: any[] = []; // TODO Model songs and song requests and remove any
-  playedRequests: any[] = []; // TODO Model songs and song requests and remove any
-  requestedRequests: any[] = []; // TODO Model songs and song requests and remove any
+  user: User;
+  event: Event;
+  queuedRequests: SongRequest[] = [];
+  deniedRequests: SongRequest[] = [];
+  playedRequests: SongRequest[] = [];
+  requestedRequests: SongRequest[] = [];
 
   eventBridge: WebSocketBridge;
   eventBridgeUri: string;
@@ -42,13 +43,11 @@ export class DjEventPage {
 
 
   constructor(
-    public navCtrl: NavController,
     public navParams: NavParams,
-    private http: Http,
     private dragulaService: DragulaService,
     private reqProvider: SongRequestProvider,
     private eventProvider: EventProvider,
-    private toast: ToastController
+    private toast: ToastController,
   ) {
     this.event = navParams.data;
     this.eventBridgeUri = `/events/${this.event.uuid}`;
@@ -76,10 +75,10 @@ export class DjEventPage {
 
     // TODO MUST - Hold the api version (dev in the url) in an environment specific way
     // TODO Stretch - Use the ngrx store to store the state of objects and handle requests
-    // this.http.get(`/api/dev/events/${this.event.uuid }`)
     this.eventProvider.getEvent(this.event.uuid)
       .subscribe(event => {
         this.event = event;
+
         for (let request of event.song_requests) {
           if(!this.requesterBridges[request.cookie]) {
             let newBridge = new WebSocketBridge();
@@ -107,6 +106,10 @@ export class DjEventPage {
     dragulaService.drop.subscribe((value) => {
       this.onDrop(value.slice(1));
     });
+  }
+
+  userEvent(user: User) {
+    this.user = user;
   }
 
   private onDrop(args) {
