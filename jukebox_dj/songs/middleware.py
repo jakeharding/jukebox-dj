@@ -21,7 +21,7 @@ class SongRequestMiddleware(object):
     def __init__(self, get_response):
         self.get_response = get_response
 
-    def __call__(self, request: HttpRequest, *args, **kwargs):
+    def __call__(self, request, *args, **kwargs):
         cookie = request.COOKIES.get(self.COOKIE_STRING)
         if not cookie:
             new_cookie = SongRequestCookie.objects.create()
@@ -30,6 +30,6 @@ class SongRequestMiddleware(object):
                 new_cookie.save()
             cookie = new_cookie.uuid
 
-        response: HttpResponse = self.get_response(request)
+        response = self.get_response(request)
         response.set_cookie(self.COOKIE_STRING, cookie, max_age=self.MAX_AGE)
         return response
