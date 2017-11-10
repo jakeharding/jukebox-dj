@@ -8,10 +8,12 @@ Author(s) of this file:
 
 Will hold the ViewSets and Serializers for songs.
 """
-import datetime
-from django_filters import Filter
+from datetime import datetime, timedelta
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
+from rest_framework.filters import SearchFilter
+
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer, SlugRelatedField, SerializerMethodField
 from rest_framework.viewsets import ModelViewSet
@@ -82,23 +84,33 @@ class StandAloneSongRequestSerializer(ModelSerializer):
 class SongRequestViewset(ModelViewSet):
     queryset = SongRequest.objects.filter()
     serializer_class = StandAloneSongRequestSerializer
+    permission_classes = [AllowAny]
     lookup_field = 'uuid'
     filter_fields = ('event__uuid', 'status', 'song__uuid', 'cookie__uuid')
 
     def create(self, request, *args, **kwargs):
         """Override the create method to prevent recent requests to same song."""
 
-        song_uuid = request.data.get('song')
-
+        song = Song.objects.get(uuid=request.data.get('song'))
+        cookie = SongRequestCookie.objects.get(uuid=request.data.get('cookie'))
+        error_message = None
+        one_hour_ago = datetime.utcnow() - timedelta(hours=1)
         if SongRequest.objects.filter(
-                        Q(song__uuid=song_uuid) &
-                        Q(created_at__gte=datetime.datetime.utcnow() - datetime.timedelta(hours=1))).exists():
-            return Response(status=409, data={
-                "error": "Request for this song has been made within the last hour.",
-                "song_uuid": song_uuid
-            })
+                        Q(song=song) &
+                        Q(created_at__gte=one_hour_ago)).exists():
+            error_message = 'A request for %s has recently been made. Please try again soon.' % song.title
+        elif SongRequest.objects.filter(
+            Q(cookie=cookie) & Q(created_at__gte=one_hour_ago)
+        ).count() >= 5:
+            error_message = "You have reached the song request limit. Please try again later."
 
+        if error_message:
+            return Response(status=409, data={
+                "message": error_message,
+                "song_uuid": song.uuid
+            })
         return super(SongRequestViewset, self).create(request, args, kwargs)
+
 
 class SongEventFilter(DjangoFilterBackend):
     def filter_queryset(self, request, qs, view):
@@ -107,8 +119,16 @@ class SongEventFilter(DjangoFilterBackend):
             return qs
         return qs.filter(song_lists__events__uuid=request.query_params.get("event"))
 
+
 class SongViewset(ModelViewSet):
     queryset = Song.objects.all()
     serializer_class = SongSerializer
     lookup_field = 'uuid'
-    filter_backends = (SongEventFilter, DjangoFilterBackend)
+    filter_backends = (SongEventFilter, SearchFilter)
+    search_fields = ['title', 'artist']
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        one_hour_ago = datetime.utcnow() - timedelta(hours=1)
+        return qs.exclude(
+            song_requests__created_at__gte=one_hour_ago)

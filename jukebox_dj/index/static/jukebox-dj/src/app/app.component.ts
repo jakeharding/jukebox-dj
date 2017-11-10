@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import {AuthProvider} from "../providers/auth/auth";
 
 @Component({
   templateUrl: 'app.html'
@@ -11,13 +12,21 @@ export class MyApp {
   rootPage:string = 'home';
   pages: Array<{title: string, link: string}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
+              private authProvider: AuthProvider) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', link: 'home'},
     ];
+    let authLink;
+    if ( this.authProvider.isLoggedIn()) {
+      authLink = { title: "Logout", link: 'logout' };
+    } else {
+      authLink = { title: "Login", link: 'login' };
+    }
+    this.pages.push(authLink);
 
   }
 

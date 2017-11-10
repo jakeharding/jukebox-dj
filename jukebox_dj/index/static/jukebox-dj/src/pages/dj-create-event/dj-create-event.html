@@ -4,8 +4,9 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
-<jukebox-header></jukebox-header>
+<jukebox-header [user]="user"></jukebox-header>
 
+<login-required (userEvent)="userEvent($event)"></login-required>
 
 <ion-content padding>
 

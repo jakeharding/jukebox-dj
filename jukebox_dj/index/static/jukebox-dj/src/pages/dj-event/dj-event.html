@@ -5,7 +5,9 @@
   Ionic pages and navigation.
 -->
 
-<jukebox-header></jukebox-header>
+<jukebox-header [user]="user"></jukebox-header>
+
+<login-required (userEvent)="userEvent($event)"></login-required>
 
 <ion-content padding>
   <ion-grid>

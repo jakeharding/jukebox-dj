@@ -4,8 +4,12 @@ import { IonicModule } from 'ionic-angular';
 import { JukeboxHeaderComponent } from './jukebox-header/jukebox-header';
 
 @NgModule({
-	declarations: [JukeboxHeaderComponent],
+	declarations: [
+	  JukeboxHeaderComponent
+  ],
 	imports: [IonicModule, CommonModule],
-	exports: [JukeboxHeaderComponent]
+	exports: [
+	  JukeboxHeaderComponent
+  ]
 })
 export class ComponentsModule {}
