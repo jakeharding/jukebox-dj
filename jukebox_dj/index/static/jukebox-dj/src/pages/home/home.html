@@ -1,9 +1,37 @@
-<jukebox-header [user]="user"></jukebox-header>
+<jukebox-header></jukebox-header>
 
-<check-auth (userEvent)="userEvent($event)"></check-auth>
+<!--ion-content padding padding-top padding-top text-center>
+    <ion-input type="text" maxlength="4" placeholder="Event Pin"> </ion-input>
 
-<ion-content padding padding-top padding-top text-center>
-  <ion-list>
-    <button ion-item *ngFor="let e of events" [navPush]="'events'" [navParams]="e">Start {{ e.name }}</button>
-  </ion-list>
+    <!--ideas//button ion-button *ngFor="let e of events" [navPush]="events" [navParams]="e">Start {{ e.name }}</button-->
+    <!--working// button ion-item *ngFor="let e of events" [navPush]="'events'" [navParams]="e">Start {{ e.name }}</button-->
+<ion-content padding-top>
+  <ion-card>
+      <ion-card-content>
+        <ion-grid>
+            <ion-row>
+                <ion-col text-center>
+                    <h1> Welcome to Jukebox DJ </h1>
+                    <h1> Enter your 4 digit pin to continue </h1>
+                </ion-col>
+            </ion-row>
+            <ion-row justify-content-center>
+                <ion-col col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4>
+                    <ion-item>
+                        <ion-input text-center [(ngModel)]="djId" type="text" maxlength="4" placeholder="Event Pin"> </ion-input>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row justify-content-center>
+                <ion-col>
+                    <ion-item text-center>
+                        <button ion-button small (click)="navigate()">Enter</button>
+                        <!--button ion-button *ngFor="let e of events" [navPush]="events" [navParams]="e">Start {{ e.name }}</button-->
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+
+        </ion-grid>
+      </ion-card-content>
+  </ion-card>
 </ion-content>
