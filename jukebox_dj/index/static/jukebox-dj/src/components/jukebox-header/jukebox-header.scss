@@ -14,18 +14,6 @@ jukebox-header {
     color: map-get($colors, white);
   }
 
-  @media (max-width: map-get($grid-breakpoints, sm)) {
-    .hidden-sm-down {
-      display: none !important;
-    }
-  }
-
-  @media (min-width: map-get($grid-breakpoints, sm) + 1) {
-    .hidden-md-up {
-      display: none !important;
-    }
-  }
-
   .back-button {
     display: inherit;
     visibility: hidden;
