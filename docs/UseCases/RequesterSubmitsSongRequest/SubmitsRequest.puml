@@ -1,0 +1,12 @@
+@startuml
+:Requester: as R
+(Connects to Active Event) as CONN
+(Request Submits Request to DJ) as REQ
+(Song Request Submitted) as SUB
+
+R -> CONN
+
+CONN -> REQ : <<includes>>
+REQ --> SUB
+
+@enduml
