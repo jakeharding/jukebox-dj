@@ -1,0 +1,13 @@
+@startuml
+:DJ: as DJ
+(Login) as L
+(Create Event) as CREATE
+(Changes Event Info) as CHANGE
+(Event Info Updated) as UPDATED
+
+DJ -> L
+L -> CREATE: <<includes>>
+CREATE -> CHANGE: <<extends>>
+CHANGE -> UPDATED
+
+@enduml
