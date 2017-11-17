@@ -2,11 +2,12 @@
 :DJ: as DJ
 (Login) as L
 (Enter Event Info) as INFO
-(Taken to Dashboard) as DASH
+(Event is created) as EVENT
 
 DJ -> L
 
 L -> INFO: <<includes>>
 
+INFO -> EVENT
 
 @enduml
