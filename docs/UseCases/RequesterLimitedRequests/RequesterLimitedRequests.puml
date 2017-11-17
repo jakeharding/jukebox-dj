@@ -1,0 +1,19 @@
+@startuml
+:Requester: as R
+(Connects to Active Event) as CONN
+(Requester Submits Request to DJ) as REQ
+(<= 5 Requests) as NOTLIMITED
+(> 5 Requests) as LIMITED
+(Song Request Invalid) as INVALID
+(Song Request Valid) as VALID
+
+R -> CONN
+
+CONN .> REQ : <<includes>>
+REQ ..> LIMITED : <<includes>>
+LIMITED ..> INVALID
+REQ --> NOTLIMITED : <<includes>>
+NOTLIMITED --> VALID
+
+
+@enduml
