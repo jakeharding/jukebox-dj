@@ -28,23 +28,24 @@ export class DjCreateEventPage {
   eventNameCorrect: boolean = true;
 
   event: Event;
-
   user: User;
   constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
   userEvent (user:User) {
     this.user = user;
   }
-  
+
   verifyInput(eventName: string) {
     if (eventName == '') {
       this.eventNameCorrect = false;
       return;
     }
-    this.eventNameCorrect = true;
+    this.createEvent();
   }
 
-  createEvent(event: Event) {
+  createEvent() {
+    this.event.name = this.eventName;
+    console.log(this.event);
   }
 
 }
