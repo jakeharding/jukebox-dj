@@ -7,8 +7,9 @@
 
 DJ -> L
 
-L -> E: <<includes>>
+L .> E: <<includes>>
+E .> A: : <<extends>>
+A -> EVENT
 
-E -> EVENT: <<extends>>
 
 @enduml
