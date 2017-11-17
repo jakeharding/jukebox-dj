@@ -17,13 +17,6 @@ export const RECEIVE_TOKEN = '[Token] Receive';
 export const LOGIN = '[Auth] Login';
 export const LOGIN_FAIL = '[Auth] Login Fail';
 
-// export class AuthAction implements Action {
-//   readonly type;
-//   payload: any;
-//   user: User;
-//   constructor(public payload: any) {}
-// }
-
 export class GetAuthAction implements Action {
   readonly type = GET_AUTH;
   constructor(public payload: any) {}

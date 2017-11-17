@@ -16,7 +16,11 @@
       <button class="hidden-sm-down" (click)="logout()" ion-button text-capitalize color="white" *ngIf="user; else notLoggedIn">
         <ion-title>Logout</ion-title>
       </button>
-      <ng-template #notLoggedIn><button class="hidden-sm-down" text-capitalize ion-button (click)="goToLogin()">Login</button></ng-template>
+      <ng-template #notLoggedIn>
+        <button class="hidden-sm-down" text-capitalize ion-button (click)="goToLogin()" color="white">
+          <ion-title>Login</ion-title>
+        </button>
+      </ng-template>
 
       <button ion-button class="hidden-md-up" menuToggle>
         <ion-icon name="menu"></ion-icon>
