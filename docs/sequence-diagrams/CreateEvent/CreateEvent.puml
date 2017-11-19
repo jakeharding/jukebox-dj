@@ -1,0 +1,41 @@
+@startuml
+actor DJ
+participant "Create Event Page" as C
+participant Submit as S
+participant ORM
+database Postgres as DB
+activate DJ
+
+DJ -> DB: Logs in
+activate DB
+activate ORM
+
+DB --> DJ: authorized
+deactivate DB
+deactivate ORM
+
+DJ -> C: Enter Event info
+activate C
+    C -> C: Client Validation
+
+alt clean data
+    C -> S: Valid
+    activate S
+
+    S -> ORM:  submit(//data//)
+    activate ORM
+    ORM -> ORM: clean(//data//)
+    ORM -> DB: create(//cleanData//)
+    activate DB
+    DB --> ORM: success
+    deactivate DB
+    ORM --> DJ: success
+else unclean data
+    ORM --> S: error(//errors//)
+    deactivate ORM
+    S --> C: errors
+    C --> DJ
+end
+
+
+@enduml
