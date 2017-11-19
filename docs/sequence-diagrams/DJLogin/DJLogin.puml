@@ -1,7 +1,42 @@
 @startuml
-DJ -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
+actor DJ
+participant "Home Page" as HP
+participant "Login Page" as LP
+participant "Dashboard" as DASH
+participant ORM
+database Postgres as DB
 
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
+activate DJ
+
+DJ -> HP: navigate \n to Home page
+activate HP
+
+HP -> LP: navigate \n to login page
+activate LP
+
+LP -> LP: enter credentials
+LP -> ORM: submit credentials
+activate ORM
+
+ORM -> DB: login(//creds//)
+activate DB
+
+alt correct credentials
+    DB --> ORM: success
+    ORM --> LP: authorized
+    LP -> DASH: logged in
+    activate DASH
+else incorrect credentials
+    DB --> ORM: invalid creds
+    ORM --> LP: error(//message//)
+    LP --> LP: display message
+
+end
+
+deactivate DJ
+deactivate DB
+deactivate ORM
+deactivate DASH
+deactivate HP
+deactivate LP
 @enduml
