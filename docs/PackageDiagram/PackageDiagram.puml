@@ -1,0 +1,35 @@
+@startuml
+
+package "jukebox_dj (REST)" {
+HTTP -- [events]
+HTTP -- [songs]
+HTTP -- [users]
+[events] --> [models]
+[songs]  --> [models]
+[users]  --> [models]
+}
+
+
+package "index (client app)" {
+HTTP - [index]
+Websocket --> [index]
+[index] --> [events]
+[index] --> [songs]
+[index] --> [users]
+
+}
+
+package "Django" {
+ORM -> [models]
+[models] -> ORM
+
+HTTP -->[WSGI server]
+[WSGI server]  -> [events]
+[WSGI server]  -> [songs]
+[WSGI server]  -> [users]
+}
+database "Postgres" {
+ORM --> [Database tables]
+}
+
+@enduml
