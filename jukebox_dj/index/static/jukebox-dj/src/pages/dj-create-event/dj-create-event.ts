@@ -27,12 +27,11 @@ export class DjCreateEventPage {
   eventName: string = '';
   eventNameCorrect: boolean = true;
 
-  event: Event;
   user: User;
   constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
-  userEvent (user:User) {
-    this.user = user;
+  userEvent (dj:User) {
+    this.user = dj;
   }
 
   verifyInput(eventName: string) {
@@ -44,8 +43,7 @@ export class DjCreateEventPage {
   }
 
   createEvent() {
-    this.event.name = this.eventName;
-    console.log(this.event);
+    let newEvent = new Event(this.user.uuid, this.eventName, this.active);
   }
 
 }
