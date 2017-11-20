@@ -1,0 +1,20 @@
+@startuml
+(*) -> [DJ Logs In] "DJ Dashboard Page"
+"DJ Dashboard Page" --> [DJ Creates Event] "DJ Create Event Page"
+if "DJ Activates Event" then
+--> [true] "DJ Active Event Page"
+else
+--> [false] "DJ Dashboard Page"
+endif
+
+"DJ Active Event Page" --> [DJ Receives Song Request] "DJ Waiting for Song Request"
+if "DJ Receives Song Request" then
+--> [DJ Accepts Song Request] "Song Request Accepted"
+else
+--> [DJ Denies Song Request] "Song Request Denied"
+endif
+
+"Song Request Accepted" --> "DJ Waiting for Song Request"
+"Song Request Denied" --> "DJ Waiting for Song Request"
+
+@enduml
