@@ -28,22 +28,18 @@ export class DjCreateEventPage {
   eventNameCorrect: boolean = true;
 
   user: User;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+  event: Event = {};
+  constructor(public navCtrl: NavController, public navParams: NavParams, private eventProvider: EventProvider) {}
 
   userEvent (dj:User) {
     this.user = dj;
   }
 
-  verifyInput(eventName: string) {
-    if (eventName == '') {
-      this.eventNameCorrect = false;
-      return;
-    }
-    this.createEvent();
-  }
-
   createEvent() {
-    let newEvent = new Event(this.user.uuid, this.eventName, this.active);
+    this.event.dj = this.user.dj_id;
+    this.eventProvider.createEvent(this.event).subscribe(event => {
+      console.log(event);
+    });
   }
 
 }

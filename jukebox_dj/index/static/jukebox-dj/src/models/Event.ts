@@ -23,9 +23,9 @@ export interface Event {
   song_requests: SongRequest[];
   songs: Song [];
 
-  constructor (name: string, dj: string, is_active: string) {
-    this.name = name;
-    this.dj = dj;
-    this.is_active = is_active;
-  }
+  // constructor (name: string, dj: string, is_active: boolean) {
+  //   this.name = name;
+  //   this.dj = dj;
+  //   this.is_active = is_active;
+  // }
 }

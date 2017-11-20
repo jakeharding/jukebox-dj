@@ -13,13 +13,13 @@
   <ion-list padding padding>
     <ion-item>
       <ion-label color="white">Event Name</ion-label>
-      <ion-input [(ngModel)]="eventName" placeholder="Event Name"></ion-input>
+      <ion-input [(ngModel)]="event.name" required placeholder="Event Name"></ion-input>
     </ion-item>
     <ion-label *ngIf="!eventNameCorrect" color="danger" text-center>Event name cannot be empty!</ion-label>
     <ion-item>
       <ion-label color="white">Active?</ion-label>
-      <ion-toggle [(ngModel)]="active"></ion-toggle>
+      <ion-toggle [(ngModel)]="event.is_active"></ion-toggle>
     </ion-item>
   </ion-list>
-  <button ion-item color="primary" (click)="verifyInput(eventName);" text-center>Create Event</button>
+  <button ion-item color="primary" (click)="createEvent();" text-center>Create Event</button>
 </ion-content>
