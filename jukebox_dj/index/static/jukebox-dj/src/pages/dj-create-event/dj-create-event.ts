@@ -29,7 +29,8 @@ export class DjCreateEventPage {
 
   user: User;
   event: Event = {};
-  constructor(public navCtrl: NavController, public navParams: NavParams, private eventProvider: EventProvider) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    private eventProvider: EventProvider) {}
 
   userEvent (dj:User) {
     this.user = dj;
@@ -38,7 +39,7 @@ export class DjCreateEventPage {
   createEvent() {
     this.event.dj = this.user.dj_id;
     this.eventProvider.createEvent(this.event).subscribe(event => {
-      console.log(event);
+      this.navCtrl.push('manage-events');
     });
   }
 
