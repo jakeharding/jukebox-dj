@@ -13,7 +13,7 @@
         <ion-title>{{ user.display_name }}</ion-title>
       </button>
 
-      <button class="hidden-sm-down" (click)="logout()" ion-button text-capitalize color="white" *ngIf="user; else notLoggedIn">
+      <button class="hidden-sm-down" tid="logout"(click)="logout()" ion-button text-capitalize color="white" *ngIf="user; else notLoggedIn">
         <ion-title>Logout</ion-title>
       </button>
       <ng-template #notLoggedIn>
