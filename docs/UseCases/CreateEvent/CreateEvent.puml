@@ -1,0 +1,13 @@
+@startuml
+:DJ: as DJ
+(Login) as L
+(Enter Event Info) as INFO
+(Event is created) as EVENT
+
+DJ -> L
+
+L -> INFO: <<includes>>
+
+INFO -> EVENT
+
+@enduml

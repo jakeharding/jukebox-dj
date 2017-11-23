@@ -1,0 +1,44 @@
+@startuml
+actor Requester as R
+participant "Active Event Page" as AE
+participant ORM
+participant WebSocket as WS
+database Postgres as DB
+actor DJ
+activate R
+
+R -> AE: connects to event
+activate AE
+AE --> R: list of available songs
+
+R -> AE: song selected
+AE -> ORM: submit(//song//)
+activate ORM
+
+alt song has been requested in last hour
+    ORM --> AE: error(//message//)
+    AE --> AE: remove \nsong from list
+    AE --> R: display error
+else requester requested 5 songs in last hour
+    ORM --> AE: error(//message//)
+    AE -> R: display error
+else song request is valid
+    ORM -> DB: create(//song request//)
+    activate DB
+    DB --> ORM: success
+    deactivate DB
+    ORM --> AE: remove song from list
+    AE -> R: notify of success
+    AE -> WS: update event channel
+    activate WS
+    WS -> DJ: notify DJ of new request
+    activate DJ
+end
+
+deactivate DJ
+deactivate AE
+deactivate ORM
+deactivate WS
+
+
+@enduml

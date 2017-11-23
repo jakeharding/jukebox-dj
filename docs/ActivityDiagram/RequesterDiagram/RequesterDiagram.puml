@@ -1,0 +1,30 @@
+@startuml
+(*) --> [Requester Enters Home Page URL] "Home Page"
+if "Requester Enters Pin" then
+--> [Valid] "Event Page"
+else
+    if "" then
+        --> [More than one event] "List Events Page"
+    else
+        --> [Invalid] "Display Error"
+        --> "Home Page"
+    endif
+endif
+
+"List Events Page" --> [Requester Selects Event] "Event Page"
+"Event Page" --> "Requester Submits Request"
+if "More than 5 requests in last hour" then
+    ---> [Yes] "Request Not Created"
+    else
+       [No] if "Already requested in last hour" then
+          --> [Yes] "Request Not Created"
+       else
+          --> [No] "Request Created"
+       endif
+endif
+
+"Request Not Created" --> "Requester is Notified"
+"Request Created" --> "Requester is Notified"
+"Requester is Notified" --> "Event Page"
+
+@enduml

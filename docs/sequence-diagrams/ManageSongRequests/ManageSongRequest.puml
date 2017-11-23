@@ -1,0 +1,51 @@
+@startuml
+actor Requester as R
+actor DJ
+participant "Manage Event Page" as ME
+participant ORM
+participant WebSocket as WS
+database Postgres as DB
+activate DJ
+
+DJ -> DB: logs in
+activate ORM
+activate DB
+DB --> DJ: authorized
+DJ -> ME: active event
+activate ME
+activate R
+R -> R: connect to event
+
+
+R -> ME: song request \n notification
+ME --> DJ: display new\n song request
+alt song request added to queue
+    DJ -> ME: song request queued
+    ME -> ORM: update song request
+    ORM -> DB: update(//song request//)
+    DB --> ME: update OK
+    ME -> WS: update requester channel
+    activate WS
+    WS -> R: song queued notification
+    deactivate WS
+else song request denied
+    DJ -> ME: denied
+    ME -> ORM: update song request
+    ORM -> DB: update(//song request//)
+    DB --> ME: update OK
+    ME -> WS: update requester channel
+    activate WS
+    WS -> R: song request denied notification
+    deactivate WS
+else song request remains in requested status
+    ME -> ME: song request \n remains in requested status \n (no-op)
+
+end
+
+deactivate ME
+deactivate ORM
+deactivate R
+deactivate DB
+deactivate DJ
+
+@enduml

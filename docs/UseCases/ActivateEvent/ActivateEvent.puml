@@ -1,0 +1,15 @@
+@startuml
+:DJ: as DJ
+(Login) as L
+(Create an Event) as E
+(Activates an Event) as A
+(Event is activated) as EVENT
+
+DJ -> L
+
+L .> E: <<includes>>
+E .> A: : <<extends>>
+A -> EVENT
+
+
+@enduml

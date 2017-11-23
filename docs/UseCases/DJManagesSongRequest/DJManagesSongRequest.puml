@@ -1,0 +1,31 @@
+@startuml
+:DJ: as DJ
+:Requester: as R
+(DJ Logs In) as Login
+(DJ Creates an Event) as Create
+(DJ Activates an Event) as Activate
+(DJ Receives Song Request) as Receive
+(Requester Connects to an Active Event) as Connects
+(Requester Submits a Song Request to the DJ) as Submits
+(Requester's Song is Validated) as Validated
+(DJ is Notified of a New Song Request) as Notified
+(DJ Manages a Request) as Manages
+(Requester Receives Song Status Notifiaction) as Status
+
+DJ -> Login
+Login ..> Create: <<includes>>
+Create ..> Activate: <<extends>>
+Activate ..> Receive: <<includes>>
+Receive ..> Notified: <<extends>>
+Notified --> Manages
+DJ --> Manages
+Manages --> Status
+
+R -> Connects
+Connects ..> Submits: <<extends>>
+Submits ..> Validated: <<includes>>
+Validated ..> Receive: <<includes>>
+Status --> R
+
+
+@enduml

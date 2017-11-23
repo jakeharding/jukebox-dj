@@ -1,0 +1,13 @@
+@startuml
+:DJ: as DJ
+(Submits Credentials) as SC
+(User Authenticated) as UA
+(Taken to Dashboard) as DASH
+
+DJ -> SC
+
+SC -> UA
+
+UA ---> DASH
+
+@enduml

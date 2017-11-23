@@ -1,0 +1,13 @@
+@startuml
+:Requester: as R
+(Submits Event PIN) as PIN
+(Pin Authenticated) as PA
+(Taken to Event) as E
+
+R -> PIN
+
+PIN -> PA
+
+PA ---> E
+
+@enduml
