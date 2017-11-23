@@ -22,14 +22,24 @@
         </ion-row>
 
         <ion-row justify-content-center>
-          <button margin-top ion-button [disabled]="searchForEventForm.invalid" >Enter</button>
+          <button margin-top ion-button [disabled]="searchForEventForm.invalid">Enter</button>
         </ion-row>
       </form>
     </div>
 
     <ion-row [hidden]="events.length === 0">
-      <ion-col>
-        <button ion-button *ngFor="let e of events" [navPush]="'requester'" [navParams]="e">Start {{ e.name }}</button>
+      <ion-col text-center>
+        <h1>Oops.....</h1>
+        <h2>We found more than one active event!</h2>
+        <h2>Please select the name of the event you are at:</h2>
+        <div class="event-list">
+          <button
+            [attr.tid]="'events_'+ i" ion-item
+            *ngFor="let e of events; let i = index" color="dark"
+            [navPush]="'requester'" [navParams]="e">
+            {{ e.name }}
+          </button>
+        </div>
       </ion-col>
     </ion-row>
   </ion-grid>
