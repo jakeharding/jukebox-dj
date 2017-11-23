@@ -1,43 +1,36 @@
 <jukebox-header></jukebox-header>
 
-<!--ion-content padding padding-top padding-top text-center>
-    <ion-input type="text" maxlength="4" placeholder="Event Pin"> </ion-input>
-
-    <!--ideas//button ion-button *ngFor="let e of events" [navPush]="events" [navParams]="e">Start {{ e.name }}</button-->
-    <!--working// button ion-item *ngFor="let e of events" [navPush]="'events'" [navParams]="e">Start {{ e.name }}</button-->
 <ion-content padding-top>
-  <ion-card>
-      <ion-card-content>
-        <ion-grid>
-            <ion-row>
-                <ion-col text-center>
-                    <h1> Welcome to Jukebox DJ </h1>
-                    <h1> Enter your 4 digit pin to continue </h1>
-                </ion-col>
-            </ion-row>
-            <ion-row justify-content-center>
-                <ion-col col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4>
-                    <ion-item>
-                        <ion-input text-center [(ngModel)]="djId" type="text" maxlength="4" placeholder="Event Pin"> </ion-input>
-                    </ion-item>
-                    <ion-label [hidden]="!noEventFound" color="danger">
-                        Sorry, no event found
-                    </ion-label>
-                </ion-col>
-            </ion-row>
-            <ion-row justify-content-center>
-                <ion-col>
-                    <ion-item text-center>
-                        <button ion-button small (click)="navigate()">Enter</button>
-                    </ion-item>
-                </ion-col>
-            </ion-row>
-            <ion-row [hidden]="events.length===0">
-                <ion-col>
-                    <button ion-button *ngFor="let e of events" [navPush]="'requester'" [navParams]="e">Start {{ e.name }}</button>
-                </ion-col>
-            </ion-row>
-        </ion-grid>
-      </ion-card-content>
-  </ion-card>
+  <ion-grid>
+    <div [hidden]="events.length > 1">
+      <ion-row>
+        <ion-col text-center>
+          <h1> Welcome to Jukebox DJ </h1>
+          <h1> Please enter the DJ ID to continue </h1>
+      </ion-col>
+      </ion-row>
+      <form [formGroup]="searchForEventForm" (ngSubmit)="navigate()">
+        <ion-row justify-content-center>
+          <ion-col col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4>
+            <ion-item>
+              <ion-input text-center formControlName="dj__dj_id" type="text" maxlength="4" placeholder="DJ ID"> </ion-input>
+            </ion-item>
+            <ion-label padding-left [hidden]="!noEventFound" color="danger">
+              Sorry, no event found
+            </ion-label>
+          </ion-col>
+        </ion-row>
+
+        <ion-row justify-content-center>
+          <button margin-top ion-button [disabled]="searchForEventForm.invalid" >Enter</button>
+        </ion-row>
+      </form>
+    </div>
+
+    <ion-row [hidden]="events.length === 0">
+      <ion-col>
+        <button ion-button *ngFor="let e of events" [navPush]="'requester'" [navParams]="e">Start {{ e.name }}</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
