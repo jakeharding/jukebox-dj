@@ -11,11 +11,12 @@
 <ion-content padding padding-top padding-top text-center>
   <h1>Event Manager</h1>
   <ion-list>
-    <button ion-item *ngFor="let e of events" color="dark" [navPush]="'events'" [navParams]="e">
+    <button [attr.tid]="'events_'+ i" ion-item *ngFor="let e of events; let i = index" color="dark" [navPush]="'events'" [navParams]="e">
       <ion-label col-4> {{ e.name }}</ion-label>
       <ion-label col-4> Created {{ e.created_at | date:'short' }} </ion-label>
       <button [ngClass]="(e.is_active) ? 'active' : 'inactive'" ion-button item-end></button>
+
     </button>
   </ion-list>
-  <button ion-item color="primary" [navPush]="'create-event'" text-center>Create Event</button>
+  <button ion-item color="primary" [navPush]="'create-event'" text-center tid="create-btn">Create Event</button>
 </ion-content>
