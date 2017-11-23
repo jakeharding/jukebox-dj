@@ -28,6 +28,10 @@ export class HomePage {
     })
   }
 
+  goToEvent (e:Event) {
+    this.navCtrl.push('requester', e).then(() => { this.events = []})
+  }
+
   navigate(){
     this.eventProvider.getEvents(this.searchForEventForm.value).subscribe(events => {
       this.noEventFound = false;

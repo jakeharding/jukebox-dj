@@ -13,16 +13,16 @@
         <ion-row justify-content-center>
           <ion-col col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4>
             <ion-item>
-              <ion-input text-center formControlName="dj__dj_id" type="text" maxlength="4" placeholder="DJ ID"> </ion-input>
+              <ion-input tid="id-input" text-center formControlName="dj__dj_id" type="text" maxlength="4" placeholder="DJ ID"> </ion-input>
             </ion-item>
-            <ion-label padding-left [hidden]="!noEventFound" color="danger">
+            <ion-label tid="no-event-error" padding-left [hidden]="!noEventFound" color="danger">
               Sorry, no event found
             </ion-label>
           </ion-col>
         </ion-row>
 
         <ion-row justify-content-center>
-          <button margin-top ion-button [disabled]="searchForEventForm.invalid">Enter</button>
+          <button tid="submit-btn" margin-top ion-button [disabled]="searchForEventForm.invalid">Enter</button>
         </ion-row>
       </form>
     </div>
@@ -34,9 +34,9 @@
         <h2>Please select the name of the event you are at:</h2>
         <div class="event-list">
           <button
-            [attr.tid]="'events_'+ i" ion-item
+            [attr.tid]="'event-btn-'+ i" ion-item
             *ngFor="let e of events; let i = index" color="dark"
-            [navPush]="'requester'" [navParams]="e">
+            (click)="goToEvent(e)">
             {{ e.name }}
           </button>
         </div>
