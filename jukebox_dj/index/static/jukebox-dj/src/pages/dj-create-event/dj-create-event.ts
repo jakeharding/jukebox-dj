@@ -22,30 +22,20 @@ import {User} from "../../models/User";
   templateUrl: 'dj-create-event.html',
 })
 export class DjCreateEventPage {
-  active: boolean = false;
-
-  eventName: string = '';
-  eventNameCorrect: boolean = true;
-
-  event: Event;
   user: User;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+  event: Event = {};
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    private eventProvider: EventProvider) {}
 
-  userEvent (user:User) {
-    this.user = user;
-  }
-
-  verifyInput(eventName: string) {
-    if (eventName == '') {
-      this.eventNameCorrect = false;
-      return;
-    }
-    this.createEvent();
+  userEvent (dj:User) {
+    this.user = dj;
   }
 
   createEvent() {
-    this.event.name = this.eventName;
-    console.log(this.event);
+    this.event.dj = this.user.dj_id;
+    this.eventProvider.createEvent(this.event).subscribe(event => {
+      this.navCtrl.push('manage-events');
+    });
   }
 
 }
