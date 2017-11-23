@@ -22,11 +22,11 @@ export class MyApp {
     ];
     let authLink;
     if ( this.authProvider.isLoggedIn()) {
-      authLink = { title: "Logout", link: 'logout' };
+      authLink = [{ title: "Logout", link: 'logout' }, {title: "Dashboard", link:"manage-events"}];
     } else {
-      authLink = { title: "Login", link: 'login' };
+      authLink = [{ title: "Login", link: 'login' }];
     }
-    this.pages.push(authLink);
+    this.pages = this.pages.concat(authLink);
 
   }
 
