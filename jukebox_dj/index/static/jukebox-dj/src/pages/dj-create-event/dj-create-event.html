@@ -8,6 +8,18 @@
 
 <login-required (userEvent)="userEvent($event)"></login-required>
 
-<ion-content padding>
-
+<ion-content padding padding>
+  <h1 text-center>Create Event</h1>
+  <ion-list padding padding>
+    <ion-item>
+      <ion-label color="white">Event Name</ion-label>
+      <ion-input [(ngModel)]="event.name" id="name" name="name" #name="ngModel" required placeholder="Event Name"></ion-input>
+    </ion-item>
+    <ion-label [hidden]="name.valid || name.untouched" color="danger" text-center>Event name cannot be empty!</ion-label>
+    <ion-item>
+      <ion-label color="white">Active?</ion-label>
+      <ion-toggle [(ngModel)]="event.is_active"></ion-toggle>
+    </ion-item>
+  </ion-list>
+  <button ion-item color="primary" (click)="createEvent();" text-center>Create Event</button>
 </ion-content>

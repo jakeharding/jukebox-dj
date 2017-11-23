@@ -14,12 +14,12 @@ import {SongRequest} from "./SongRequest";
 import {SongList} from "./SongList";
 
 export interface Event {
-  uuid: string;
-  name: string;
-  dj: string;
-  created_at: Date;
-  is_active: boolean;
-  song_lists: SongList[];
-  song_requests: SongRequest[];
-  songs: Song [];
+  uuid?: string;
+  name?: string;
+  dj?: string;
+  created_at?: Date;
+  is_active?: boolean;
+  song_lists?: SongList[];
+  song_requests?: SongRequest[];
+  songs?: Song [];
 }
