@@ -18,17 +18,17 @@ export class JukeboxHeaderComponent {
   @Input() user: User;
 
   constructor(
-    private nav: NavController,
+    private navCtrl: NavController,
     private authProvider: AuthProvider
   ) {}
 
   goToLogin () {
-    this.nav.push('login');
+    this.navCtrl.push('login');
   }
 
   logout () {
     this.authProvider.clearToken();
-    this.nav.setRoot('home');
+    this.navCtrl.setRoot('home');
   }
 
 }
