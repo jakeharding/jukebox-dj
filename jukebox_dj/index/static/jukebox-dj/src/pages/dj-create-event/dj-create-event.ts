@@ -22,11 +22,6 @@ import {User} from "../../models/User";
   templateUrl: 'dj-create-event.html',
 })
 export class DjCreateEventPage {
-  active: boolean = false;
-
-  eventName: string = '';
-  eventNameCorrect: boolean = true;
-
   user: User;
   event: Event = {};
   constructor(public navCtrl: NavController, public navParams: NavParams,
