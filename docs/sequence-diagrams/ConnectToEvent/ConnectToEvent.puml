@@ -1,0 +1,38 @@
+@startuml
+actor DJ
+actor Requester as R
+participant "Home Page" as HP
+participant "Active Event Page" as AE
+participant ORM
+database Postgres as DB
+activate R
+activate DJ
+
+DJ -> R: PIN
+deactivate DJ
+
+R -> HP: Enter PIN
+activate HP
+HP -> ORM: PIN
+activate ORM
+ORM -> DB: getEvent(PIN, isActive)
+activate DB
+
+alt no active events
+    DB --> ORM: empty
+    ORM --> R: error
+else more than one active event
+    DB --> HP: event list
+    HP -> R: display list
+    R -> AE: select event
+    activate AE
+else one active event
+    DB --> R: event
+    R -> AE: event
+end
+
+deactivate DB
+deactivate ORM
+deactivate AE
+
+@enduml

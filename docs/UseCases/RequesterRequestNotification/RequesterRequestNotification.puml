@@ -1,0 +1,33 @@
+@startuml
+:Requester: as R
+:DJ: as DJ
+(Connects to Active Event) as CONN
+(Requester Submits Request to DJ) as REQ
+(Song Request Valid) as VALID
+(Song Request Invalid) as INVALID
+(Requester Receives Denial Notification) as DENIAL
+(DJ Accepts Request) as ACCEPT
+(DJ Denies Request) as DENIED
+(Requester Notified of Denied Request) as NOTDENIED
+(Requester Notified of Accepted Request) as NOTACCEPT
+
+
+R -> CONN
+
+CONN .> REQ : <<includes>>
+
+REQ ..> INVALID : <<includes>>
+INVALID --> DENIAL
+
+REQ ..> VALID : <<includes>>
+VALID --> DJ
+
+DJ --> ACCEPT
+ACCEPT ..> NOTACCEPT : <<includes>>
+NOTACCEPT --> R
+
+DJ --> DENIED
+DENIED ..> NOTDENIED : <<includes>>
+NOTDENIED --> R
+
+@enduml

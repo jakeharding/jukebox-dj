@@ -1,0 +1,21 @@
+@startuml
+:Requester: as R
+(Connect To Event) as EV
+(Submits Song) as S
+(Song Request Invalid) as I
+(Song Request Valid) as V
+(Song Request Denied) as D
+(Requester Notified) as N
+
+R -> EV
+
+EV .> S: <<includes>>
+
+S ..> I: <<includes>>
+S ..> V: <<includes>>
+
+I -> D
+D --> N
+N -> R
+
+@enduml

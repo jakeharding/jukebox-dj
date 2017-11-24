@@ -1,0 +1,17 @@
+@startuml
+
+(*) --> DJNotLoggedIn
+
+DJNotLoggedIn --> [login()] LoggedIn
+LoggedIn --> Dashboard
+Dashboard --> [enterEventInfo()]CreatesEvent
+Dashboard --> [changeEventInfo()] ManagesEvent
+Dashboard --> [activate()] ActivatesEvent
+Dashboard --> [logout()] DJNotLoggedIn
+ManagesEvent --> [logout()] DJNotLoggedIn
+ActivatesEvent --> [logout()] DJNotLoggedIn
+CreatesEvent --> [logout()] DJNotLoggedIn
+ActivatesEvent --> [receiveInfo()] ReceivesSongRequest
+ReceivesSongRequest --> [songRequestValid()] ActivatesEvent
+
+@enduml
