@@ -82,7 +82,7 @@ ROOT_URLCONF = 'jukebox_dj.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR + 'jukebox_dj/index/static/jukebox-dj/www/'],
+        'DIRS': [BASE_DIR + '/jukebox_dj/index/static/jukebox-dj/www/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
