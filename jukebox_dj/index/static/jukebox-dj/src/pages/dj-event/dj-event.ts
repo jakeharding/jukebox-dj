@@ -112,6 +112,14 @@ export class DjEventPage {
     this.user = user;
   }
 
+  ionViewWillLeave () {
+    this.eventBridge.socket.close();
+    Object.keys(this.requesterBridges).forEach(key => {
+      this.requesterBridges[key].socket.close();
+    });
+
+  }
+
   private onDrop(args) {
     let [el, target, source, sibling] = args;
     let status : SongRequestStatus = this.getRequestStatus(target.id);

@@ -9,17 +9,32 @@
 <login-required (userEvent)="userEvent($event)"></login-required>
 
 <ion-content padding padding>
-  <h1 text-center>Create Event</h1>
+  <h1 text-center tid="page-heading">Create Event</h1>
   <ion-list padding padding>
-    <ion-item>
-      <ion-label color="white">Event Name</ion-label>
-      <ion-input [(ngModel)]="event.name" id="name" name="name" #name="ngModel" required placeholder="Event Name"></ion-input>
-    </ion-item>
-    <ion-label [hidden]="name.valid || name.untouched" color="danger" text-center>Event name cannot be empty!</ion-label>
-    <ion-item>
-      <ion-label color="white">Active?</ion-label>
-      <ion-toggle [(ngModel)]="event.is_active"></ion-toggle>
-    </ion-item>
+    <form [formGroup]="createEventForm" (ngSubmit)="createEvent()">
+      <ion-item>
+        <ion-label color="white">Event Name</ion-label>
+        <ion-input tid="event-name" formControlName="name" id="name" name="name" placeholder="Event Name"></ion-input>
+      </ion-item>
+
+      <ion-label
+        tid="event-name-error"
+        [hidden]="createEventForm.controls['name'].valid || createEventForm.controls['name'].untouched"
+        color="danger" padding-left
+      >
+        Please provide an event name.
+      </ion-label>
+
+      <ion-item>
+        <ion-label color="white">Active?</ion-label>
+        <ion-toggle tid="event-is-active" formControlName="is_active"></ion-toggle>
+      </ion-item>
+      <button
+        [disabled]="createEventForm.invalid"
+        tid="submit-btn" ion-item color="primary"
+        text-center
+        margin
+      >Create Event</button>
+    </form>
   </ion-list>
-  <button ion-item color="primary" (click)="createEvent();" text-center>Create Event</button>
 </ion-content>

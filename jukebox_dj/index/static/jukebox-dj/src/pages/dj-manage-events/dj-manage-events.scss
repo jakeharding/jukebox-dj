@@ -14,4 +14,14 @@ page-dj-manage-events {
     background: radial-gradient(#ff1919 25%, #4c0000 75%);
     color: color($colors, danger)!important;
   }
+
+  ion-list {
+    height: 80%;
+    overflow-y: auto;
+  }
+
+  .event-list {
+    height: 80%;
+    overflow-y: auto;
+  }
 }

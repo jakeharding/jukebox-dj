@@ -7,6 +7,7 @@ import 'rxjs/add/observable/throw'
 import {Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import {AuthState, AuthAction} from "../../providers/auth/auth.store";
 import { LOGIN, LOGIN_FAIL, RECEIVE_TOKEN } from '../../providers/auth/auth.actions';
+import {User} from "../../models/User";
 
 /**
  * Generated class for the LoginPage page.
@@ -24,6 +25,7 @@ import { LOGIN, LOGIN_FAIL, RECEIVE_TOKEN } from '../../providers/auth/auth.acti
   templateUrl: 'login.html',
 })
 export class LoginPage {
+  user: User;
   private loginForm: FormGroup;
   private username: string = "";
   private password: string = "";
@@ -66,5 +68,9 @@ export class LoginPage {
     this.store.dispatch({type:LOGIN, payload: this.loginForm.value});
 
     this.store.select(state=>state['auth']).subscribe(( user ) => {/* Noop to  trigger obeservable */})
+  }
+
+  userEvent (user: User) {
+    this.user = user;
   }
 }

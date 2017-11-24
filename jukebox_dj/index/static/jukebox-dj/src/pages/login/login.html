@@ -5,7 +5,9 @@
   Ionic pages and navigation.
 -->
 
-<jukebox-header></jukebox-header>
+<jukebox-header [user]="user"></jukebox-header>
+
+<check-auth (userEvent)="userEvent($event)"></check-auth>
 
 <ion-content padding>
   <ion-row>
@@ -24,14 +26,15 @@
           padding-left
           tid="username-error"
           color="danger"
-          [hidden]="loginForm.controls['username'].valid || loginForm.controls['username'].untouched">{{usernameErr}}</ion-label>
+          [hidden]="loginForm.controls['username'].valid || loginForm.controls['username'].untouched">{{usernameErr}}
+        </ion-label>
 
         <ion-item>
           <ion-label tid="password-label" floating>Password</ion-label>
           <ion-input tid="password-input" type="password" formControlName="password"></ion-input>
         </ion-item>
 
-        <button ion-button margin-left margin-top type="submit" [disabled]="loginForm.invalid">Login</button>
+        <button ion-button margin-left margin-top type="submit" tid="submit-btn" [disabled]="loginForm.invalid">Login</button>
       </form>
     </ion-col>
   </ion-row>
