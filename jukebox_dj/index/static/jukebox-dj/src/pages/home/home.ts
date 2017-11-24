@@ -3,6 +3,7 @@ import { NavController, IonicPage } from 'ionic-angular';
 import { Event } from '../../models/Event';
 import { EventProvider} from "../../providers/event/event";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {User} from "../../models/User";
 
 @IonicPage({
   name: 'home'
@@ -12,10 +13,10 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
   templateUrl: 'home.html'
 })
 export class HomePage {
+  user: User;
   noEventFound: boolean = false;
   searchForEventForm: FormGroup;
   djId: string = null;
-  // event: Event;
   events: Event[] = [];
 
   constructor(public navCtrl: NavController,
@@ -44,5 +45,9 @@ export class HomePage {
         this.events = [];
       }
     });
+  }
+
+  userEvent (user: User) {
+    this.user = user;
   }
 }
