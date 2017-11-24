@@ -12,7 +12,6 @@ demo_list.events.add(demo)
 tags = requests.get("http://ws.audioscrobbler.com/2.0/?method=tag.getTopTags&api_key=6a2a687a792d7a34bd34fca954d0f924&format=json").json()
 
 for t in tags['toptags']['tag']:
-    print(t['name'])
     c = Category.objects.create(name=t['name'])
     tracks = requests.get("http://ws.audioscrobbler.com/2.0/?method=tag.gettoptracks&tag=%s&api_key=6a2a687a792d7a34bd34fca954d0f924&format=json" % t['name'])
     for track in tracks.json()['tracks']['track']:
