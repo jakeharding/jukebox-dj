@@ -63,7 +63,7 @@ export class RequesterPage {
   }
 
   filterSongs() {
-    if (this.searchText.length >= 2) {
+    if (this.searchText.length >= 2 || this.searchText.length === 0) {
       this.songProvider.getSongs({ search: this.searchText, event: this.event.uuid }).subscribe( (songs) =>{
         this.songs = songs;
       });
@@ -106,6 +106,11 @@ export class RequesterPage {
     this.songs = this.songs.filter((underTest: Song) => {
       return uuid !== underTest.uuid;
     });
+  }
+
+  ionViewWillLeave () {
+    this.eventBridge.socket.close();
+    this.requesterBridge.socket.close();
   }
 
   ionViewWillLoad() {
