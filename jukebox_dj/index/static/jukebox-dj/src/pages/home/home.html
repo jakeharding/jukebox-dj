@@ -2,8 +2,47 @@
 
 <check-auth (userEvent)="userEvent($event)"></check-auth>
 
-<ion-content padding padding-top padding-top text-center>
-  <ion-list>
-    <button ion-item *ngFor="let e of events" [navPush]="'events'" [navParams]="e">Start {{ e.name }}</button>
-  </ion-list>
+<ion-content padding-top>
+  <ion-grid>
+    <div [hidden]="events.length > 1">
+      <ion-row>
+        <ion-col text-center>
+          <h1> Welcome to Jukebox DJ </h1>
+          <h1> Please enter the DJ ID to continue </h1>
+      </ion-col>
+      </ion-row>
+      <form [formGroup]="searchForEventForm" (ngSubmit)="navigate()">
+        <ion-row justify-content-center>
+          <ion-col col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4>
+            <ion-item>
+              <ion-input tid="id-input" text-center formControlName="dj__dj_id" type="text" maxlength="4" placeholder="DJ ID"> </ion-input>
+            </ion-item>
+            <ion-label tid="no-event-error" padding-left [hidden]="!noEventFound" color="danger">
+              Sorry, no event found
+            </ion-label>
+          </ion-col>
+        </ion-row>
+
+        <ion-row justify-content-center>
+          <button tid="submit-btn" margin-top ion-button [disabled]="searchForEventForm.invalid">Enter</button>
+        </ion-row>
+      </form>
+    </div>
+
+    <ion-row [hidden]="events.length === 0">
+      <ion-col text-center>
+        <h1>Oops.....</h1>
+        <h2>We found more than one active event!</h2>
+        <h2>Please select the name of the event you are at:</h2>
+        <div class="event-list">
+          <button
+            [attr.tid]="'event-btn-'+ i" ion-item
+            *ngFor="let e of events; let i = index" color="dark"
+            (click)="goToEvent(e)">
+            {{ e.name }}
+          </button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

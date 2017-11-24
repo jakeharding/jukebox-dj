@@ -39,18 +39,12 @@ export class DjCreateEventPage {
     })
   }
 
-  ionViewDidLoad () {
-
-  }
-
   userEvent (dj:User) {
     this.user = dj;
     this.createEventForm.controls['dj'].setValue(dj.dj_id);
   }
 
   createEvent() {
-    // this.event.dj = this.user.dj_id;
-    console.log(this.createEventForm);
     this.eventProvider.createEvent(this.createEventForm.value).subscribe(event => {
       this.navCtrl.push('manage-events');
     });

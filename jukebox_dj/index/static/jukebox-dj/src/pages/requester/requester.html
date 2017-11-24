@@ -16,11 +16,11 @@
       >
         <ion-segment color="light" [(ngModel)]="requesterLists">
 
-          <ion-segment-button value="songs" text-capitalize id="requestSong">
+          <ion-segment-button tid="request-song-btn" value="songs" text-capitalize id="requestSong">
             Request a Song
           </ion-segment-button>
 
-          <ion-segment-button value="songRequests" text-capitalize id="songRequests">
+          <ion-segment-button tid="request-list-btn" value="songRequests" text-capitalize id="songRequests">
             Song Requests
           </ion-segment-button>
 
@@ -41,6 +41,7 @@
         <ion-row>
           <ion-col col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4>
             <ion-searchbar
+              tid="search-input"
               [(ngModel)]="searchText"
               placeholder="Search Available Songs"
               col-12 col-sm-10 offset-sm-1 no-padding
@@ -59,8 +60,8 @@
                 <ion-label><h2>Song Titles</h2></ion-label><ion-label><h2>Artists</h2></ion-label>
               </ion-list-header>
 
-              <div class="song-container" id="infinite-scroller" infinite-scroller [immediateCallback]="true" [scrollCallback]="scrollCallback" [loadMore]="loadMore">
-                <button ion-item *ngFor="let song of songs" (click)="createRequest(song);">
+              <div tid="song-container" class="song-container" id="infinite-scroller" infinite-scroller [immediateCallback]="true" [scrollCallback]="scrollCallback" [loadMore]="loadMore">
+                <button [attr.tid]="'song-' + i" ion-item *ngFor="let song of songs; let i = index" (click)="createRequest(song);">
                   <ion-label text-center>{{ song.title }}</ion-label><ion-label text-center>{{ song.artist }}</ion-label>
                 </button>
               </div>
@@ -78,7 +79,7 @@
 
               <h2>Requested Songs</h2>
 
-              <ion-item *ngFor="let request of requested">
+              <ion-item [attr.tid]="'request-' + i" *ngFor="let request of requested, let i = index">
                 <ion-label text-center>{{ request.song_title }}</ion-label>
                 <ion-label text-center>{{ request.song_artist }}</ion-label>
               </ion-item>

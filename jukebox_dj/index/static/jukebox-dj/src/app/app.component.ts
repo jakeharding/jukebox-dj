@@ -22,7 +22,7 @@ export class MyApp {
     ];
     let authLink;
     if ( this.authProvider.isLoggedIn()) {
-      authLink = [{ title: "Logout", link: 'logout' }, {title: "Dashboard", link:"manage-events"}];
+      authLink = [{title: "Dashboard", link:"manage-events"}, { title: "Logout", link: 'logout' }];
     } else {
       authLink = [{ title: "Login", link: 'login' }];
     }
