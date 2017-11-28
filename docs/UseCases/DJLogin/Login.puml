@@ -8,6 +8,6 @@ DJ -> SC
 
 SC -> UA
 
-UA ---> DASH
+UA -> DASH
 
 @enduml

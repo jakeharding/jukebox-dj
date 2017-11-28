@@ -31,7 +31,7 @@ export class DjManageEventsPage {
 
   userEvent (dj:User) {
     this.user = dj;
-    this.eventProvider.getEvents({dj_id: dj.dj_id}).subscribe(events => {
+    this.eventProvider.getEvents({dj__dj_id: dj.dj_id}).subscribe(events => {
       this.events = events;
     });
   }
